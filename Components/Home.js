@@ -46,9 +46,6 @@ class Home extends React.Component {
       myFetchedData: [],
       services: [],
 
-
-
-
     };
   }
 
@@ -157,8 +154,8 @@ class Home extends React.Component {
     this.props.navigation.navigate('Home'); // Navigate to the home screen
   };
   //for services
-  handleIconPressService = () => {
-    this.props.navigation.navigate('Washing'); // Navigate to the Washing screen
+  handleIconPressService = (serviceName,serviceDescription) => {
+    this.props.navigation.navigate('Washing' ,{serviceName,serviceDescription}); // Navigate to the Washing screen
   };
   //for Booking
   handleIconPressBooking = () => {
@@ -187,6 +184,17 @@ class Home extends React.Component {
     const { services } = this.state;
     const { isSearchBarOpen, searchText } = this.state;
     const { myFetchedData } = this.state;
+
+    const { data } = this.state;
+
+    if (services.length === 0) {
+      return <Text>Loading...</Text>;
+    }
+
+    const firstItem = services[0];
+    const secondItem = services[1];
+    const thirdItem = services[2];
+    const fourthItem = services[3];
 
 
     return (
@@ -276,32 +284,39 @@ class Home extends React.Component {
               }}
             >
               <View style={styles.icon3}>
-
-                <TouchableOpacity onPress={this.handleIconPressService}>
-
-                  {/* <MaterialIcons
-                    name="local-car-wash"
-                    size={40} color="black"
-                    backgroundColor="#F2F3F4"
-                    margin={4} /> */}
-                  {services.length >= 1 && (
+              {/* {services.map((item) => (
+          <TouchableOpacity
+            key={item._id} // Assuming each item has a unique _id field
+            onPress={() => this.handleIconPressService(item.serviceName)}
+            style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}
+          >
+            <Text >{item.servicePrice}</Text>
+          </TouchableOpacity>
+        ))} */}
+               
+                <TouchableOpacity 
+                onPress={() => this.handleIconPressService(firstItem.serviceName,firstItem.serviceDescription)}
+                key={firstItem._id} >
+                  
                     <View size={40}
                       color="black"
                       backgroundColor="#F2F3F4"
                       margin={4}>
-                      <Text style={styles.wash}>{services[0].servicePrice}</Text>
+                      <Text style={styles.wash}>{firstItem.servicePrice}</Text>
                     </View>
-                  )}
+                
                 </TouchableOpacity>
+               
 
                 {/* <Text style={styles.wash}>Wash</Text> */}
                 <View>
-                  {services.length >= 1 && (
+                 
                     <View>
-                      <Text style={styles.wash}>{services[0].serviceName}</Text>
+                      <Text style={styles.wash}>{firstItem.serviceName}</Text>
                     </View>
-                  )}
+                 
                 </View>
+                
 
               </View>
             </View>
@@ -315,37 +330,33 @@ class Home extends React.Component {
                 borderWidth: 1,
               }}
             >
+
               <View style={styles.icon3}>
-                <TouchableOpacity onPress={this.handleIconPressService}>
-                  {/* <MaterialCommunityIcons
-                    name="card-account-details-outline"
-                    size={40}
-                    color="black"
-                    backgroundColor="#F2F3F4"
-                    margin={4}
-                  /> */}
-                  {services.length >= 2 && (
+             
+                <TouchableOpacity 
+                 onPress={() => this.handleIconPressService(secondItem.serviceName,secondItem.serviceDescription)}
+                 key={secondItem._id} 
+                >
                     <View size={40}
                       color="black"
                       backgroundColor="#F2F3F4"
                       margin={4}>
-                      <Text style={styles.wash}>{services[1].servicePrice}</Text>
+                      <Text style={styles.wash}>{secondItem.servicePrice}</Text>
                     </View>
-                  )}
+                 
                 </TouchableOpacity>
+                
                 {/* <Text style={styles.wash}>Detailing</Text> */}
                 <View>
-                  {services.length >= 2 && (
+                 
                     <View>
-                      <Text style={styles.wash}>{services[1].serviceName}</Text>
+                      <Text style={styles.wash}>{secondItem.serviceName}</Text>
                     </View>
-                  )}
+                 
                 </View>
-
               </View>
             </View>
           </View>
-
           <View style={styles.icon2}>
             <View
               style={{
@@ -357,7 +368,8 @@ class Home extends React.Component {
               }}
             >
               <View style={styles.icon3}>
-                <TouchableOpacity onPress={this.handleIconPressService}>
+                <TouchableOpacity onPress={() => this.handleIconPressService(thirdItem.serviceName,thirdItem.serviceDescription)}
+                 key={thirdItem._id}>
                   {/* <MaterialIcons
                     name="cleaning-services"
                     size={40}
@@ -365,23 +377,23 @@ class Home extends React.Component {
                     backgroundColor="#F2F3F4"
                     margin={4}
                   /> */}
-                  {services.length >= 3 && (
+                
                     <View size={40}
                       color="black"
                       backgroundColor="#F2F3F4"
                       margin={4}>
-                      <Text style={styles.wash}>{services[2].servicePrice}</Text>
+                      <Text style={styles.wash}>{thirdItem.servicePrice}</Text>
                     </View>
-                  )}
+                 
                 </TouchableOpacity>
                 {/* <Text style={styles.wash}>Cleaning</Text>
                  */}
                 <View>
-                  {services.length >= 3 && (
+                 
                     <View>
-                      <Text style={styles.wash}>{services[2].serviceName}</Text>
+                      <Text style={styles.wash}>{thirdItem.serviceName}</Text>
                     </View>
-                  )}
+                 
                 </View>
               </View>
             </View>
@@ -395,7 +407,8 @@ class Home extends React.Component {
               }}
             >
               <View style={styles.icon3}>
-                <TouchableOpacity onPress={this.handleIconPressService}>
+                <TouchableOpacity onPress={() => this.handleIconPressService(thirdItem.serviceName,thirdItem.serviceDescription)}
+                 key={thirdItem._id}>
                   {/* <Ionicons
                     name="car-sharp"
                     size={40}
@@ -403,22 +416,22 @@ class Home extends React.Component {
                     backgroundColor="#F2F3F4"
                     margin={4}
                   /> */}
-                  {services.length >= 4 && (
+                  
                     <View size={40}
                       color="black"
                       backgroundColor="#F2F3F4"
                       margin={4}>
-                      <Text style={styles.wash}>{services[3].servicePrice}</Text>
+                      <Text style={styles.wash}>{thirdItem.servicePrice}</Text>
                     </View>
-                  )}
+                 
                 </TouchableOpacity>
                 {/* <Text style={styles.wash}>Polish</Text> */}
                 <View>
-                  {services.length >= 4 && (
+                  
                     <View>
-                      <Text style={styles.wash}>{services[3].serviceName}</Text>
+                      <Text style={styles.wash}>{thirdItem.serviceName}</Text>
                     </View>
-                  )}
+                
                 </View>
               </View>
             </View>
@@ -818,3 +831,41 @@ export default Home;
 // *******************************
 // *******************************
 // *******************************
+
+// on the view there two touchbale opcatity one for first and second is for 2nd id show the code
+// import React, { Component } from 'react';
+// import { View, Text, TouchableOpacity } from 'react-native';
+
+// class FirstPage extends Component {
+//   handleFirstServiceClick = () => {
+//     // Handle the click for the first ID (e.g., ID 1)
+//     // You can navigate to the second page with ID 1 or perform any action you need.
+//   }
+
+//   handleSecondServiceClick = () => {
+//     // Handle the click for the second ID (e.g., ID 2)
+//     // You can navigate to the second page with ID 2 or perform any action you need.
+//   }
+
+//   render() {
+//     return (
+//       <View>
+//         <TouchableOpacity
+//           onPress={this.handleFirstServiceClick}
+//           style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}
+//         >
+//           <Text>Service 1</Text>
+//         </TouchableOpacity>
+
+//         <TouchableOpacity
+//           onPress={this.handleSecondServiceClick}
+//           style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}
+//         >
+//           <Text>Service 2</Text>
+//         </TouchableOpacity>
+//       </View>
+//     );
+//   }
+// }
+
+// export default FirstPage;

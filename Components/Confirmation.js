@@ -24,46 +24,54 @@ class Confirmation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedDate: new Date(),
-      showPicker: false,
-      isDatePickerVisible: false,
-      selectedTime: new Date(),
+      // date: new Date(),
+      // showPicker: false,
+      // isDatePickerVisible: false,
+      // time: new Date(),
+      
+      servicesName:'',
+      date:'',
+      time:'',
+      totalPrice:'',
+      pickupAddress:'',
     };
   }
   //for time
-  showDatePicker = () => {
-    this.setState({ isDatePickerVisible: true });
-  };
+  // showDatePicker = () => {
+  //   this.setState({ isDatePickerVisible: true });
+  // };
 
-  hideDatePicker = () => {
-    this.setState({ isDatePickerVisible: false });
-  };
+  // hideDatePicker = () => {
+  //   this.setState({ isDatePickerVisible: false });
+  // };
 
-  handleDateConfirm = date => {
-    this.setState({
-      selectedTime: date,
-    });
-    this.hideDatePicker();
-  };
+  // handleDateConfirm = date => {
+  //   this.setState({
+  //     time: date,
+  //   });
+  //   this.hideDatePicker();
+  // };
 
-  formatTime = time => {
-    if (!time) return '';
-    return time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true, }).toUpperCase();
-  };
+  // formatTime = time => {
+  //   if (!time) return '';
+  //   return time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true, }).toUpperCase();
+  // };
 
-  //for date
-  handleDateChange = (event, selectedDate) => {
-    if (selectedDate !== undefined) {
-      this.setState({
-        selectedDate,
-        showPicker: false,
-        searchText: "",
-        isSearching: false,
-      });
-    }
-  };
+  // //for date
+  // handleDateChange = (event, date) => {
+  //   if (date !== undefined) {
+  //     this.setState({
+  //       date,
+  //       showPicker: false,
+  //       searchText: "",
+  //       isSearching: false,
+  //     });
+  //   }
+  // };
   //for confirm Booking 
   handleIconPressConfirm = () => {
+    // const { serviceName,pickupAddress,totalPrice,date,time } = this.props.route.params;
+
     this.props.navigation.navigate('Confirm'); // Navigate to the Washing screen
   };
   //for home
@@ -90,11 +98,52 @@ handleIconPressBooking = () => {
       console.error('Error opening settings:', error);
     }
   };
+  handleSubmit =  () => {
+     
+        fetch('https://car-wash-backend-api.onrender.com/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+        date,
+        time,
+        totalPrice,
+        pickupAddress,),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          this.setState({ response: data });
+          // if (data.success) {
+          //   // Navigate to the success screen upon successful submission
+          //   this.props.navigation.navigate('Home');
 
+          //   console.log('After navigation');
+          // } else {
+          //   Alert.alert('API Error', 'Failed to submit data.');
+          // }
+         
+          this.props.navigation.navigate('Confirm');
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+
+        
+      };
+      
 
   render() {
-    const { selectedDate, showPicker } = this.state;
-    const { selectedTime, isDatePickerVisible } = this.state;
+    // const { date, showPicker } = this.state;
+    // const { time, isDatePickerVisible } = this.state;
+    const { route } = this.props;
+        // const { serviceName } = route.params;
+        const { pickupAddress,totalPrice,date,time } = this.props.route.params;
     return (
       <>
         <ScrollView
@@ -123,7 +172,7 @@ handleIconPressBooking = () => {
                 <MaterialCommunityIcons name="car-wash" size={35} color="black" />
 
                 <Text>Service</Text>
-                <Text>1500</Text>
+                <Text>{totalPrice}</Text>
               </View>
             </View>
             <View
@@ -134,7 +183,8 @@ handleIconPressBooking = () => {
                 marginVertical: 10,
               }}
             >
-              <View style={{ flexDirection: 'row', margin: 10 }}>
+              <Text>{time} |  {time}</Text>
+              {/* <View style={{ flexDirection: 'row', margin: 10 }}>
                 <TouchableOpacity
                   onPress={() => this.setState({ showPicker: true })}
                 >
@@ -149,8 +199,8 @@ handleIconPressBooking = () => {
                       <EvilIcons name="clock" size={22} color="black" />
                     </TouchableOpacity>
 
-                    {selectedTime && (
-                      <Text>{(this.formatTime(selectedTime)) || "8:30"}</Text>
+                    {time && (
+                      <Text>{(this.formatTime(time)) || "8:30"}</Text>
                     )}
 
                     <DateTimePickerModal
@@ -162,18 +212,18 @@ handleIconPressBooking = () => {
                     <Text>  |  </Text>
                     {showPicker && (
                       <DateTimePicker
-                        value={selectedDate}
+                        value={date}
                         mode="date"
                         display="default"
                         onChange={this.handleDateChange}
                       />
                     )}
-                    {selectedDate && (
-                      <Text> {selectedDate.toLocaleDateString()}</Text>
+                    {date && (
+                      <Text> {date.toLocaleDateString()}</Text>
                     )}
                   </View>
                 </View>
-              </View>
+              </View> */}
             </View>
             <View
               style={{
@@ -201,13 +251,15 @@ handleIconPressBooking = () => {
                 marginVertical: 10,
               }}
             >
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}>
+              {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}>
                 <View>
-                  <Text>Pickup address</Text>
-                  <Text>PIN Text Address</Text>
+                  <Text>Pickup pickupAddress</Text>
+                  <Text>PIN Text pickupAddress</Text>
                 </View>
                 <MaterialCommunityIcons name="greater-than" size={24} color="black" paddingTop={10} />
-              </View>
+              </View> */}
+              <Text>{pickupAddress}</Text>
+
 
             </View>
             <Text>Voucher</Text>
@@ -223,7 +275,7 @@ handleIconPressBooking = () => {
 
             <View style={styles.amount}>
               <Text style={styles.text2}>TOTAL</Text>
-              <Text style={styles.text2}>1500</Text>
+              <Text style={styles.text2}>{totalPrice}</Text>
             </View>
             <View style={styles.amount}>
               <Text style={styles.text2}>PICK UP</Text>
@@ -246,7 +298,7 @@ handleIconPressBooking = () => {
         </ScrollView>
         <View style={styles.container}>
 
-          <TouchableOpacity style={styles.button} onPress={this.handleIconPressConfirm}>
+          <TouchableOpacity style={styles.button} onPress={this.handleSubmit}>
             <Text style={styles.buttonText}>Confirm Booking</Text>
           </TouchableOpacity>
         </View>

@@ -22,23 +22,34 @@ class Otp extends React.Component {
     super(props);
     this.state = {
       enteredOTP: '',
-      OtpError:''
+      OtpError:'',
+      generatedOTP1: '',
     };
   }
   componentDidMount() {
     this.generateOTP();
   }
 
-  generateOTP = () => {
-    // Generate a random 4-digit OTP
-    
-    const generatedOTP= Math.floor(1000 + Math.random() * 9000);
-    this.setState({ generatedOTP});
-  };
+  // generateOTP = () => {
+  //   // Generate a random 4-digit OTP
+   
+  //   const generatedOTP1= Math.floor(1000 + Math.random() * 9000);
+  //   this.setState({ generatedOTP1});
+  // };
 
+  // handleResendOTP = () => {
+  //   // Regenerate OTP and enable Resend button
+  //   this.generateOTP();
+  // };
   handleResendOTP = () => {
     // Regenerate OTP and enable Resend button
-    this.generateOTP();
+    const newOTP = this.generateOTP();
+    this.setState({ generatedOTP1: newOTP });
+  };
+
+  generateOTP = () => {
+    // Generate a random 4-digit OTP
+    return Math.floor(1000 + Math.random() * 9000).toString();
   };
   handleVerifyOTP = () => {
     const { generatedOTP } = this.props.route.params;
@@ -47,7 +58,7 @@ class Otp extends React.Component {
     if (enteredOTP === generatedOTP.toString()) {
       // OTP verification successful, navigate to next screen
       // Replace 'NextScreen' with the actual name of the next screen
-      this.props.navigation.navigate('Signup');
+      this.props.navigation.navigate('Home');
     } else {
       // Show an error message or alert about incorrect OTP
       this.setState({ OtpError: 'Enter The Correct OTP' });
@@ -56,12 +67,14 @@ class Otp extends React.Component {
   }
   render() {
     const { phoneNumber,generatedOTP } = this.props.route.params;
-    const {  OtpError } = this.state;
+    const {  OtpError,generatedOTP1 } = this.state;
    
     return (
       <>
         {/* <Text>Enter OTP sent to {phoneNumber}</Text> */}
         <Text>Generated OTP: {generatedOTP}</Text> 
+        <Text>ReGenerated OTP: {this.state.generatedOTP1}</Text>
+ 
         
         <Text style={styles.log}>Verify OTP</Text>
 

@@ -2,6 +2,35 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 // import DocumentPicker from 'react-native-document-picker';
+async function checkEmailUniqueness(email) {
+  try {
+    // Make an API request to fetch the existing clientEmail data
+    const response = await fetch('https://car-wash-backend-api.onrender.com/api/clients', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Extract the existing clientEmail from the API response
+      const clientEmailFromApi = data.clientEmail;
+
+      // Compare the entered email with the fetched clientEmail
+      return email === clientEmailFromApi;
+    } else {
+      // If the API request fails, return false or handle the error as needed
+      return false;
+    }
+  } catch (error) {
+    // Handle any errors that occur during the API call.
+    console.error('Error checking email uniqueness:', error);
+    return false;
+  }
+}
+
+
 
 
 class Signup extends Component {
@@ -14,6 +43,8 @@ class Signup extends Component {
       clientPhone: '',
       clientdob: '',
       clientAddress: '',
+      errorMessage:'',
+      email:'',
       response:null,
 
       errors: {
@@ -26,7 +57,13 @@ class Signup extends Component {
       },
     };
   }
-  handleSubmit = () => {
+  componentDidMount() {
+    checkEmailUniqueness();
+
+  }
+   
+  
+  handleSubmit =  () => {
     if (this.validateFields()) {
       const requestBody = {
         clientName: this.state.clientName,
@@ -35,8 +72,22 @@ class Signup extends Component {
         clientdob: this.state.clientdob,
         clientAddress: this.state.clientAddress,
       };
+    
+      const { email } = this.state;
+      const errors = {};
+    
 
-      fetch('https://car-wash-backend-api.onrender.com/api/clients', {
+
+      // Check if the email is already registered (You would typically make an API call here)
+      const isEmailRegistered =  checkEmailUniqueness(email);
+    
+      if (isEmailRegistered) {
+        // this.setState({ errors: 'Email is already registered' });
+        errors.clientEmail = 'Email is already registered';
+      } else { 
+        // Perform the registration or API call for registration here.
+        // Reset the error message and clear the form fields.
+        fetch('https://car-wash-backend-api.onrender.com/api/clients', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -60,15 +111,53 @@ class Signup extends Component {
           //   Alert.alert('API Error', 'Failed to submit data.');
           // }
          
-          this.props.navigation.navigate('Home');
+          this.props.navigation.navigate('Login');
         })
         .catch((error) => {
           console.error('Error:', error);
         });
 
+        
+      }
+      // Perform the registration or API call for registration here.
+        // Reset the error message and clear the form fields.
+        fetch('https://car-wash-backend-api.onrender.com/api/clients', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          this.setState({ response: data });
+          // if (data.success) {
+          //   // Navigate to the success screen upon successful submission
+          //   this.props.navigation.navigate('Home');
+
+          //   console.log('After navigation');
+          // } else {
+          //   Alert.alert('API Error', 'Failed to submit data.');
+          // }
+         
+          this.props.navigation.navigate('Login');
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+ 
+
     }
   };
-  validateFields() {
+
+  
+  validateFields() 
+  {
     const { clientName, clientEmail, clientPhone, clientdob, clientAddress } = this.state;
     const errors = {};
 
@@ -114,6 +203,8 @@ class Signup extends Component {
     return Object.keys(errors).length === 0;
   }
 
+  
+
 
   // handleFilePick = async () => {
   //   try {
@@ -139,6 +230,7 @@ class Signup extends Component {
   //   // Handle file upload logic here
   //   this.setState({ file });
   // };
+  
 
 
 
@@ -184,6 +276,7 @@ class Signup extends Component {
           style={styles.input}
         />
         <Text style={styles.errorText}>{errors.clientPhone}</Text>
+        
 
         <TextInput
           placeholder="Date of Birth"

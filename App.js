@@ -16,6 +16,7 @@ import Notification from './Components/Notification';
 import Confirm from './Components/Confirm';
 import Profile from './Components/Profile';
 import Signup from './Components/Signup';
+import AddressPicker from './Components/AddressPicker';
 
 
 
@@ -27,8 +28,8 @@ function App() {
     <View style={styles.container}>
       <NavigationContainer theme={{ colors: { background: 'white' } }}
         fallback={<Text>Loading...</Text>}>
-        <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen name="Set up your Account" component={Login} />
+        <Stack.Navigator>
+          <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Otp" component={Otp} />
           <Stack.Screen name="Appointment" component={Appointment} />
           <Stack.Screen name="Home" component={Home} />
@@ -42,8 +43,12 @@ function App() {
         </Stack.Navigator>
       
       </NavigationContainer>
-      
+      {/* initialRouteName="Login"  */}
+
+    
      
+
+      
      
       <StatusBar style="auto" />
     </View>

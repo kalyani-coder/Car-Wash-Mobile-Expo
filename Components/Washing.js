@@ -6,9 +6,12 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
-    Linking
+    Linking,
+    TextInput,
+
 
 } from 'react-native'
+import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -31,44 +34,114 @@ class Washing extends React.Component {
             isDateTimePickerVisible: false,
             selectedTimes: Array(3).fill(null), // Initialize an array to store selected times
             activePicker: null, // To track the active picker index
+            date: new Date(), // Initialize a state variable with the current date
+            showDatePicker: false, // Set initial visibility of the date picker
+            time: new Date(), // Initialize a state variable with the current time
+            showTimePicker: false,
+            pickupAddress: '',
+            totalPrice: '',
+            errors: {
+                pickupAddress: '',
+                totalPrice: ''
+
+            }
 
         };
     }
 
-
-    showDateTimePicker = (index) => {
-        this.setState({ isDateTimePickerVisible: true, activePicker: index });
-    };
-
-    hideDateTimePicker = () => {
-        this.setState({ isDateTimePickerVisible: false, activePicker: null });
-    };
-
-    handleDateTimeConfirm = (datetime) => {
-        const { activePicker } = this.state;
-        if (activePicker !== null) {
-            const updatedSelectedTimes = [...this.state.selectedTimes];
-            updatedSelectedTimes[activePicker] = datetime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            this.setState({
-                selectedTimes: updatedSelectedTimes,
-                isDateTimePickerVisible: false,
-                activePicker: null,
-            });
+    validateInput = () => {
+        let isValid = true;
+        const { pickupAddress, totalPrice } = this.state;
+        const errors = {};
+    
+        if (pickupAddress.trim() === '') {
+            errors.pickupAddress = 'pickupAddress is required.';
+          isValid = false;
+        } else {
+            errors.pickupAddress = '';
         }
-    };
+    
+        if (totalPrice.trim() === '') {
+            errors.totalPrice = 'totalPrice can not be empty';
+          isValid = false;
+        } else if (isNaN(totalPrice)) {
+            errors.totalPrice = 'totalPrice must be number';
+          isValid = false;
+        } else {
+            errors.totalPrice = '';
+        }
+    
+        return isValid;
+      };
+      handlepickupAddressChange = (text) => {
+        this.setState({ pickupAddress: text });
+      };
+    
+      handletotalPriceChange = (text) => {
+        this.setState({ totalPrice: text });
+      };
+    handleDateChange = (event, selectedDate) => {
+        if (selectedDate !== undefined) {
+            this.setState({ date, showDatePicker: false });
+        } else {
+            this.setState({ showDatePicker: false });
+        }
+    }
+    formatDate(date) {
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+    }
+    handleTimeChange = (event, selectedTime) => {
+        if (selectedTime !== undefined) {
+            this.setState({ time, showTimePicker: false });
+        } else {
+            this.setState({ showTimePicker: false });
+        }
+    }
+
+    handlcontinue = () => {
+        const { pickupAddress,totalPrice,selectedDate,selectedTime} = this.state;
+        if (this.validateInput()) {
+
+            this.props.navigation.navigate('Confirmation',{pickupAddress,totalPrice,date,time}); // Navigate to the Confirmation page screen
+        }
+    }
+
+    // showDateTimePicker = (index) => {
+    //     this.setState({ isDateTimePickerVisible: true, activePicker: index });
+    // };
+
+    // hideDateTimePicker = () => {
+    //     this.setState({ isDateTimePickerVisible: false, activePicker: null });
+    // };
+
+    // handleDateTimeConfirm = (datetime) => {
+    //     const { activePicker } = this.state;
+    //     if (activePicker !== null) {
+    //         const updatedSelectedTimes = [...this.state.selectedTimes];
+    //         updatedSelectedTimes[activePicker] = datetime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    //         this.setState({
+    //             selectedTimes: updatedSelectedTimes,
+    //             isDateTimePickerVisible: false,
+    //             activePicker: null,
+    //         });
+    //     }
+    // };
 
     //for date
-    onDayPress = (day) => {
-        this.setState({
-            selectedDate: day.dateString,
-        });
-    };
+    // onDayPress = (day) => {
+    //     this.setState({
+    //         selectedDate: day.dateString,
+    //     });
+    // };
     //map link
-    openMapLink = () => {
-        const { latitude, longitude } = this.props;
-        const mapUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
-        Linking.openURL(mapUrl);
-    };
+    // openMapLink = () => {
+    //     const { latitude, longitude } = this.props;
+    //     const mapUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+    //     Linking.openURL(mapUrl);
+    // };
 
     //for stars
     state = {
@@ -91,7 +164,7 @@ class Washing extends React.Component {
     };
     //inbox page
     handleIconPressInbox = () => {
-        this.props.navigation.navigate('Confirmation'); // Navigate to the Confirmation page screen
+        this.props.navigation.navigate('Confirmation'); // Navigate to the Appointment screen
     };
     //for  setting
     openSettings = async () => {
@@ -109,6 +182,10 @@ class Washing extends React.Component {
         const formattedDate = currentDate.format('D MMM');
 
         const { selectedStars } = this.state;
+        const { route } = this.props;
+        const { serviceName, serviceDescription } = route.params;
+        const { errors } = this.state;
+
         return (
             <>
 
@@ -120,13 +197,12 @@ class Washing extends React.Component {
                 >
 
                     <View style={{ height: 120, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
-                        <Text style={styles.text1}>Deep Wash</Text>
+                        <Text style={styles.text1}>{serviceName}</Text>
                     </View>
 
                     <View style={styles.about}>
                         <Text style={styles.text2}>About</Text>
-                        <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            Neque esse omnis ut iusto dicta soluta impedit fugiat.</Text>
+                        <Text>{serviceDescription}.</Text>
                     </View>
 
                     <View style={styles.reviewtext}>
@@ -198,46 +274,120 @@ class Washing extends React.Component {
 
                     </ScrollView>
 
-                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Glossgenic</Text>
-                    <View style={{ height: 50, width: 360, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
+                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>pickupAddress</Text>
+                    {/* <View style={{ height: 50, width: 360, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
                         <View style={styles.gloss}>
                             <TouchableOpacity onPress={this.openMapLink}>
                                 <FontAwesome name="map-marker" size={35} color="black" marginBottom={5}/>
                             </TouchableOpacity>
-                            <Text style={{ fontSize: 15 }}>Amanora Park Town 1284 ABC Address</Text>
+                            <Text style={{ fontSize: 15 }}>Amanora Park Town 1284 ABC pickupAddress</Text>
                             <TouchableOpacity onPress={this.openMapLink}>
                                 <MaterialCommunityIcons name="greater-than" size={17} color="black" />
                             </TouchableOpacity>
                         </View>
+                    </View> */}
+                    <TextInput
+                        placeholder="Enter pickupAddress"
+                        value={this.state.pickupAddress}
+                        onChangeText={this.handlepickupAddressChange}
+                        
+                        style={styles.input}
+                    />
+                    <Text style={styles.errorText}>{errors.pickupAddress}</Text>
+
+                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Choose Date & Time</Text>
+                    {/* <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                        <View style={styles.date}>
+                            <Text style={styles.datetext}>{formattedDate}</Text>
+                        </View>
+                        <View style={styles.date}>
+                            <Text style={styles.datetext}>{formattedDate}</Text>
+                        </View>
+                        <View style={styles.date}>
+                            <Text style={styles.datetext}>{formattedDate}</Text>
+                        </View>
+                        <View style={styles.date}>
+                            <Text style={styles.datetext}>{formattedDate}</Text>
+                        </View>
+                        <View style={styles.date}>
+                            <Text style={styles.datetext}>{formattedDate}</Text>
+                        </View>
+                        <View style={styles.date}>
+                            <Text style={styles.datetext}>{formattedDate}</Text>
+                        </View>
+                        <View style={styles.date}>
+                            <Text style={styles.datetext}>{formattedDate}</Text>
+                        </View>
+
+                    </ScrollView> */}
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={styles.datepicker}>
+
+                            <TouchableOpacity
+                                style={{ flexDirection: 'row', alignItems: 'center' }}
+                                onPress={() => this.setState({ showDatePicker: true })}
+                            >
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Icon name="calendar" size={30} color="black" />
+                                    <Text style={{ marginLeft: 10 }}>
+                                        {this.formatDate(this.state.date)}
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+
+
+                            {this.state.showDatePicker && (
+                                <DateTimePicker
+                                    testID="datePicker"
+                                    value={this.state.date}
+                                    mode="date"
+                                    is24Hour={true}
+                                    display="default"
+                                    onChange={this.handleDateChange}
+                                />
+                            )}
+                        </View>
+                        <View style={styles.datepicker}>
+                            <TouchableOpacity
+                                style={{ flexDirection: 'row', alignItems: 'center' }}
+                                onPress={() => this.setState({ showTimePicker: true })}
+                            >
+                                <View style={{ flexDirection: 'row' }}>
+
+                                    {/* <Icon name="clock" size={30} color="blue" /> */}
+                                    <EvilIcons name="clock" size={30} color="black" />
+
+                                    <Text style={{ marginLeft: 10 }}>
+                                        {this.state.time.toLocaleTimeString('en-US', {
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                            hour12: true,
+                                        })}
+                                    </Text>
+                                </View>
+
+
+                            </TouchableOpacity>
+
+
+                            {this.state.showTimePicker && (
+                                <DateTimePicker
+                                    testID="timePicker"
+                                    value={this.state.time}
+                                    mode="time"
+                                    is24Hour={false}
+                                    display="default"
+                                    onChange={this.handleTimeChange}
+                                />
+                            )}
+                        </View>
                     </View>
 
-                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Choose Date</Text>
-                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                        <View style={styles.date}>
-                            <Text style={styles.datetext}>{formattedDate}</Text>
-                        </View>
-                        <View style={styles.date}>
-                            <Text style={styles.datetext}>{formattedDate}</Text>
-                        </View>
-                        <View style={styles.date}>
-                            <Text style={styles.datetext}>{formattedDate}</Text>
-                        </View>
-                        <View style={styles.date}>
-                            <Text style={styles.datetext}>{formattedDate}</Text>
-                        </View>
-                        <View style={styles.date}>
-                            <Text style={styles.datetext}>{formattedDate}</Text>
-                        </View>
-                        <View style={styles.date}>
-                            <Text style={styles.datetext}>{formattedDate}</Text>
-                        </View>
-                        <View style={styles.date}>
-                            <Text style={styles.datetext}>{formattedDate}</Text>
-                        </View>
 
-                    </ScrollView>
-                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 5 }}>Choose time</Text>
-                    <View style={styles.time1}>
+
+
+                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 5 }}>Enter totalPrice</Text>
+                    {/* <View style={styles.time1}>
                         <View style={styles.date1}>
                             {this.state.selectedTimes.map((time, index) => (
                                 <TouchableOpacity
@@ -271,11 +421,20 @@ class Washing extends React.Component {
 
                         />
 
-                    </View>
+                    </View> */}
+                    <TextInput
+                        placeholder="totalPrice"
+                        value={this.state.totalPrice}
+                        onChangeText={this.handletotalPriceChange}
+                        style={styles.input}
+
+                    />
+                    <Text style={styles.errorText}>{errors.totalPrice}</Text>
+
                 </ScrollView>
                 <View style={styles.container}>
 
-                    <TouchableOpacity style={styles.button} onPress={this.handleIconPressInbox}>
+                    <TouchableOpacity style={styles.button} onPress={this.handlcontinue}>
                         <Text style={styles.buttonText}>Continue</Text>
                     </TouchableOpacity>
                 </View>
@@ -364,11 +523,32 @@ const styles = StyleSheet.create({
     review: {
         margin: 5,
     },
-    gloss: {
-        paddingTop: 10,
-        marginHorizontal: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+    // gloss: {
+    //     paddingTop: 10,
+    //     marginHorizontal: 10,
+    //     flexDirection: 'row',
+    //     justifyContent: 'space-between',
+    // },
+    input: {
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 5,
+        padding: 10,
+        // marginBottom: 10,
+        marginHorizontal: 20
+    },
+    errorText: {
+        color: 'red',
+        // marginBottom: 5,
+        marginHorizontal: 20
+    },
+    datepicker: {
+        marginHorizontal: 20,
+        borderWidth: 1,
+        padding: 7,
+        width: 150
+        // borderColor:'black',
+
     },
     date: {
         height: 60,
@@ -411,7 +591,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
         textAlign: "center",
-        
+
     },
     footer: {
         position: 'fixed',
