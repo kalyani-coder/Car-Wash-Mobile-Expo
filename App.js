@@ -26,7 +26,7 @@ function App() {
   return (
 
     <View style={styles.container}>
-      {/* <NavigationContainer theme={{ colors: { background: 'white' } }}
+      <NavigationContainer theme={{ colors: { background: 'white' } }}
         fallback={<Text>Loading...</Text>}>
         <Stack.Navigator>
           <Stack.Screen name="Login" component={Login} />
@@ -42,11 +42,11 @@ function App() {
 
         </Stack.Navigator>
       
-      </NavigationContainer> */}
-      {/* initialRouteName="Login"  */}
+      </NavigationContainer>
+    {/* initialRouteName="Login"  */}
 
     
-      <Confirmation/>
+      
       
       
      
