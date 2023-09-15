@@ -24,50 +24,50 @@ class Confirmation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // date: new Date(),
-      // showPicker: false,
-      // isDatePickerVisible: false,
-      // time: new Date(),
+      date: new Date(),
+      showPicker: false,
+      isDatePickerVisible: false,
+      time: new Date(),
       
-      servicesName:'',
-      date:'',
-      time:'',
-      totalPrice:'',
-      pickupAddress:'',
+      // servicesName:'',
+      // date:'',
+      // time:'',
+      // totalPrice:'',
+      // pickupAddress:'',
     };
   }
   //for time
-  // showDatePicker = () => {
-  //   this.setState({ isDatePickerVisible: true });
-  // };
+  showDatePicker = () => {
+    this.setState({ isDatePickerVisible: true });
+  };
 
-  // hideDatePicker = () => {
-  //   this.setState({ isDatePickerVisible: false });
-  // };
+  hideDatePicker = () => {
+    this.setState({ isDatePickerVisible: false });
+  };
 
-  // handleDateConfirm = date => {
-  //   this.setState({
-  //     time: date,
-  //   });
-  //   this.hideDatePicker();
-  // };
+  handleDateConfirm = date => {
+    this.setState({
+      time: date,
+    });
+    this.hideDatePicker();
+  };
 
-  // formatTime = time => {
-  //   if (!time) return '';
-  //   return time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true, }).toUpperCase();
-  // };
+  formatTime = time => {
+    if (!time) return '';
+    return time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true, }).toUpperCase();
+  };
 
   // //for date
-  // handleDateChange = (event, date) => {
-  //   if (date !== undefined) {
-  //     this.setState({
-  //       date,
-  //       showPicker: false,
-  //       searchText: "",
-  //       isSearching: false,
-  //     });
-  //   }
-  // };
+  handleDateChange = (event, date) => {
+    if (date !== undefined) {
+      this.setState({
+        date,
+        showPicker: false,
+        searchText: "",
+        isSearching: false,
+      });
+    }
+  };
   //for confirm Booking 
   handleIconPressConfirm = () => {
     // const { serviceName,pickupAddress,totalPrice,date,time } = this.props.route.params;
@@ -139,11 +139,11 @@ handleIconPressBooking = () => {
       
 
   render() {
-    // const { date, showPicker } = this.state;
-    // const { time, isDatePickerVisible } = this.state;
+    const { date, showPicker } = this.state;
+    const { time, isDatePickerVisible } = this.state;
     const { route } = this.props;
         // const { serviceName } = route.params;
-        const { pickupAddress,totalPrice,date,time } = this.props.route.params;
+        // const { pickupAddress,totalPrice,date,time } = this.props.route.params;
     return (
       <>
         <ScrollView
@@ -172,7 +172,7 @@ handleIconPressBooking = () => {
                 <MaterialCommunityIcons name="car-wash" size={35} color="black" />
 
                 <Text>Service</Text>
-                <Text>{totalPrice}</Text>
+                {/* <Text>{totalPrice}</Text> */}
               </View>
             </View>
             <View
@@ -183,8 +183,8 @@ handleIconPressBooking = () => {
                 marginVertical: 10,
               }}
             >
-              <Text>{time} |  {time}</Text>
-              {/* <View style={{ flexDirection: 'row', margin: 10 }}>
+              {/* <Text>{date} |  {time}</Text> */}
+              <View style={{ flexDirection: 'row', margin: 10 }}>
                 <TouchableOpacity
                   onPress={() => this.setState({ showPicker: true })}
                 >
@@ -199,8 +199,8 @@ handleIconPressBooking = () => {
                       <EvilIcons name="clock" size={22} color="black" />
                     </TouchableOpacity>
 
-                    {time && (
-                      <Text>{(this.formatTime(time)) || "8:30"}</Text>
+                    {this.state.time && (
+                      <Text>{(this.formatTime(this.state.time)) || "8:30"}</Text>
                     )}
 
                     <DateTimePickerModal
@@ -212,18 +212,18 @@ handleIconPressBooking = () => {
                     <Text>  |  </Text>
                     {showPicker && (
                       <DateTimePicker
-                        value={date}
+                        value={this.state.date}
                         mode="date"
                         display="default"
                         onChange={this.handleDateChange}
                       />
                     )}
-                    {date && (
-                      <Text> {date.toLocaleDateString()}</Text>
+                    {this.state.date && (
+                      <Text> {this.state.date.toLocaleDateString()}</Text>
                     )}
                   </View>
                 </View>
-              </View> */}
+              </View>
             </View>
             <View
               style={{
@@ -258,7 +258,7 @@ handleIconPressBooking = () => {
                 </View>
                 <MaterialCommunityIcons name="greater-than" size={24} color="black" paddingTop={10} />
               </View> */}
-              <Text>{pickupAddress}</Text>
+              {/* <Text>{pickupAddress}</Text> */}
 
 
             </View>
@@ -275,7 +275,7 @@ handleIconPressBooking = () => {
 
             <View style={styles.amount}>
               <Text style={styles.text2}>TOTAL</Text>
-              <Text style={styles.text2}>{totalPrice}</Text>
+              {/* <Text style={styles.text2}>{totalPrice}</Text> */}
             </View>
             <View style={styles.amount}>
               <Text style={styles.text2}>PICK UP</Text>
