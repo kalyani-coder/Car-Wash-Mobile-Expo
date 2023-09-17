@@ -53,6 +53,7 @@ class Otp extends React.Component {
   };
   handleVerifyOTP = () => {
     const { generatedOTP } = this.props.route.params;
+   
     const { enteredOTP } = this.state;
 
     if (enteredOTP === generatedOTP.toString()) {

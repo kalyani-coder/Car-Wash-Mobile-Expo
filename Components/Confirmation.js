@@ -6,8 +6,11 @@ import {
   TouchableOpacity,
   Linking,
   TextInput,
-  ScrollView
+  ScrollView,
+
 } from "react-native";
+import DropDownPicker from 'react-native-dropdown-picker';
+import { useRoute } from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
@@ -24,53 +27,30 @@ class Confirmation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      date: new Date(),
-      showPicker: false,
-      isDatePickerVisible: false,
-      time: new Date(),
-      
-      // servicesName:'',
-      // date:'',
-      // time:'',
-      // totalPrice:'',
-      // pickupAddress:'',
+      date: '',
+      time: '',
+      pickupAddress: '',
+      selectedOption: null,
+
     };
+    this.options = [
+      { label: 'Pick Up by Agent', value: 'agentPickup', amount: 300 },
+      { label: 'Self Drive', value: 'selfDrive', amount: 0 },
+    ];
   }
-  //for time
-  showDatePicker = () => {
-    this.setState({ isDatePickerVisible: true });
+
+
+
+  //for dropdown
+  handleOptionChange = (selectedOption) => {
+    this.setState({ selectedOption });
   };
 
-  hideDatePicker = () => {
-    this.setState({ isDatePickerVisible: false });
-  };
-
-  handleDateConfirm = date => {
-    this.setState({
-      time: date,
-    });
-    this.hideDatePicker();
-  };
-
-  formatTime = time => {
-    if (!time) return '';
-    return time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true, }).toUpperCase();
-  };
-
-  // //for date
-  handleDateChange = (event, date) => {
-    if (date !== undefined) {
-      this.setState({
-        date,
-        showPicker: false,
-        searchText: "",
-        isSearching: false,
-      });
-    }
-  };
   //for confirm Booking 
   handleIconPressConfirm = () => {
-    // const { serviceName,pickupAddress,totalPrice,date,time } = this.props.route.params;
+    const { pickupAddress, date, time, } = this.props.route.params;
+    const { route } = useRoute();
+
 
     this.props.navigation.navigate('Confirm'); // Navigate to the Washing screen
   };
@@ -78,14 +58,14 @@ class Confirmation extends React.Component {
   handleIconPressHome = () => {
     this.props.navigation.navigate('Home'); // Navigate to the home screen
   };
- //for services
- handleIconPressService = () => {
-  this.props.navigation.navigate('Washing'); // Navigate to the Washing screen
-};
-//for Booking
-handleIconPressBooking = () => {
-  this.props.navigation.navigate('Appointment'); // Navigate to the Appointment screen
-};
+  //for services
+  handleIconPressService = () => {
+    this.props.navigation.navigate('Washing'); // Navigate to the Washing screen
+  };
+  //for Booking
+  handleIconPressBooking = () => {
+    this.props.navigation.navigate('Appointment'); // Navigate to the Appointment screen
+  };
   //inbox page
   handleIconPressInbox = () => {
     this.props.navigation.navigate('Confirmation'); // Navigate to the Confirmation page screen
@@ -98,52 +78,67 @@ handleIconPressBooking = () => {
       console.error('Error opening settings:', error);
     }
   };
-  handleSubmit =  () => {
-     
-        fetch('https://car-wash-backend-api.onrender.com/api/bookings', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(
-        date,
-        time,
+  handleSubmit = () => {
+    const { pickupAddress, date, time, servicesName,totalPrice } = this.props.route.params;
+    // const { route } = useRoute();
+    // const { servicesDataToConfirm } = this.props.route.params;
+    // const servicesName = servicesDataToConfirm.ServiceName;
+
+    fetch('https://car-wash-backend-api.onrender.com/api/bookings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        date: date, // Pass date from state
+        time: time, // Pass time from state
+        pickupAddress: pickupAddress, // Pass pickupAddress from state,
+        servicesName,
         totalPrice,
-        pickupAddress,),
+        status: " ",
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then((data) => {
-          this.setState({ response: data });
-          // if (data.success) {
-          //   // Navigate to the success screen upon successful submission
-          //   this.props.navigation.navigate('Home');
+      .then((data) => {
+        this.setState({ response: data });
+        // if (data.success) {
+        //   // Navigate to the success screen upon successful submission
+        //   this.props.navigation.navigate('Home');
 
-          //   console.log('After navigation');
-          // } else {
-          //   Alert.alert('API Error', 'Failed to submit data.');
-          // }
-         
-          this.props.navigation.navigate('Confirm');
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
+        //   console.log('After navigation');
+        // } else {
+        //   Alert.alert('API Error', 'Failed to submit data.');
+        // }
 
-        
-      };
-      
+        this.props.navigation.navigate('Confirm');
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+
+  };
+
+
+
+
 
   render() {
-    const { date, showPicker } = this.state;
-    const { time, isDatePickerVisible } = this.state;
+    // const { date, showPicker } = this.state;
+    // const { time, isDatePickerVisible } = this.state;
     const { route } = this.props;
-        // const { serviceName } = route.params;
-        // const { pickupAddress,totalPrice,date,time } = this.props.route.params;
+    // const { serviceName } = route.params;
+    const { pickupAddress, date, time } = this.props.route.params;
+    const { servicesName, price,amount } = this.props.route.params;
+    const taxAmount = price * 0.10;
+    const totalPrice = price + taxAmount ;
+
+
     return (
       <>
         <ScrollView
@@ -171,8 +166,9 @@ handleIconPressBooking = () => {
               >
                 <MaterialCommunityIcons name="car-wash" size={35} color="black" />
 
-                <Text>Service</Text>
-                {/* <Text>{totalPrice}</Text> */}
+                <Text>{servicesName}</Text>
+                <Text>{price}</Text>
+
               </View>
             </View>
             <View
@@ -183,8 +179,19 @@ handleIconPressBooking = () => {
                 marginVertical: 10,
               }}
             >
-              {/* <Text>{date} |  {time}</Text> */}
-              <View style={{ flexDirection: 'row', margin: 10 }}>
+              {/* <Text>{this.state.date.toLocaleDateString()} | {this.formatTime(this.state.time) || "8:30"}</Text>
+              {this.state.date && (
+                <Text> {this.state.date.toLocaleDateString()}</Text>
+              )}
+              {this.state.time && (
+                <Text>{(this.formatTime(this.state.time)) || "8:30"}</Text>
+              )} */}
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 15 }}>
+                <Text>{date.toLocaleDateString()}</Text>
+
+                <Text>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase()}</Text>
+              </View>
+              {/* <View style={{ flexDirection: 'row', margin: 10 }}>
                 <TouchableOpacity
                   onPress={() => this.setState({ showPicker: true })}
                 >
@@ -223,7 +230,7 @@ handleIconPressBooking = () => {
                     )}
                   </View>
                 </View>
-              </View>
+              </View> */}
             </View>
             <View
               style={{
@@ -245,7 +252,7 @@ handleIconPressBooking = () => {
             <Text>Select Pickup</Text>
             <View
               style={{
-                height: 70,
+                height: 50,
                 width: 370,
                 backgroundColor: "#F2F3F4",
                 marginVertical: 10,
@@ -258,7 +265,7 @@ handleIconPressBooking = () => {
                 </View>
                 <MaterialCommunityIcons name="greater-than" size={24} color="black" paddingTop={10} />
               </View> */}
-              {/* <Text>{pickupAddress}</Text> */}
+              <Text style={{ margin: 10 }}>{pickupAddress}</Text>
 
 
             </View>
@@ -273,25 +280,41 @@ handleIconPressBooking = () => {
               </TouchableOpacity>
             </View>
 
-            <View style={styles.amount}>
+            {/* <View style={styles.amount}>
               <Text style={styles.text2}>TOTAL</Text>
-              {/* <Text style={styles.text2}>{totalPrice}</Text> */}
-            </View>
-            <View style={styles.amount}>
-              <Text style={styles.text2}>PICK UP</Text>
-              <Text style={styles.text2}>300</Text>
-            </View>
+              <Text style={styles.text2}>{totalPrice}</Text>
+            </View> */}
+
+
+            <Text>Select an option:</Text>
+            <DropDownPicker
+              items={this.options.map((option) => ({ label: option.label, value: option.value }))}
+              defaultValue={this.state.selectedOption}
+              containerStyle={{ height: 50 }}
+              controller={(instance) => (this.dropdown = instance)} // Add this line
+              onChangeItem={(item) => this.setState({ selectedOption: item.value })}
+              searchable={false}
+              placeholder="Select an option"
+              labelStyle={{ fontSize: 16 }}
+            />
+            {this.state.selectedOption && (
+              <View>
+                <Text>Selected Option: {this.state.selectedOption}</Text>
+                <Text>Price: {this.options.find((opt) => opt.value === this.state.selectedOption)?.amount}</Text>
+              </View>
+            )}
+
             <View style={styles.amount}>
               <Text style={styles.text2}>TAXES</Text>
-              <Text style={styles.text2}>150</Text>
+              <Text style={styles.text2}>{taxAmount}</Text>
             </View>
             <View style={styles.amount}>
-              <Text style={styles.text2}>TOTAL PAYABLE AMOUNT</Text>
-              <Text style={styles.text2}>1950</Text>
+              <Text style={styles.text2}>Service Price</Text>
+              <Text style={styles.text2}>{price}</Text>
             </View>
             <View style={styles.amount}>
               <Text style={styles.text2}>TOTAL PAYABLE </Text>
-              <Text style={styles.text2}>1950</Text>
+              <Text style={styles.text2}>{totalPrice}</Text>
             </View>
           </View>
 
@@ -302,6 +325,11 @@ handleIconPressBooking = () => {
             <Text style={styles.buttonText}>Confirm Booking</Text>
           </TouchableOpacity>
         </View>
+        {/* <View>
+        <TouchableOpacity style={styles.button} onPress={this.handleIconPressConfirm}>
+            <Text style={styles.buttonText}>Confirm Booking</Text>
+          </TouchableOpacity>
+        </View> */}
 
         <View style={styles.footer}>
 
@@ -350,7 +378,7 @@ handleIconPressBooking = () => {
   }
 }
 const styles = StyleSheet.create({
- 
+
   text: {
     fontSize: 15,
     fontWeight: "bold",
@@ -385,6 +413,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginVertical: 5,
   },
+
   text2: {
     fontWeight: "bold",
     fontSize: 13,

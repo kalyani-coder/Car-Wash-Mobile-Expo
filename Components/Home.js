@@ -7,13 +7,9 @@ import {
   Image,
   ScrollView,
   Linking,
-  FlatList,
   TextInput,
   Modal,
-  map
 } from "react-native";
-
-import DateTimePicker from "@react-native-community/datetimepicker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -28,37 +24,27 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 
-
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // currentTime: new Date(),
       selectedDate: new Date(),
       showPicker: false,
       selectedTime: new Date(),
       isDatePickerVisible: false,
       isSearchBarOpen: false,
-      searchText: '',
-
-      // API
+      searchText: "",
       data: [],
-      myFetchedData: [],
-      services: [],
-
+      servicesData: [],
     };
   }
 
-  //API
   componentDidMount() {
     this.callApiPromotion();
     this.callApiService();
-
     this.fetchservices();
   }
 
-
-  // for promotion
   async callApiPromotion() {
     const apiUrl = 'https://car-wash-backend-api.onrender.com/api/promotions';
     try {
@@ -70,9 +56,9 @@ class Home extends React.Component {
       this.setState({ data: respJson });
     } catch (error) {
       console.error('Error fetching promotion:', error);
-      // Handle the error, e.g., show an error message to the user
     }
-  };
+  }
+
   async callApiService() {
     const apiUrl = 'https://car-wash-backend-api.onrender.com/api/topservices';
     try {
@@ -81,42 +67,39 @@ class Home extends React.Component {
         throw new Error('Network response was not ok');
       }
       let respJson = await resp.json();
-      this.setState({ myFetchedData: respJson }); // Update the state with the new variable name
+      this.setState({ myFetchedData: respJson });
     } catch (error) {
       console.error('Error fetching promotion:', error);
-      // Handle the error, e.g., show an error message to the user
     }
-  };
+  }
 
-
-  //for servivces
   fetchservices = () => {
-    fetch('https://car-wash-backend-api.onrender.com/api/services') // Replace with your API endpoint
+    fetch('https://car-wash-backend-api.onrender.com/api/services')
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ services: data });
+        this.setState({ servicesData: data });
+        // console.warn(servicesData)
       })
       .catch((error) => {
         console.error(error);
       });
   };
 
-
-  // search bar 
   toggleSearchBar = () => {
     this.setState((prevState) => ({
       isSearchBarOpen: !prevState.isSearchBarOpen,
     }));
   };
 
-
   //for date
-  handleDateChange = (event, selectedDate) => {
-    if (selectedDate !== undefined) {
+  handleDateChange = (event, date) => {
+    if (date !== undefined) {
+      const formattedDate = moment(date).format('DD-MM-YYYY');
       this.setState({
-        selectedDate,
+        date: formattedDate, // Store the formatted date in state
         showPicker: false,
-
+        searchText: "",
+        isSearching: false,
       });
     }
   };
@@ -154,8 +137,8 @@ class Home extends React.Component {
     this.props.navigation.navigate('Home'); // Navigate to the home screen
   };
   //for services
-  handleIconPressService = (serviceName,serviceDescription) => {
-    this.props.navigation.navigate('Washing' ,{serviceName,serviceDescription}); // Navigate to the Washing screen
+  handleIconPressService = (serviceName,serviceDescription,servicePrice) => {
+    this.props.navigation.navigate('Washing' ,{serviceName,serviceDescription,servicePrice}); // Navigate to the Washing screen
   };
   //for Booking
   handleIconPressBooking = () => {
@@ -184,18 +167,19 @@ class Home extends React.Component {
     const { services } = this.state;
     const { isSearchBarOpen, searchText } = this.state;
     const { myFetchedData } = this.state;
+    const {servicesData} = this.state;
 
     const { data } = this.state;
 
-    if (services.length === 0) {
+    if (servicesData.length === 0) {
       return <Text>Loading...</Text>;
     }
 
-    const firstItem = services[0];
-    const secondItem = services[1];
-    const thirdItem = services[2];
-    const fourthItem = services[3];
-
+    // const firstItem = services[0];
+    // const secondItem = services[1];
+    // const thirdItem = services[2];
+    // // const fourthItem = services[4];
+    // console.warn(servicesData)
 
     return (
       <>
@@ -272,170 +256,22 @@ class Home extends React.Component {
           </View>
 
           <Text style={styles.text3}>Services</Text>
-
-          <View style={styles.icon1}>
-            <View
-              style={{
-                height: 50,
-                width: 160,
-                backgroundColor: "white",
-                borderColor: "black",
-                borderWidth: 1,
-              }}
-            >
-              <View style={styles.icon3}>
-              {/* {services.map((item) => (
-          <TouchableOpacity
-            key={item._id} // Assuming each item has a unique _id field
-            onPress={() => this.handleIconPressService(item.serviceName)}
-            style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}
-          >
-            <Text >{item.servicePrice}</Text>
-          </TouchableOpacity>
-        ))} */}
-               
-                <TouchableOpacity 
-                onPress={() => this.handleIconPressService(firstItem.serviceName,firstItem.serviceDescription)}
-                key={firstItem._id} >
-                  
-                    <View size={40}
-                      color="black"
-                      backgroundColor="#F2F3F4"
-                      margin={4}>
-                      <Text style={styles.wash}>{firstItem.servicePrice}</Text>
-                    </View>
-                
-                </TouchableOpacity>
-               
-
-                {/* <Text style={styles.wash}>Wash</Text> */}
-                <View>
-                 
-                    <View>
-                      <Text style={styles.wash}>{firstItem.serviceName}</Text>
-                    </View>
-                 
-                </View>
-                
-
-              </View>
-            </View>
-
-            <View
-              style={{
-                height: 50,
-                width: 160,
-                backgroundColor: "white",
-                borderColor: "black",
-                borderWidth: 1,
-              }}
-            >
-
-              <View style={styles.icon3}>
+          <View style={styles.icon3}>
+            {servicesData.map((service) => (
              
-                <TouchableOpacity 
-                 onPress={() => this.handleIconPressService(secondItem.serviceName,secondItem.serviceDescription)}
-                 key={secondItem._id} 
-                >
-                    <View size={40}
-                      color="black"
-                      backgroundColor="#F2F3F4"
-                      margin={4}>
-                      <Text style={styles.wash}>{secondItem.servicePrice}</Text>
-                    </View>
-                 
-                </TouchableOpacity>
-                
-                {/* <Text style={styles.wash}>Detailing</Text> */}
-                <View>
-                 
-                    <View>
-                      <Text style={styles.wash}>{secondItem.serviceName}</Text>
-                    </View>
-                 
-                </View>
-              </View>
-            </View>
-          </View>
-          <View style={styles.icon2}>
-            <View
-              style={{
-                height: 50,
-                width: 160,
-                backgroundColor: "white",
-                borderColor: "black",
-                borderWidth: 1,
-              }}
-            >
-              <View style={styles.icon3}>
-                <TouchableOpacity onPress={() => this.handleIconPressService(thirdItem.serviceName,thirdItem.serviceDescription)}
-                 key={thirdItem._id}>
-                  {/* <MaterialIcons
-                    name="cleaning-services"
-                    size={40}
-                    color="black"
-                    backgroundColor="#F2F3F4"
-                    margin={4}
-                  /> */}
-                
-                    <View size={40}
-                      color="black"
-                      backgroundColor="#F2F3F4"
-                      margin={4}>
-                      <Text style={styles.wash}>{thirdItem.servicePrice}</Text>
-                    </View>
-                 
-                </TouchableOpacity>
-                {/* <Text style={styles.wash}>Cleaning</Text>
-                 */}
-                <View>
-                 
-                    <View>
-                      <Text style={styles.wash}>{thirdItem.serviceName}</Text>
-                    </View>
-                 
-                </View>
-              </View>
-            </View>
-            <View
-              style={{
-                height: 50,
-                width: 160,
-                backgroundColor: "white",
-                borderColor: "black",
-                borderWidth: 1,
-              }}
-            >
-              <View style={styles.icon3}>
-                <TouchableOpacity onPress={() => this.handleIconPressService(thirdItem.serviceName,thirdItem.serviceDescription)}
-                 key={thirdItem._id}>
-                  {/* <Ionicons
-                    name="car-sharp"
-                    size={40}
-                    color="black"
-                    backgroundColor="#F2F3F4"
-                    margin={4}
-                  /> */}
-                  
-                    <View size={40}
-                      color="black"
-                      backgroundColor="#F2F3F4"
-                      margin={4}>
-                      <Text style={styles.wash}>{thirdItem.servicePrice}</Text>
-                    </View>
-                 
-                </TouchableOpacity>
-                {/* <Text style={styles.wash}>Polish</Text> */}
-                <View>
-                  
-                    <View>
-                      <Text style={styles.wash}>{thirdItem.serviceName}</Text>
-                    </View>
-                
-                </View>
-              </View>
-            </View>
-          </View>
+              <TouchableOpacity
+                key={service._id}
+                onPress={() => this.handleIconPressService(service.serviceName, service.serviceDescription,service.servicePrice)}
+                style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}
+              >
+                <Text>{service.serviceName}</Text>
+                <Text style={styles.wash}>Price: ${service.servicePrice}</Text>
+              </TouchableOpacity>
+            ))}
+          </View> 
+
+          {/*  */}
+
           <Text style={styles.text4}>Upcoming Booking</Text>
           <View
             style={{
@@ -500,24 +336,37 @@ class Home extends React.Component {
               <Text>View all</Text>
             </TouchableOpacity>
           </View>
-          {/* <ScrollView
+          <ScrollView
             horizontal={true}
             style={styles.promotion2}
             showsHorizontalScrollIndicator={false}
-          > */}
-          {/* <TouchableOpacity onPress={this.handleIconPressInbox}>
-              <Image source={require("./Images/car1.jpg")} style={styles.item} />
+          >
+            <View>
+          <TouchableOpacity onPress={this.handleIconPressInbox}>
+              <Image source={require("./Images/Car-Bike-Dents.png")} style={styles.item} />
               </TouchableOpacity>
+              <Text style={{marginTop:5}}>Car & Bike Dent</Text>
+              </View>
+              <View>
               <TouchableOpacity onPress={this.handleIconPressInbox}>
-              <Image source={require("./Images/car2.jpg")} style={styles.item} />
+              <Image source={require("./Images/Car-Bike.png")} style={styles.item} />
               </TouchableOpacity>
+              <Text style={{marginTop:5}}>Car & Bike PPF</Text>
+              </View>
+              <View>
               <TouchableOpacity onPress={this.handleIconPressInbox}>
-              <Image source={require("./Images/car3.jpg")} style={styles.item} />
+              <Image source={require("./Images/Car-Bikes-Wraps.png")} style={styles.item} />
               </TouchableOpacity>
+              
+              <Text style={{marginTop:5}}>Car & Bike wraps Stickers</Text>
+              </View>
+              <View>
               <TouchableOpacity onPress={this.handleIconPressInbox}>
-              <Image source={require("./Images/car3.jpg")} style={styles.item} />
-              </TouchableOpacity> */}
-          <View>
+              <Image source={require("./Images/Car-Modification.png")} style={styles.item} />
+              </TouchableOpacity>
+              <Text style={{marginTop:5}}>Car & Bike Modification</Text>
+              </View>
+          {/* <View>
             <TouchableOpacity onPress={this.handleIconPressInbox}>
               <FlatList
                 horizontal={true}
@@ -533,10 +382,10 @@ class Home extends React.Component {
 
 
             </TouchableOpacity>
-          </View>
+          </View> */}
 
 
-          {/* </ScrollView> */}
+          </ScrollView>
           <View style={styles.topservice1}>
             <Text style={styles.text7}>Top Services</Text>
 
@@ -544,16 +393,28 @@ class Home extends React.Component {
               <Text>View all</Text>
             </TouchableOpacity>
           </View>
-          {/* <ScrollView
+          <ScrollView
             horizontal={true}
             style={styles.topservice2}
             showsHorizontalScrollIndicator={false}
-          > */}
-          {/* <Image source={require("./Images/car1.jpg")} style={styles.item1} />
-            <Image source={require("./Images/car2.jpg")} style={styles.item1} />
-            <Image source={require("./Images/car3.jpg")} style={styles.item1} />
-            <Image source={require("./Images/car1.jpg")} style={styles.item1} /> */}
+          >
+            <View>
+          <Image source={require("./Images/Automatic-Wash.png")} style={styles.item1} />
+          <Text style={{marginTop:5}}>Automation Car Wash</Text>
+          </View>
           <View>
+            <Image source={require("./Images/Car-bike-Coating.png")} style={styles.item1} />
+            <Text style={{marginTop:5}}>Car & Bike Ceramic </Text>
+            </View>
+            <View>
+            <Image source={require("./Images/car-Bike-detailing.png")} style={styles.item1} />
+            <Text style={{marginTop:5}}>Car & Bike Detailing</Text>
+            </View>
+            <View>
+            <Image source={require("./Images/Car-Bike-Wash.png")} style={styles.item1} />
+            <Text style={{marginTop:5}}>Car & Bike Wash</Text>
+            </View>
+          {/* <View>
             <TouchableOpacity onPress={this.handleIconPressInbox}>
               <FlatList
                 horizontal={true}
@@ -569,9 +430,9 @@ class Home extends React.Component {
 
 
             </TouchableOpacity>
-          </View>
+          </View> */}
 
-          {/* </ScrollView> */}
+          </ScrollView>
         </ScrollView>
 
 
@@ -668,12 +529,7 @@ const styles = StyleSheet.create({
     top: 10,
     right: 10,
     margin: 8,
-
-
   },
-
-
-
   Section: {
     marginHorizontal: 20,
     marginVertical: 10,
@@ -775,9 +631,11 @@ const styles = StyleSheet.create({
   },
   item: {
     flexDirection: 'row',
-    height: 90,
-    width: 160,
+    height: 120,
+    width: 180,
     marginRight: 20,
+    borderWidth:2,
+    borderColor:'black'
 
   },
   topservice1: {
@@ -794,9 +652,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   item1: {
-    height: 70,
-    width: 100,
+    height: 100,
+    width: 150,
     marginRight: 20,
+    borderWidth:2,
+    borderColor:'black'
   },
 
   footer: {
@@ -806,6 +666,8 @@ const styles = StyleSheet.create({
     right: 0,
     padding: 5,
     alignItems: 'center',
+    // borderWidth:2,
+    // borderColor:'black'
 
   },
 
@@ -820,7 +682,27 @@ const styles = StyleSheet.create({
   },
   text10: {
     fontSize: 10,
-  }
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  serviceList: {
+    flexDirection: 'column',
+  },
+  serviceItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  serviceName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  servicePrice: {
+    color: 'green',
+  },
 });
 export default Home;
 // *******************************

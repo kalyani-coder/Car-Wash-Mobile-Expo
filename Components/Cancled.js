@@ -116,7 +116,7 @@ class Cancled extends React.Component {
     return (
       <>
         
-        <View style={styles.flex}>
+        {/* <View style={styles.flex}>
         <ScrollView
                         Vertical={true}
                         showsVerticalScrollIndicator={false}
@@ -292,7 +292,7 @@ class Cancled extends React.Component {
                         </View>
                     </View>
           </ScrollView>
-        </View>
+        </View> */}
         <View style={styles.footer}>
         <View style={styles.add}>
                     <AntDesign name="plus" size={20} color="black" />
@@ -338,95 +338,97 @@ class Cancled extends React.Component {
   }
 }
 const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
-    justifyContent: "space-between",
-    flexDirection: "column",
-    marginHorizontal: 5,
-    marginVertical: 15,
-  },
-  add: {
-    flexDirection: "row",
-    marginHorizontal: 120,
-    marginVertical: 10,
-  },
-  iconsContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginHorizontal: 55,
-  },
-  icon: {
-    marginHorizontal: 20,
-  },
-  wash: {
-    flexDirection: "row",
-    margin: 10,
-    justifyContent: "space-between",
-    marginHorizontal: 20,
-    marginVertical: 15,
-  },
-  date: {
-    height: 70,
-    width: 55,
-    backgroundColor: "#D3d3d3",
-  },
-  datetext: {
-    fontSize: 15,
-    textAlign: "center",
-    margin: 8,
-  },
-  btn3: {
-    backgroundColor: "#D3d3d3",
-    borderRadius: 20,
-    width: 80,
-    height: 30,
-  },
-  btntext: {
-    textAlign: "center",
-    margin: 4,
-  },
-  clock: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    marginHorizontal: 20,
-    marginBottom: 10,
-  },
-  button: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginHorizontal: 20,
-  },
-  btn1: {
-    width: 160,
-    height: 40,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "grey",
-  },
-  btn2: {
-    width: 160,
-    height: 40,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "grey",
-  },
-  buttontext: {
-    color: "black",
-    fontSize: 15,
-    textAlign: "center",
-    margin: 8,
-  },
-  text4: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginHorizontal: 75,
-  },
-  text5: {
-    fontSize: 10,
-  },
+  // flex: {
+  //   flex: 1,
+  //   justifyContent: "space-between",
+  //   flexDirection: "column",
+  //   marginHorizontal: 5,
+  //   marginVertical: 15,
+  // },
+  // add: {
+  //   flexDirection: "row",
+  //   marginHorizontal: 120,
+  //   marginVertical: 10,
+  // },
+  // iconsContainer: {
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   marginHorizontal: 55,
+  // },
+  // icon: {
+  //   marginHorizontal: 20,
+  // },
+  // wash: {
+  //   flexDirection: "row",
+  //   margin: 10,
+  //   justifyContent: "space-between",
+  //   marginHorizontal: 20,
+  //   marginVertical: 15,
+  // },
+  // date: {
+  //   height: 70,
+  //   width: 55,
+  //   backgroundColor: "#D3d3d3",
+  // },
+  // datetext: {
+  //   fontSize: 15,
+  //   textAlign: "center",
+  //   margin: 8,
+  // },
+  // btn3: {
+  //   backgroundColor: "#D3d3d3",
+  //   borderRadius: 20,
+  //   width: 80,
+  //   height: 30,
+  // },
+  // btntext: {
+  //   textAlign: "center",
+  //   margin: 4,
+  // },
+  // clock: {
+  //   flexDirection: "row",
+  //   justifyContent: "flex-end",
+  //   marginHorizontal: 20,
+  //   marginBottom: 10,
+  // },
+  // button: {
+  //   flexDirection: "row",
+  //   justifyContent: "space-between",
+  //   marginHorizontal: 20,
+  // },
+  // btn1: {
+  //   width: 160,
+  //   height: 40,
+  //   borderRadius: 8,
+  //   borderWidth: 1,
+  //   borderColor: "grey",
+  // },
+  // btn2: {
+  //   width: 160,
+  //   height: 40,
+  //   borderRadius: 8,
+  //   borderWidth: 1,
+  //   borderColor: "grey",
+  // },
+  // buttontext: {
+  //   color: "black",
+  //   fontSize: 15,
+  //   textAlign: "center",
+  //   margin: 8,
+  // },
+  // text4: {
+  //   flexDirection: "row",
+  //   justifyContent: "space-between",
+  //   alignItems: "center",
+  //   marginHorizontal: 75,
+  // },
+  // text5: {
+  //   fontSize: 10,
+  // },
     footer:{
-      position: 'fixed',
+      position: 'relative',
+      // top:550,
+      marginTop:'140%',
       bottom: 0,
       left: 0,
       right: 0,

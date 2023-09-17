@@ -41,7 +41,7 @@ class Signup extends Component {
       clientName: '',
       clientEmail: '',
       clientPhone: '',
-      clientdob: '',
+      // clientdob: '',
       clientAddress: '',
       errorMessage:'',
       email:'',
@@ -51,7 +51,7 @@ class Signup extends Component {
         clientName: '',
         clientEmail: '',
         clientPhone: '',
-        clientdob: '',
+        // clientdob: '',
         clientAddress: '',
         file: '',
       },
@@ -69,7 +69,7 @@ class Signup extends Component {
         clientName: this.state.clientName,
         clientEmail: this.state.clientEmail,
         clientPhone: this.state.clientPhone,
-        clientdob: this.state.clientdob,
+        // clientdob: this.state.clientdob,
         clientAddress: this.state.clientAddress,
       };
     
@@ -185,15 +185,15 @@ class Signup extends Component {
       }
     }
 
-    if (!clientdob) {
-      errors.clientdob = 'Client Date of Birth is required.';
-    } else {
-      // Validate client date of birth format (dd-mm-yyyy)
-      const dobPattern = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/;
-      if (!dobPattern.test(clientdob)) {
-        errors.clientdob = 'Invalid Client Date of Birth. Please use dd-mm-yyyy format.';
-      }
-    }
+    // if (!clientdob) {
+    //   errors.clientdob = 'Client Date of Birth is required.';
+    // } else {
+    //   // Validate client date of birth format (dd-mm-yyyy)
+    //   const dobPattern = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/;
+    //   if (!dobPattern.test(clientdob)) {
+    //     errors.clientdob = 'Invalid Client Date of Birth. Please use dd-mm-yyyy format.';
+    //   }
+    // }
 
     if (!clientAddress) {
       errors.clientAddress = 'Client Address is required.';
@@ -278,7 +278,7 @@ class Signup extends Component {
         <Text style={styles.errorText}>{errors.clientPhone}</Text>
         
 
-        <TextInput
+        {/* <TextInput
           placeholder="Date of Birth"
 
           onChangeText={(text) => this.setState({ clientdob: text })}
@@ -287,7 +287,7 @@ class Signup extends Component {
           keyboardType="numeric"
           style={styles.input}
         />
-        <Text style={styles.errorText}>{errors.clientdob}</Text>
+        <Text style={styles.errorText}>{errors.clientdob}</Text> */}
 
 
         <TextInput

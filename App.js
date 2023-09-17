@@ -42,8 +42,8 @@ function App() {
 
         </Stack.Navigator>
       
-      </NavigationContainer>
-    {/* initialRouteName="Login"  */}
+      </NavigationContainer> 
+    {/* initialRouteName="Login" */}
 
     
       

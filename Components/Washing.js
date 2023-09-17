@@ -8,9 +8,11 @@ import {
     TouchableOpacity,
     Linking,
     TextInput,
+    Image
 
 
 } from 'react-native'
+import { useRoute } from "@react-navigation/native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -34,12 +36,16 @@ class Washing extends React.Component {
             isDateTimePickerVisible: false,
             selectedTimes: Array(3).fill(null), // Initialize an array to store selected times
             activePicker: null, // To track the active picker index
-            date: new Date(), // Initialize a state variable with the current date
-            showDatePicker: false, // Set initial visibility of the date picker
-            time: new Date(), // Initialize a state variable with the current time
-            showTimePicker: false,
+            // date: new Date(), // Initialize a state variable with the current date
+            // showDatePicker: false, // Set initial visibility of the date picker
+            // time: new Date(), // Initialize a state variable with the current time
+            // showTimePicker: false,
             pickupAddress: '',
             totalPrice: '',
+            date: new Date(),
+            showPicker: false,
+            isDatePickerVisible: false,
+            time: new Date(),
             errors: {
                 pickupAddress: '',
                 totalPrice: ''
@@ -49,63 +55,106 @@ class Washing extends React.Component {
         };
     }
 
+
+    // for time
+    showDatePicker = () => {
+        this.setState({ isDatePickerVisible: true });
+    };
+
+    hideDatePicker = () => {
+        this.setState({ isDatePickerVisible: false });
+    };
+
+    handleDateConfirm = date => {
+        this.setState({
+            time: date,
+        });
+        this.hideDatePicker();
+    };
+
+    formatTime = time => {
+        if (!time) return '';
+        return time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true, }).toUpperCase();
+    };
+
+    //for date
+    handleDateChange = (event, date) => {
+        if (date !== undefined) {
+            this.setState({
+                date,
+                showPicker: false,
+                searchText: "",
+                isSearching: false,
+            });
+        }
+    };
+
     validateInput = () => {
         let isValid = true;
         const { pickupAddress, totalPrice } = this.state;
         const errors = {};
-    
+
         if (pickupAddress.trim() === '') {
             errors.pickupAddress = 'pickupAddress is required.';
-          isValid = false;
+            isValid = false;
         } else {
             errors.pickupAddress = '';
         }
-    
-        if (totalPrice.trim() === '') {
-            errors.totalPrice = 'totalPrice can not be empty';
-          isValid = false;
-        } else if (isNaN(totalPrice)) {
-            errors.totalPrice = 'totalPrice must be number';
-          isValid = false;
-        } else {
-            errors.totalPrice = '';
-        }
-    
+
+        // if (totalPrice.trim() === '') {
+        //     errors.totalPrice = 'totalPrice can not be empty';
+        //     isValid = false;
+        // } else if (isNaN(totalPrice)) {
+        //     errors.totalPrice = 'totalPrice must be number';
+        //     isValid = false;
+        // } else {
+        //     errors.totalPrice = '';
+        // }
+
         return isValid;
-      };
-      handlepickupAddressChange = (text) => {
+    };
+    handlepickupAddressChange = (text) => {
         this.setState({ pickupAddress: text });
-      };
-    
-      handletotalPriceChange = (text) => {
-        this.setState({ totalPrice: text });
-      };
-    handleDateChange = (event, selectedDate) => {
-        if (selectedDate !== undefined) {
-            this.setState({ date, showDatePicker: false });
-        } else {
-            this.setState({ showDatePicker: false });
-        }
-    }
-    formatDate(date) {
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
-    }
-    handleTimeChange = (event, selectedTime) => {
-        if (selectedTime !== undefined) {
-            this.setState({ time, showTimePicker: false });
-        } else {
-            this.setState({ showTimePicker: false });
-        }
-    }
+    };
+
+    // handletotalPriceChange = (text) => {
+    //     this.setState({ totalPrice: text });
+    // };
+    // handleDateChange = (event, selectedDate) => {
+    //     if (selectedDate !== undefined) {
+    //         this.setState({ date, showDatePicker: false });
+    //     } else {
+    //         this.setState({ showDatePicker: false });
+    //     }
+    // }
+    // formatDate(date) {
+    //     const day = date.getDate().toString().padStart(2, '0');
+    //     const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    //     const year = date.getFullYear();
+    //     return `${day}-${month}-${year}`;
+    // }
+    // handleTimeChange = (event, selectedTime) => {
+    //     if (selectedTime !== undefined) {
+    //         this.setState({ time, showTimePicker: false });
+    //     } else {
+    //         this.setState({ showTimePicker: false });
+    //     }
+    // }
 
     handlcontinue = () => {
-        const { pickupAddress,totalPrice,selectedDate,selectedTime} = this.state;
+        const { pickupAddress, date, time } = this.state;
+        const { serviceName,servicePrice } = this.props.route.params;
+        const servicesName=serviceName;
+        const price=servicePrice;
+
+        // const { route, navigation } = useRoute();
+        console.warn(servicesName)
+        console.warn(price)
+
+
         if (this.validateInput()) {
 
-            this.props.navigation.navigate('Confirmation',{pickupAddress,totalPrice,date,time}); // Navigate to the Confirmation page screen
+            this.props.navigation.navigate('Confirmation', { pickupAddress, date, time, servicesName,price}); // Navigate to the Confirmation page screen
         }
     }
 
@@ -183,8 +232,10 @@ class Washing extends React.Component {
 
         const { selectedStars } = this.state;
         const { route } = this.props;
-        const { serviceName, serviceDescription } = route.params;
+        const { serviceName, serviceDescription,servicePrice} = route.params;
         const { errors } = this.state;
+        const { date, showPicker } = this.state;
+        const { time, isDatePickerVisible } = this.state;
 
         return (
             <>
@@ -195,9 +246,14 @@ class Washing extends React.Component {
                     Vertical={true}
                     showsVerticalScrollIndicator={false}
                 >
-
+                    <Text style={styles.text1}>{serviceName}</Text>
+                    <Text >{servicePrice}</Text>
                     <View style={{ height: 120, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
-                        <Text style={styles.text1}>{serviceName}</Text>
+
+                        <Image source={require("./Images/Car-Bikes-Wraps.png")} style={{ width: '100%', height: '100%', resizeMode: 'cover' }} />
+
+                        {/* <Image source={require("./Images/Car-Bike.png")}  style={{ width: '100%', height: '100%', resizeMode: 'cover' }} /> */}
+
                     </View>
 
                     <View style={styles.about}>
@@ -228,7 +284,7 @@ class Washing extends React.Component {
                                             <TouchableOpacity
                                                 key={index}
                                                 onPress={() => this.handleStarPress(index)}
-                                                style={styles.starContainer}
+                                                style={styles.starmainContainer}
                                             >
                                                 <Entypo
                                                     name="star"
@@ -238,8 +294,6 @@ class Washing extends React.Component {
 
                                             </TouchableOpacity>
                                         ))}
-
-
                                     </View>
                                 </View>
                                 <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempore alias eum deserunt recusandae ex rerum qui rem.</Text>
@@ -257,7 +311,7 @@ class Washing extends React.Component {
                                             <TouchableOpacity
                                                 key={index}
                                                 onPress={() => this.handleStarPress(index)}
-                                                style={styles.starContainer}
+                                                style={styles.starmainContainer}
                                             >
                                                 <Entypo
                                                     name="star"
@@ -274,7 +328,7 @@ class Washing extends React.Component {
 
                     </ScrollView>
 
-                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>pickupAddress</Text>
+                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address</Text>
                     {/* <View style={{ height: 50, width: 360, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
                         <View style={styles.gloss}>
                             <TouchableOpacity onPress={this.openMapLink}>
@@ -287,10 +341,10 @@ class Washing extends React.Component {
                         </View>
                     </View> */}
                     <TextInput
-                        placeholder="Enter pickupAddress"
+                        placeholder="Enter Address"
                         value={this.state.pickupAddress}
                         onChangeText={this.handlepickupAddressChange}
-                        
+
                         style={styles.input}
                     />
                     <Text style={styles.errorText}>{errors.pickupAddress}</Text>
@@ -320,9 +374,9 @@ class Washing extends React.Component {
                         </View>
 
                     </ScrollView> */}
-                    <View style={{ flexDirection: 'row' }}>
+                    {/* <View style={{ flexDirection: 'row' }}>
                         <View style={styles.datepicker}>
-
+ 
                             <TouchableOpacity
                                 style={{ flexDirection: 'row', alignItems: 'center' }}
                                 onPress={() => this.setState({ showDatePicker: true })}
@@ -354,7 +408,7 @@ class Washing extends React.Component {
                             >
                                 <View style={{ flexDirection: 'row' }}>
 
-                                    {/* <Icon name="clock" size={30} color="blue" /> */}
+                                    <Icon name="clock" size={30} color="blue" />
                                     <EvilIcons name="clock" size={30} color="black" />
 
                                     <Text style={{ marginLeft: 10 }}>
@@ -383,10 +437,67 @@ class Washing extends React.Component {
                         </View>
                     </View>
 
+ */}
+
+                    <View
+                        style={{
+                            height: 65,
+                            width: 360,
+                            backgroundColor: "#F2F3F4",
+                            marginVertical: 10,
+                            marginHorizontal: 20
+                        }}
+                    >
+                        {/* <Text>{date} |  {time}</Text> */}
+
+                        <View style={{ flexDirection: 'row', margin: 15, }}>
+                            <TouchableOpacity
+                                onPress={() => this.setState({ showPicker: true })}
+                            >
+                                <AntDesign name="calendar" size={35} color="black" />
+                            </TouchableOpacity>
+                            <View style={{ marginLeft: 15, flexDirection: 'row' }}>
+                                {this.state.date && (
+                                    <Text> {this.state.date.toLocaleDateString()}</Text>
+                                )}
+
+                                <View style={styles.date1}>
+
+                                    <TouchableOpacity onPress={this.showDatePicker}>
+                                        <EvilIcons name="clock" size={35} color="black" />
+                                    </TouchableOpacity>
+
+                                    {this.state.time && (
+                                        <Text>{(this.formatTime(this.state.time)) || "8:30"}</Text>
+                                    )}
+
+                                    <DateTimePickerModal
+                                        isVisible={isDatePickerVisible}
+                                        mode="time"
+                                        onConfirm={this.handleDateConfirm}
+                                        onCancel={this.hideDatePicker}
+                                    />
+
+                                    {showPicker && (
+                                        <DateTimePicker
+                                            value={this.state.date}
+                                            mode="date"
+                                            display="default"
+                                            onChange={this.handleDateChange}
+                                        />
+                                    )}
+                                    {/* {this.state.date && (
+                                        <Text> {this.state.date.toLocaleDateString()}</Text>
+                                    )} */}
+                                    {/* <Text>{this.state.date.toLocaleDateString()} | {this.formatTime(this.state.time) || "8:30"}</Text> */}
+
+                                </View>
+                            </View>
+                        </View>
+                    </View>
 
 
-
-                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 5 }}>Enter totalPrice</Text>
+                    {/* <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 5 }}>Enter totalPrice</Text> */}
                     {/* <View style={styles.time1}>
                         <View style={styles.date1}>
                             {this.state.selectedTimes.map((time, index) => (
@@ -422,17 +533,17 @@ class Washing extends React.Component {
                         />
 
                     </View> */}
-                    <TextInput
-                        placeholder="totalPrice"
+                    {/* <TextInput
+                        placeholder="Price"
                         value={this.state.totalPrice}
                         onChangeText={this.handletotalPriceChange}
                         style={styles.input}
 
                     />
-                    <Text style={styles.errorText}>{errors.totalPrice}</Text>
+                    <Text style={styles.errorText}>{errors.totalPrice}</Text> */}
 
                 </ScrollView>
-                <View style={styles.container}>
+                <View style={styles.maincontainer}>
 
                     <TouchableOpacity style={styles.button} onPress={this.handlcontinue}>
                         <Text style={styles.buttonText}>Continue</Text>
@@ -442,7 +553,7 @@ class Washing extends React.Component {
 
                 <View style={styles.footer}>
 
-                    <View style={styles.iconsContainer1}>
+                    <View style={styles.iconsmainContainer1}>
 
                         <View style={styles.text9}>
                             <TouchableOpacity onPress={this.handleIconPressHome}>
@@ -481,7 +592,6 @@ class Washing extends React.Component {
     }
 }
 const styles = StyleSheet.create({
-
     text: {
         textAlign: 'center',
         fontSize: 15,
@@ -575,7 +685,7 @@ const styles = StyleSheet.create({
         margin: 5,
         paddingTop: 8
     },
-    container: {
+    maincontainer: {
         marginHorizontal: 15,
     },
     button: {
@@ -600,10 +710,10 @@ const styles = StyleSheet.create({
         right: 0,
         padding: 5,
         alignItems: 'center',
-
+        zIndex: 2,
     },
 
-    iconsContainer1: {
+    iconsmainContainer1: {
         flexDirection: 'row',
     },
     icon4: {

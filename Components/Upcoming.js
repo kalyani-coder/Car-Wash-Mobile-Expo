@@ -154,7 +154,7 @@ class Upcoming extends React.Component {
                             </View>
                         </View>
 
-                        <View style={{ height: 180, width: 380, backgroundColor: '#E5E5E5', borderWidth: 2, borderColor: 'white' }}>
+                        {/* <View style={{ height: 180, width: 380, backgroundColor: '#E5E5E5', borderWidth: 2, borderColor: 'white' }}>
                             <View style={styles.wash}>
                                 <TouchableOpacity style={styles.date}>
                                     <Text style={styles.datetext}>{formattedDate}</Text>
@@ -254,7 +254,7 @@ class Upcoming extends React.Component {
                                     <Text style={styles.buttontext}>Cancel</Text>
                                 </TouchableOpacity>
                             </View>
-                        </View>
+                        </View> */}
                     </ScrollView>
 
                 </View >
@@ -323,8 +323,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         textAlign: 'center',
         margin: 8
-
-
     },
     btn3: {
         backgroundColor: '#D3d3d3',
