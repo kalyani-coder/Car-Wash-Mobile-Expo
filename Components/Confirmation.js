@@ -31,7 +31,10 @@ class Confirmation extends React.Component {
       time: '',
       pickupAddress: '',
       selectedOption: null,
-
+      vehicleNumber: '',
+      modelNumber: '',
+      vehicleNumberError: '',
+      modelNumberError: '',
     };
     this.options = [
       { label: 'Pick Up by Agent', value: 'agentPickup', amount: 300 },
@@ -46,14 +49,7 @@ class Confirmation extends React.Component {
     this.setState({ selectedOption });
   };
 
-  //for confirm Booking 
-  handleIconPressConfirm = () => {
-    const { pickupAddress, date, time, } = this.props.route.params;
-    const { route } = useRoute();
 
-
-    this.props.navigation.navigate('Confirm'); // Navigate to the Washing screen
-  };
   //for home
   handleIconPressHome = () => {
     this.props.navigation.navigate('Home'); // Navigate to the home screen
@@ -78,11 +74,32 @@ class Confirmation extends React.Component {
       console.error('Error opening settings:', error);
     }
   };
+  validateFields = () => {
+    const { vehicleNumber, modelNumber } = this.state;
+    let isValid = true;
+  
+    // Validate Vehicle Number
+    if (vehicleNumber.trim() === '') {
+      this.setState({ vehicleNumberError: 'Vehicle Number is required' });
+      isValid = false;
+    } else {
+      this.setState({ vehicleNumberError: '' });
+    }
+  
+    // Validate Model Number
+    if (modelNumber.trim() === '') {
+      this.setState({ modelNumberError: 'Model Number is required' });
+      isValid = false;
+    } else {
+      this.setState({ modelNumberError: '' });
+    }
+  
+    return isValid;
+  };
   handleSubmit = () => {
-    const { pickupAddress, date, time, servicesName,totalPrice } = this.props.route.params;
-    // const { route } = useRoute();
-    // const { servicesDataToConfirm } = this.props.route.params;
-    // const servicesName = servicesDataToConfirm.ServiceName;
+    if (this.validateFields()) {
+    const { pickupAddress, date, time, servicesName, totalPrice } = this.props.route.params;
+    
 
     fetch('https://car-wash-backend-api.onrender.com/api/bookings', {
       method: 'POST',
@@ -90,12 +107,12 @@ class Confirmation extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        date: date, // Pass date from state
-        time: time, // Pass time from state
-        pickupAddress: pickupAddress, // Pass pickupAddress from state,
+        date: date, 
+        time: time, 
+        pickupAddress: pickupAddress, 
         servicesName,
         totalPrice,
-        status: " ",
+        status: "",
       }),
     })
       .then((response) => {
@@ -120,13 +137,9 @@ class Confirmation extends React.Component {
       .catch((error) => {
         console.error('Error:', error);
       });
-
+    }
 
   };
-
-
-
-
 
   render() {
     // const { date, showPicker } = this.state;
@@ -134,9 +147,9 @@ class Confirmation extends React.Component {
     const { route } = this.props;
     // const { serviceName } = route.params;
     const { pickupAddress, date, time } = this.props.route.params;
-    const { servicesName, price,amount } = this.props.route.params;
+    const { servicesName, price, amount } = this.props.route.params;
     const taxAmount = price * 0.10;
-    const totalPrice = price + taxAmount ;
+    const totalPrice = price + taxAmount;
 
 
     return (
@@ -232,7 +245,7 @@ class Confirmation extends React.Component {
                 </View>
               </View> */}
             </View>
-            <View
+            {/* <View
               style={{
                 height: 65,
                 width: 370,
@@ -248,8 +261,8 @@ class Confirmation extends React.Component {
                   <Text>Ipsum Velt ut null null temp</Text>
                 </View>
               </View>
-            </View>
-            <Text>Select Pickup</Text>
+            </View> */}
+            <Text>Pickup Address</Text>
             <View
               style={{
                 height: 50,
@@ -269,7 +282,26 @@ class Confirmation extends React.Component {
 
 
             </View>
-            <Text>Voucher</Text>
+            <Text>Enter Vehicle Number</Text>
+            <TextInput
+              placeholder="Vehicle Number"
+              onChangeText={(text) => this.setState({ vehicleNumber: text })}
+              value={this.state.vehicleNumber}
+              style={styles.input}
+            />
+            <Text style={styles.errorText}>{this.state.vehicleNumberError}</Text>
+
+
+            <Text>Enter Model Number</Text>
+
+            <TextInput
+              placeholder="Model Number"
+              onChangeText={(text) => this.setState({ modelNumber: text })}
+              value={this.state.modelNumber}
+              style={styles.input}
+            />
+            <Text style={styles.errorText}>{this.state.modelNumberError}</Text>
+            {/* <Text>Voucher</Text>
             <View style={styles.voucher1}>
               <TextInput
                 style={styles.text1}
@@ -278,7 +310,7 @@ class Confirmation extends React.Component {
               <TouchableOpacity style={styles.apply}>
                 <Text style={{ textAlign: "center", margin: 10 }}>Apply</Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
 
             {/* <View style={styles.amount}>
               <Text style={styles.text2}>TOTAL</Text>
@@ -378,6 +410,10 @@ class Confirmation extends React.Component {
   }
 }
 const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 15,
+    // backgroundColor:'grey'
+  },
 
   text: {
     fontSize: 15,
@@ -418,9 +454,20 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 13,
   },
-  container: {
-    marginHorizontal: 15,
-  },
+  input: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 2,
+    padding: 5,
+    marginBottom: 5,
+    // marginHorizontal: 10
+},
+errorText: {
+    color: 'red',
+    // marginBottom: 5,
+    // marginHorizontal: 20
+},
+  
   button: {
     backgroundColor: "#5B7586",
     height: 50,

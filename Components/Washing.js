@@ -154,7 +154,7 @@ class Washing extends React.Component {
 
         if (this.validateInput()) {
 
-            this.props.navigation.navigate('Confirmation', { pickupAddress, date, time, servicesName,price}); // Navigate to the Confirmation page screen
+            this.props.navigation.navigate('Confirmation', { pickupAddress, date, time, servicesName, price}); // Navigate to the Confirmation page screen
         }
     }
 
@@ -247,7 +247,7 @@ class Washing extends React.Component {
                     showsVerticalScrollIndicator={false}
                 >
                     <Text style={styles.text1}>{serviceName}</Text>
-                    <Text >{servicePrice}</Text>
+                    {/* <Text >{servicePrice}</Text> */}
                     <View style={{ height: 120, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
 
                         <Image source={require("./Images/Car-Bikes-Wraps.png")} style={{ width: '100%', height: '100%', resizeMode: 'cover' }} />

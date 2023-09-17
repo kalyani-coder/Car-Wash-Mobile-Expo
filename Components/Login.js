@@ -97,7 +97,7 @@ class Login extends React.Component {
         {/* <Text style={styles.log}>Log in</Text> */}
 
         <View style={styles.container}>
-          {/* <Text style={{fontSize:20}}>Set up your Account</Text> */}
+
 
           <Text style={styles.name}>Enter your phone number</Text>
           <TextInput
@@ -136,13 +136,12 @@ class Login extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    // flex:1,
     marginHorizontal: 30,
-
   },
 
   name: {
     fontSize: 20,
-    // marginHorizontal: 30,
     paddingTop: 40,
     marginTop: 10,
     color: 'black',
