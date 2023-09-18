@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // import DocumentPicker from 'react-native-document-picker';
 async function checkEmailUniqueness(email) {
   try {
@@ -43,9 +44,9 @@ class Signup extends Component {
       clientPhone: '',
       // clientdob: '',
       clientAddress: '',
-      errorMessage:'',
-      email:'',
-      response:null,
+      errorMessage: '',
+      email: '',
+      response: null,
 
       errors: {
         clientName: '',
@@ -61,8 +62,8 @@ class Signup extends Component {
     checkEmailUniqueness();
 
   }
-   
-  
+
+
   handleSubmit =  () => {
     if (this.validateFields()) {
       const requestBody = {
@@ -72,56 +73,63 @@ class Signup extends Component {
         // clientdob: this.state.clientdob,
         clientAddress: this.state.clientAddress,
       };
-    
+
       const { email } = this.state;
       const errors = {};
-    
+
 
 
       // Check if the email is already registered (You would typically make an API call here)
-      const isEmailRegistered =  checkEmailUniqueness(email);
-    
+      const isEmailRegistered = checkEmailUniqueness(email);
+
       if (isEmailRegistered) {
         // this.setState({ errors: 'Email is already registered' });
         errors.clientEmail = 'Email is already registered';
-      } else { 
+      } else {
         // Perform the registration or API call for registration here.
         // Reset the error message and clear the form fields.
         fetch('https://car-wash-backend-api.onrender.com/api/clients', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
         })
-        .then((data) => {
-          this.setState({ response: data });
-          // if (data.success) {
-          //   // Navigate to the success screen upon successful submission
-          //   this.props.navigation.navigate('Home');
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(async (data) => {
+            this.setState({ response: data });
+            // if (data.success) {
+            //   // Navigate to the success screen upon successful submission
+            //   this.props.navigation.navigate('Home');
 
-          //   console.log('After navigation');
-          // } else {
-          //   Alert.alert('API Error', 'Failed to submit data.');
-          // }
-         
-          this.props.navigation.navigate('Login');
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
+            //   console.log('After navigation');
+            // } else {
+            //   Alert.alert('API Error', 'Failed to submit data.');
+            // }
+            try {
+              // Store the user's email in AsyncStorage
+              await AsyncStorage.setItem('userEmail', clientEmail);
+              // Continue with other actions, such as navigation
+            } catch (error) {
+              console.error('Error storing user email:', error);
+            }
 
-        
+            this.props.navigation.navigate('Login');
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+
+
       }
       // Perform the registration or API call for registration here.
-        // Reset the error message and clear the form fields.
-        fetch('https://car-wash-backend-api.onrender.com/api/clients', {
+      // Reset the error message and clear the form fields.
+      fetch('https://car-wash-backend-api.onrender.com/api/clients', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -134,30 +142,34 @@ class Signup extends Component {
           }
           return response.json();
         })
-        .then((data) => {
+        .then(async (data) => {
           this.setState({ response: data });
-          // if (data.success) {
-          //   // Navigate to the success screen upon successful submission
-          //   this.props.navigation.navigate('Home');
 
-          //   console.log('After navigation');
-          // } else {
-          //   Alert.alert('API Error', 'Failed to submit data.');
-          // }
-         
+          // Assuming a successful signup
+          const { clientEmail } = this.state;
+
+          try {
+            // Store the user's email in AsyncStorage
+            await AsyncStorage.setItem('userEmail', clientEmail);
+            // Continue with other actions, such as navigation
+          } catch (error) {
+            console.error('Error storing user email:', error);
+          }
+
+
+
           this.props.navigation.navigate('Login');
         })
         .catch((error) => {
           console.error('Error:', error);
         });
- 
+
 
     }
   };
 
-  
-  validateFields() 
-  {
+
+  validateFields() {
     const { clientName, clientEmail, clientPhone, clientdob, clientAddress } = this.state;
     const errors = {};
 
@@ -203,7 +215,7 @@ class Signup extends Component {
     return Object.keys(errors).length === 0;
   }
 
-  
+
 
 
   // handleFilePick = async () => {
@@ -230,7 +242,7 @@ class Signup extends Component {
   //   // Handle file upload logic here
   //   this.setState({ file });
   // };
-  
+
 
 
 
@@ -276,7 +288,7 @@ class Signup extends Component {
           style={styles.input}
         />
         <Text style={styles.errorText}>{errors.clientPhone}</Text>
-        
+
 
         {/* <TextInput
           placeholder="Date of Birth"
@@ -332,8 +344,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    paddingTop:80,
-    backgroundColor:'#c4fdf7'
+    paddingTop: 80,
+    backgroundColor: '#c4fdf7'
   },
   input: {
     borderWidth: 1,
@@ -341,7 +353,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
-    backgroundColor:'white'
+    backgroundColor: 'white'
   },
   errorText: {
     color: 'red',

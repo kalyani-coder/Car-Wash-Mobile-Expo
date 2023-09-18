@@ -187,8 +187,10 @@ class Upcoming extends React.Component {
                 </View >
                 <View style={styles.footer}>
                     <View style={styles.add}>
+                    <TouchableOpacity onPress={this.handleIconPressHome} style={{flexDirection:'row'}}>
                         <AntDesign name="plus" size={20} color="black" />
                         <Text>Add New Booking</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.iconsContainer1}>
                         <View style={styles.text9}>

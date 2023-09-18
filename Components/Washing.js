@@ -598,7 +598,7 @@ class Washing extends React.Component {
 const styles = StyleSheet.create({
     container:{
         // paddingTop:50,
-        marginTop:50,
+        // marginTop:50,
     },
     text: {
         textAlign: 'center',

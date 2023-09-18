@@ -264,8 +264,10 @@ class Completed extends React.Component {
                 </View> */}
                 <View style={styles.footer}>
                     <View style={styles.add}>
+                    <TouchableOpacity onPress={this.handleIconPressHome} style={{flexDirection:'row'}}>
                         <AntDesign name="plus" size={20} color="black" />
                         <Text>Add New Booking</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.iconsContainer1}>
 
@@ -397,7 +399,7 @@ const styles = StyleSheet.create({
     // },
     footer: {
         position: 'fixed',
-        marginTop:'140%',
+        marginTop:'155%',
         bottom: 0,
         left: 0,
         right: 0,

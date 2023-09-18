@@ -15,7 +15,7 @@ class Profile extends Component {
             .then(response => response.json())
             .then(data => {
                 // Assuming you have a way to identify the current user (maybe through authentication)
-                const currentUser = data.find(client => client.clientEmail === 'rakesh@gmail.com');
+                const currentUser = data.find(client => client.clientEmail === 'chitkutepratiksha@gmail.com');
                 this.setState({ user: currentUser });
             })
             .catch(error => console.error('Error:', error));

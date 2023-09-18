@@ -21,7 +21,9 @@ class Login extends React.Component {
 
   componentDidMount() {
     // Fetch the client's phone number from your API here
-    this.fetchAPIResponse();
+    this.props.navigation.addListener('focus', () => {
+      this.fetchAPIResponse();
+    });
   }
 
   fetchAPIResponse = async () => {
@@ -71,7 +73,7 @@ class Login extends React.Component {
         // Store user data in AsyncStorage
         try {
           await AsyncStorage.setItem('userId', user._id);
-          await AsyncStorage.setItem('phoneNumber', phoneNumber);
+          await AsyncStorage.setItem('phoneNumber', this.state.clientPhone);
         } catch (error) {
           console.error('Error storing user data:', error);
         }

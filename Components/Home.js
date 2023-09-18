@@ -506,7 +506,7 @@ header:{
     justifyContent: "space-between",
     alignItems: "center",
     marginHorizontal: 10,
-    paddingTop: 45,
+    paddingTop: 15,
     // backgroundColor:'#c4fdf7'
   },
   iconsContainer: {
