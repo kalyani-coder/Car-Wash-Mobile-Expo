@@ -73,13 +73,15 @@ class Otp extends React.Component {
     return (
       <>
         {/* <Text>Enter OTP sent to {phoneNumber}</Text> */}
+        <View style={styles.container}>
+       
         <Text>Generated OTP: {generatedOTP}</Text> 
         <Text>ReGenerated OTP: {this.state.generatedOTP1}</Text>
  
         
         <Text style={styles.log}>Verify OTP</Text>
 
-        <View style={styles.container}>
+       
 
           <Text style={styles.name}>Enter OTP</Text>
           <TextInput
@@ -123,6 +125,11 @@ class Otp extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container:{
+    paddingTop:40,
+    flex:1,
+    backgroundColor:'#c4fdf7'
+  },
   log: {
     textAlign: 'center',
     fontSize: 25,
@@ -145,7 +152,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   button: {
-    backgroundColor: '#5B7586',
+    backgroundColor: '#006b51',
     height: 50,
     paddingTop: 10,
     marginHorizontal: 30,

@@ -29,27 +29,21 @@ function App() {
       <NavigationContainer theme={{ colors: { background: 'white' } }}
         fallback={<Text>Loading...</Text>}>
         <Stack.Navigator>
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Otp" component={Otp} />
-          <Stack.Screen name="Appointment" component={Appointment} />
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Washing" component={Washing} />
-          <Stack.Screen name="Confirmation" component={Confirmation} />
-          <Stack.Screen name="Notification" component={Notification} />
-          <Stack.Screen name="Confirm" component={Confirm} />
-          <Stack.Screen name="Profile" component={Profile} />
-          <Stack.Screen name="Signup" component={Signup} />
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
+          <Stack.Screen name="Otp" component={Otp} options={{ headerShown: false }}/>
+          <Stack.Screen name="Appointment" component={Appointment} options={{ headerShown: false }}/>
+          <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
+          <Stack.Screen name="Washing" component={Washing} options={{ headerShown: false }}/>
+          <Stack.Screen name="Confirmation" component={Confirmation} options={{ headerShown: false }}/>
+          <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }}/>
+          <Stack.Screen name="Confirm" component={Confirm} options={{ headerShown: false }}/>
+          <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }}/>
+          <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }}/>
 
         </Stack.Navigator>
       
       </NavigationContainer> 
     {/* initialRouteName="Login" */}
-
-    
-      
-      
-      
-     
       <StatusBar style="auto" />
     </View>
   );
@@ -58,7 +52,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop:40,
-    backgroundColor:'#82EEFD'
+    // backgroundColor:'#82EEFD'
   },
 });
 export default App;

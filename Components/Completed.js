@@ -77,6 +77,10 @@ class Completed extends React.Component {
             isButton6Pressed: buttonName === 'button6',
         });
     };
+
+    handleIconPressNotification=()=>{
+        this.props.navigation.navigate('Notification'); 
+    };
     //for home
     handleIconPressHome = () => {
         this.props.navigation.navigate('Home'); // Navigate to the home screen
@@ -280,7 +284,7 @@ class Completed extends React.Component {
                         </View>
 
                         <View style={styles.text9}>
-                            <TouchableOpacity onPress={this.handleIconPressInbox}>
+                            <TouchableOpacity onPress={this.handleIconPressNotification}>
                                 <MaterialIcons name="forward-to-inbox" size={30} style={styles.icon4} />
                             </TouchableOpacity>
                             <Text style={styles.text10}>Inbox</Text>

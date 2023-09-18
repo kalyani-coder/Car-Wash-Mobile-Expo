@@ -9,18 +9,28 @@ import {
   ScrollView,
 
 } from "react-native";
+import moment from 'moment';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { useRoute } from "@react-navigation/native";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-
 import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { EvilIcons } from "@expo/vector-icons";
 
+
+const formatDate = (date) => {
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+
+// Define a function to format the time as hh:mm AM/PM
+const formatTime = (time) => {
+  const hours = time.getHours() % 12 || 12; // Get hours in 12-hour format
+  const minutes = time.getMinutes().toString().padStart(2, "0");
+  const ampm = time.getHours() >= 12 ? "PM" : "AM";
+  return `${hours}:${minutes} ${ampm}`;
+};
 
 
 class Confirmation extends React.Component {
@@ -31,10 +41,13 @@ class Confirmation extends React.Component {
       time: '',
       pickupAddress: '',
       selectedOption: null,
-      vehicleNumber: '',
-      modelNumber: '',
+      clientvehicleno: '',
+      clientcarmodelno: '',
       vehicleNumberError: '',
       modelNumberError: '',
+      totalPrice1:'',
+      formattedDate:'',
+      formattedTime:''
     };
     this.options = [
       { label: 'Pick Up by Agent', value: 'agentPickup', amount: 300 },
@@ -49,7 +62,9 @@ class Confirmation extends React.Component {
     this.setState({ selectedOption });
   };
 
-
+  handleIconPressNotification=()=>{
+    this.props.navigation.navigate('Notification'); 
+};
   //for home
   handleIconPressHome = () => {
     this.props.navigation.navigate('Home'); // Navigate to the home screen
@@ -75,11 +90,11 @@ class Confirmation extends React.Component {
     }
   };
   validateFields = () => {
-    const { vehicleNumber, modelNumber } = this.state;
+    const { clientvehicleno, clientcarmodelno } = this.state;
     let isValid = true;
   
     // Validate Vehicle Number
-    if (vehicleNumber.trim() === '') {
+    if (clientvehicleno.trim() === '') {
       this.setState({ vehicleNumberError: 'Vehicle Number is required' });
       isValid = false;
     } else {
@@ -87,7 +102,7 @@ class Confirmation extends React.Component {
     }
   
     // Validate Model Number
-    if (modelNumber.trim() === '') {
+    if (clientcarmodelno.trim() === '') {
       this.setState({ modelNumberError: 'Model Number is required' });
       isValid = false;
     } else {
@@ -98,21 +113,28 @@ class Confirmation extends React.Component {
   };
   handleSubmit = () => {
     if (this.validateFields()) {
-    const { pickupAddress, date, time, servicesName, totalPrice } = this.props.route.params;
-    
-
+    const { pickupAddress, date, time, servicesName,status,price} = this.props.route.params;
+    const{ clientcarmodelno,clientvehicleno} = this.state;
+    // const totalPrice=totalPrice1;
+    const taxAmount = price * 0.10;
+    const totalPrice = price + taxAmount ;
+    const formattedDate = moment(date).format('DD-MM-YYYY');
+    const formattedTime = moment(time).format('hh:mm A');
     fetch('https://car-wash-backend-api.onrender.com/api/bookings', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        date: date, 
-        time: time, 
+        date: formattedDate, 
+        time: formattedTime, 
         pickupAddress: pickupAddress, 
         servicesName,
-        totalPrice,
+        totalPrice:totalPrice,
         status: "",
+        agentId:"",
+        clientcarmodelno:clientcarmodelno,
+        clientvehicleno:clientvehicleno,
       }),
     })
       .then((response) => {
@@ -141,6 +163,8 @@ class Confirmation extends React.Component {
 
   };
 
+  
+
   render() {
     // const { date, showPicker } = this.state;
     // const { time, isDatePickerVisible } = this.state;
@@ -149,7 +173,10 @@ class Confirmation extends React.Component {
     const { pickupAddress, date, time } = this.props.route.params;
     const { servicesName, price, amount } = this.props.route.params;
     const taxAmount = price * 0.10;
-    const totalPrice = price + taxAmount;
+    const totalPrice= price + taxAmount ;
+   
+    const formattedDate = moment(date).format('DD-MM-YYYY');
+const formattedTime = moment(time).format('hh:mm A');
 
 
     return (
@@ -200,9 +227,9 @@ class Confirmation extends React.Component {
                 <Text>{(this.formatTime(this.state.time)) || "8:30"}</Text>
               )} */}
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 15 }}>
-                <Text>{date.toLocaleDateString()}</Text>
+                <Text>{formattedDate}</Text>
 
-                <Text>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase()}</Text>
+                <Text>{formattedTime}</Text>
               </View>
               {/* <View style={{ flexDirection: 'row', margin: 10 }}>
                 <TouchableOpacity
@@ -285,8 +312,8 @@ class Confirmation extends React.Component {
             <Text>Enter Vehicle Number</Text>
             <TextInput
               placeholder="Vehicle Number"
-              onChangeText={(text) => this.setState({ vehicleNumber: text })}
-              value={this.state.vehicleNumber}
+              onChangeText={(text) => this.setState({ clientvehicleno: text })}
+              value={this.state.clientvehicleno}
               style={styles.input}
             />
             <Text style={styles.errorText}>{this.state.vehicleNumberError}</Text>
@@ -296,8 +323,8 @@ class Confirmation extends React.Component {
 
             <TextInput
               placeholder="Model Number"
-              onChangeText={(text) => this.setState({ modelNumber: text })}
-              value={this.state.modelNumber}
+              onChangeText={(text) => this.setState({ clientcarmodelno: text })}
+              value={this.state.clientcarmodelno}
               style={styles.input}
             />
             <Text style={styles.errorText}>{this.state.modelNumberError}</Text>
@@ -381,7 +408,7 @@ class Confirmation extends React.Component {
             </View>
 
             <View style={styles.text9}>
-              <TouchableOpacity onPress={this.handleIconPressInbox}>
+              <TouchableOpacity onPress={this.handleIconPressNotification}>
                 <MaterialIcons
                   name="forward-to-inbox"
                   size={30}
@@ -412,7 +439,8 @@ class Confirmation extends React.Component {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 15,
-    // backgroundColor:'grey'
+    paddingTop:45,
+    // backgroundColor:'#c4fdf7'
   },
 
   text: {

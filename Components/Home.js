@@ -11,6 +11,8 @@ import {
   Modal,
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from '@react-native-community/datetimepicker';
+// import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons/faMagnifyingGlass';
@@ -147,7 +149,7 @@ class Home extends React.Component {
 
   //inbox page
   handleIconPressInbox = () => {
-    this.props.navigation.navigate('Confirmation'); // Navigate to the Confirmation page screen
+    this.props.navigation.navigate('Washing'); // Navigate to the Confirmation page screen
   };
   //for  setting
   openSettings = async () => {
@@ -183,7 +185,7 @@ class Home extends React.Component {
 
     return (
       <>
-
+<View style={styles.header}>
 
         <View style={styles.container1}>
 
@@ -234,6 +236,7 @@ class Home extends React.Component {
 
         <ScrollView Vertical={true}
           showsVerticalScrollIndicator={false}
+          style={{flex:1}}
         >
 
           <View style={styles.Section}>
@@ -246,29 +249,34 @@ class Home extends React.Component {
               </TouchableOpacity>
             </View>
 
-            <Image
-              style={styles.img}
-              source={{
-                uri: 'https://reactnative.dev/img/tiny_logo.png',
-              }}
+            <Image source={require("./Images/Car-Bike-Dents.png")} style={styles.img} 
+              resizeMode="cover" 
             />
 
           </View>
 
+
           <Text style={styles.text3}>Services</Text>
+
+          <ScrollView
+            horizontal={true}
+            style={styles.topservice2}
+            showsHorizontalScrollIndicator={false}
+          >
           <View style={styles.icon3}>
             {servicesData.map((service) => (
              
               <TouchableOpacity
                 key={service._id}
                 onPress={() => this.handleIconPressService(service.serviceName, service.serviceDescription,service.servicePrice)}
-                style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}
+                style={styles.card}
               >
-                <Text>{service.serviceName}</Text>
-                <Text style={styles.wash}>Price: ${service.servicePrice}</Text>
+                <Text style={styles.serviceName}>{service.serviceName}</Text>
+                <Text style={styles.servicePrice}>{service.servicePrice}</Text>
               </TouchableOpacity>
             ))}
           </View> 
+          </ScrollView>
 
           {/*  */}
 
@@ -453,7 +461,7 @@ class Home extends React.Component {
             </View>
 
             <View style={styles.text9}>
-              <TouchableOpacity onPress={this.handleIconPressInbox}>
+              <TouchableOpacity onPress={this.handleIconPressNotification}>
                 <MaterialIcons
                   name="forward-to-inbox"
                   size={30}
@@ -472,12 +480,16 @@ class Home extends React.Component {
             </View>
           </View>
         </View>
+        </View>
       </>
     );
   }
 }
 const styles = StyleSheet.create({
-
+header:{
+  flex:1,
+  backgroundColor:'#c4fdf7'
+},
   flex: {
     marginHorizontal: 20,
     marginVertical: 10,
@@ -489,11 +501,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   container1: {
+    
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginHorizontal: 10,
-    // paddingTop: 35,
+    paddingTop: 45,
+    // backgroundColor:'#c4fdf7'
   },
   iconsContainer: {
     flexDirection: "row",
@@ -555,12 +569,11 @@ const styles = StyleSheet.create({
   img: {
     height: 110,
     width: 175,
-
   },
   text3: {
     marginHorizontal: 20,
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 18,
   },
   icon1: {
     flexDirection: "row",
@@ -575,6 +588,21 @@ const styles = StyleSheet.create({
   },
   icon3: {
     flexDirection: "row",
+  },
+  card: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    margin: 10,
+  },
+  serviceName: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  servicePrice: {
+    color: 'green',
   },
   wash: {
     fontSize: 15,
@@ -630,12 +658,22 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   item: {
-    flexDirection: 'row',
-    height: 120,
-    width: 180,
-    marginRight: 20,
-    borderWidth:2,
-    borderColor:'black'
+  flexDirection: 'row',
+  height: 120,
+  width: 180,
+  marginRight: 20,
+  borderWidth: 2,
+  borderColor: 'black',
+  borderRadius: 10, // Add rounded corners
+  overflow: 'hidden', // Ensure the image stays within the border
+  backgroundColor: 'white', // Add a background color
+  elevation: 5, // Add a shadow (Android)
+  shadowColor: 'black', // Add a shadow (iOS)
+  shadowOpacity: 0.5, // Add a shadow (iOS)
+  shadowOffset: { width: 0, height: 2 }, // Add a shadow (iOS)
+  padding: 5, // Add some padding inside the container
+  alignItems: 'center', // Center image horizontally
+  justifyContent: 'center',
 
   },
   topservice1: {
@@ -653,10 +691,20 @@ const styles = StyleSheet.create({
   },
   item1: {
     height: 100,
-    width: 150,
-    marginRight: 20,
-    borderWidth:2,
-    borderColor:'black'
+  width: 150,
+  marginRight: 20,
+  borderWidth: 2,
+  borderColor: 'black',
+  borderRadius: 10, // Add rounded corners
+  overflow: 'hidden', // Ensure the image stays within the border
+  backgroundColor: 'white', // Add a background color
+  elevation: 5, // Add a shadow (Android)
+  shadowColor: 'black', // Add a shadow (iOS)
+  shadowOpacity: 0.5, // Add a shadow (iOS)
+  shadowOffset: { width: 0, height: 2 }, // Add a shadow (iOS)
+  padding: 5, // Add some padding inside the container
+  alignItems: 'center', // Center image horizontally
+  justifyContent: 'center',
   },
 
   footer: {

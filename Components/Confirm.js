@@ -16,7 +16,7 @@ class Confirm extends React.Component{
       }
 
     handleIconPressContinue = () => {
-        this.props.navigation.navigate('Confirmation'); // Navigate to the Washing screen
+        this.props.navigation.navigate('Home'); // Navigate to the home screen
       };
     render(){
         return(

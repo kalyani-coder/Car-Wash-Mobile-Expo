@@ -332,6 +332,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    paddingTop:80,
+    backgroundColor:'#c4fdf7'
   },
   input: {
     borderWidth: 1,
@@ -339,6 +341,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
+    backgroundColor:'white'
   },
   errorText: {
     color: 'red',
@@ -361,7 +364,7 @@ const styles = StyleSheet.create({
 
   },
   button: {
-    backgroundColor: '#5B7586',
+    backgroundColor: '#006b51',
     height: 50,
     paddingTop: 10,
     borderRadius: 5,

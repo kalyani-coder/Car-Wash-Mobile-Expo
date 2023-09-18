@@ -8,199 +8,89 @@ import {
   ScrollView,
   Linking,
 } from "react-native";
-import { Calendar } from "react-native-calendars";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faDownload } from '@fortawesome/free-solid-svg-icons/faDownload'
-// import { faDownload } from '@fortawesome/free-regular-svg-icons/faDownload'
-
+import { faDownload } from '@fortawesome/free-solid-svg-icons/faDownload';
 import { Ionicons } from "@expo/vector-icons";
-// import { Icon } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { EvilIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+
 class Notification extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
-
+      notifications: [], // Initialize an empty array to hold notifications
     };
   }
-  //for home
-  handleIconPressHome = () => {
-    this.props.navigation.navigate('Home'); // Navigate to the home screen
-  };
-  //for services
-  handleIconPressService = () => {
-    this.props.navigation.navigate('Washing'); // Navigate to the Washing screen
-  };
-  //for Booking
-  handleIconPressBooking = () => {
-    this.props.navigation.navigate('Appointment'); // Navigate to the Appointment screen
-  };
-  //inbox page
-  handleIconPressInbox = () => {
-    this.props.navigation.navigate('Confirmation'); // Navigate to the Confirmation page screen
-  };
-  //for  setting
-  openSettings = async () => {
-    try {
-      await Linking.openSettings();
-    } catch (error) {
-      console.error("Error opening settings:", error);
-    }
+
+  componentDidMount() {
+    // Fetch notifications from the API
+    fetch('https://car-wash-backend-api.onrender.com/api/notification')
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ notifications: data });
+      })
+      .catch((error) => console.error('Error fetching notifications:', error));
+  }
+
+  handleIconPressNotification = () => {
+    this.props.navigation.navigate('Notification');
   };
 
+  // ... Rest of your component code ...
+
   render() {
+    const { notifications } = this.state;
     const { navigation } = this.props;
 
     return (
       <>
-        
-          <View
-            style={{
-              height: 50,
-              width: 360,
-              backgroundColor: "#F2F3F4",
-              marginVertical: 10,
-              marginHorizontal: 15
-            }}
-          >
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}>
-              <Text style={styles.text}>Notification Inbox</Text>
-              <FontAwesomeIcon icon={faDownload} size={25} />
-            </View>
+        <View
+          style={{
+            height: 50,
+            width: 360,
+            backgroundColor: "#F2F3F4",
+            marginVertical: 10,
+            marginHorizontal: 15
+          }}
+        >
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}>
+            <Text style={styles.text}>Notification Inbox</Text>
+            <FontAwesomeIcon icon={faDownload} size={25} />
           </View>
-          <ScrollView
+        </View>
+        <ScrollView
           Vertical={true}
           showsVerticalScrollIndicator={false}
         >
-          
-          <View
-            style={{
-              height: 70,
-              width: 360,
-              backgroundColor: "#F2F3F4",
-              marginVertical: 10,
-              marginHorizontal: 15
-            }}
-          >
-            <View style={{ flexDirection: 'row', margin: 15 }}>
-              <MaterialCommunityIcons name="code-braces-box" size={40} color="black" />
-              <View>
-                <Text style={{ margin: 2 }}>    Lorem Ipsum</Text>
-                <Text>    15/01/2017</Text>
+          {notifications.map((notification, index) => (
+            <View
+              key={index}
+              style={{
+                height: 70,
+                width: 360,
+                backgroundColor: "#F2F3F4",
+                marginVertical: 10,
+                marginHorizontal: 15
+              }}
+            >
+              <View style={{ flexDirection: 'row', margin: 15 }}>
+                <MaterialCommunityIcons name="code-braces-box" size={40} color="black" />
+                <View>
+                  <Text style={{ margin: 2 }}>{notification.title}</Text>
+                  <Text>{notification.message}</Text>
+                </View>
               </View>
             </View>
-
-          </View>
-
-          <View
-            style={{
-              height: 70,
-              width: 360,
-              backgroundColor: "#F2F3F4",
-              marginVertical: 10,
-              marginHorizontal: 15
-            }}
-          >
-            <View style={{ flexDirection: 'row', margin: 15 }}>
-              <MaterialCommunityIcons name="code-braces-box" size={40} color="black" />
-              <View>
-                <Text style={{ margin: 2 }}>    Lorem Ipsum</Text>
-                <Text>    15/01/2017</Text>
-              </View>
-            </View>
-
-          </View>
-          <View
-            style={{
-              height: 70,
-              width: 360,
-              backgroundColor: "#F2F3F4",
-              marginVertical: 10,
-              marginHorizontal: 15
-            }}
-          >
-            <View style={{ flexDirection: 'row', margin: 15 }}>
-              <MaterialCommunityIcons name="code-braces-box" size={40} color="black" />
-              <View>
-                <Text style={{ margin: 2 }}>    Lorem Ipsum</Text>
-                <Text>    15/01/2017</Text>
-              </View>
-            </View>
-
-          </View>
-          <View
-            style={{
-              height: 70,
-              width: 360,
-              backgroundColor: "#F2F3F4",
-              marginVertical: 10,
-              marginHorizontal: 15
-            }}
-          ><View style={{ flexDirection: 'row', margin: 15 }}>
-              <MaterialCommunityIcons name="code-braces-box" size={40} color="black" />
-              <View>
-                <Text style={{ margin: 2 }}>    Lorem Ipsum</Text>
-                <Text>    15/01/2017</Text>
-              </View>
-            </View>
-          </View>
-          </ScrollView>
-
-
-          <View style={styles.footer}>
-            <View style={styles.iconsContainer1}>
-              <View style={styles.text9}>
-                <TouchableOpacity onPress={this.handleIconPressHome}>
-                  <Entypo name="home" size={30} style={styles.icon4} />
-                </TouchableOpacity>
-                <Text style={styles.text10}>Home</Text>
-              </View>
-
-              <View style={styles.text9}>
-                <TouchableOpacity onPress={this.handleIconPressBooking}>
-                  <Entypo name="calendar" size={30} style={styles.icon4} />
-                </TouchableOpacity>
-                <Text style={styles.text10}>Booking</Text>
-              </View>
-
-              <View style={styles.text9}>
-                <TouchableOpacity onPress={this.handleIconPressInbox}>
-                  <MaterialIcons
-                    name="forward-to-inbox"
-                    size={30}
-                    style={styles.icon4}
-                  />
-                </TouchableOpacity>
-                <Text style={styles.text10}>Inbox</Text>
-              </View>
-
-              <View style={styles.text9}>
-                <TouchableOpacity onPress={this.openSettings}>
-                  <Ionicons
-                    name="settings-sharp"
-                    size={30}
-                    style={styles.icon4}
-                  />
-                </TouchableOpacity>
-
-                <Text style={styles.text10}>Setting</Text>
-              </View>
-              
-            </View>
-          </View>
-      
+          ))}
+        </ScrollView>
+        {/* ... Rest of your component code ... */}
       </>
     )
   }
 }
+
 const styles = StyleSheet.create({
- 
   text: {
     fontSize: 15,
   },
@@ -211,9 +101,7 @@ const styles = StyleSheet.create({
     right: 0,
     padding: 5,
     alignItems: 'center',
-
   },
-
   iconsContainer1: {
     flexDirection: 'row',
   },
@@ -227,4 +115,5 @@ const styles = StyleSheet.create({
     fontSize: 10,
   }
 })
+
 export default Notification;

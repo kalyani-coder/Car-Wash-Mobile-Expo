@@ -203,6 +203,9 @@ class Washing extends React.Component {
     handleIconPressHome = () => {
         this.props.navigation.navigate('Home'); // Navigate to the home screen
     };
+    handleIconPressNotification=()=>{
+        this.props.navigation.navigate('Notification'); 
+    };
     //for services
     handleIconPressService = () => {
         this.props.navigation.navigate('Washing'); // Navigate to the Washing screen
@@ -242,6 +245,7 @@ class Washing extends React.Component {
 
 
                 {/* <Text style={styles.text}>Washing</Text> */}
+                <View style={styles.container}>
                 <ScrollView
                     Vertical={true}
                     showsVerticalScrollIndicator={false}
@@ -344,7 +348,6 @@ class Washing extends React.Component {
                         placeholder="Enter Address"
                         value={this.state.pickupAddress}
                         onChangeText={this.handlepickupAddressChange}
-
                         style={styles.input}
                     />
                     <Text style={styles.errorText}>{errors.pickupAddress}</Text>
@@ -458,7 +461,7 @@ class Washing extends React.Component {
                             </TouchableOpacity>
                             <View style={{ marginLeft: 15, flexDirection: 'row' }}>
                                 {this.state.date && (
-                                    <Text> {this.state.date.toLocaleDateString()}</Text>
+                                    <Text> {moment(this.state.date).format('DD-MM-YYYY')}</Text>
                                 )}
 
                                 <View style={styles.date1}>
@@ -468,7 +471,7 @@ class Washing extends React.Component {
                                     </TouchableOpacity>
 
                                     {this.state.time && (
-                                        <Text>{(this.formatTime(this.state.time)) || "8:30"}</Text>
+                                        <Text> {moment(this.state.time).format('hh:mm A')}</Text>
                                     )}
 
                                     <DateTimePickerModal
@@ -570,7 +573,7 @@ class Washing extends React.Component {
                         </View>
 
                         <View style={styles.text9}>
-                            <TouchableOpacity onPress={this.handleIconPressInbox}>
+                            <TouchableOpacity onPress={this.handleIconPressNotification}>
                                 <MaterialIcons name="forward-to-inbox" size={30} style={styles.icon4} />
                             </TouchableOpacity>
                             <Text style={styles.text10}>Inbox</Text>
@@ -585,6 +588,7 @@ class Washing extends React.Component {
                         </View>
                     </View>
                 </View>
+                </View>
 
             </>
         );
@@ -592,6 +596,10 @@ class Washing extends React.Component {
     }
 }
 const styles = StyleSheet.create({
+    container:{
+        // paddingTop:50,
+        marginTop:50,
+    },
     text: {
         textAlign: 'center',
         fontSize: 15,

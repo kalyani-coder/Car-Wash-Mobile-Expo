@@ -1,18 +1,13 @@
-import React from 'react'
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-
-} from 'react-native'
-
-
-// #f7db03 YELLOW
-//#006b51 DARK GREEN
-//#c4fcf7 FAINT GREEN
-// #659b9c MADIUM GREEN
+  
+} from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 class Login extends React.Component {
   constructor(props) {
@@ -20,15 +15,15 @@ class Login extends React.Component {
     this.state = {
       phoneNumber: '',
       phoneNumberError: '',
-      clientPhoneNumber: '',
       apiResponse: [],
-    }
-  };
+    };
+  }
 
   componentDidMount() {
     // Fetch the client's phone number from your API here
     this.fetchAPIResponse();
   }
+
   fetchAPIResponse = async () => {
     try {
       // Make an API request to fetch data
@@ -45,11 +40,6 @@ class Login extends React.Component {
     }
   };
 
-  //for signup 
-  handleIconPressSignup = () => {
-    this.props.navigation.navigate('Signup'); // Navigate to the Signup screen
-  };
-
   handlePhoneNumberChange = (text) => {
     // Remove non-numeric characters from the input
     const numericValue = text.replace(/[^0-9]/g, '');
@@ -62,43 +52,52 @@ class Login extends React.Component {
     // Update the state with the validated input
     this.setState({ phoneNumber: numericValue, phoneNumberError: '' });
   };
-  handleLogin = () => {
+
+  handleLogin = async () => {
     const { phoneNumber, apiResponse } = this.state;
-    // const { clientPhone} = this.state;
 
     // Reset error message
     this.setState({ phoneNumberError: '' });
 
-    const isPhoneNumberValid = apiResponse.some((element) => (element.clientPhone === phoneNumber));
-    // if (isPhoneNumberValid) {
-      if (phoneNumber.length === 10) {
-        const generatedOTP = Math.floor(1000 + Math.random() * 9000);
-        this.props.navigation.navigate('Otp', { phoneNumber, generatedOTP });
-      }
-      else {
-        this.setState({ phoneNumberError: '* phone number should be 10 digit' });
-      }
-    // }
-    //   else {
-    //     this.setState({ phoneNumberError: '* Phone numbers do not match' });
-    //   }
-    
+    if (phoneNumber.length === 10) {
+      const user = apiResponse.find(
+        (element) => element.clientPhone === parseInt(phoneNumber)
+      );
 
-    // Proceed with your logic here
-    console.log(`Phone number: ${phoneNumber}`);
+      if (user) {
+        // Valid phone number, navigate to OTP screen
+        const generatedOTP = Math.floor(1000 + Math.random() * 9000);
+
+        // Store user data in AsyncStorage
+        try {
+          await AsyncStorage.setItem('userId', user._id);
+          await AsyncStorage.setItem('phoneNumber', phoneNumber);
+        } catch (error) {
+          console.error('Error storing user data:', error);
+        }
+
+        this.props.navigation.navigate('Otp', {
+          phoneNumber,
+          generatedOTP,
+        });
+      } else {
+        this.setState({ phoneNumberError: '* Phone number not found' });
+      }
+    } else {
+      this.setState({ phoneNumberError: '* Phone number should be 10 digits' });
+    }
   };
+
+  handleIconPressSignup = () => {
+    this.props.navigation.navigate('Signup'); // Navigate to the Signup screen
+  };
+
   render() {
     const { phoneNumber, phoneNumberError } = this.state;
 
-
     return (
       <>
-        {/* <Text>Set up your Account</Text> */}
-        {/* <Text style={styles.log}>Log in</Text> */}
-
         <View style={styles.container}>
-
-
           <Text style={styles.name}>Enter your phone number</Text>
           <TextInput
             style={styles.textBox}
@@ -107,14 +106,18 @@ class Login extends React.Component {
             value={phoneNumber}
             keyboardType={'numeric'}
             maxLength={10}
-          >
-          </TextInput>
-          {phoneNumberError !== '' && <Text style={styles.errorText}>{phoneNumberError}</Text>}
+          />
+          {phoneNumberError !== '' && (
+            <Text style={styles.errorText}>{phoneNumberError}</Text>
+          )}
 
           <TouchableOpacity style={styles.button} onPress={this.handleLogin}>
             <Text style={styles.buttonText}>Continue</Text>
           </TouchableOpacity>
-          <Text style={styles.sign}>By signing up,you agree to GoGoRide's </Text>
+
+          <Text style={styles.sign}>
+            By signing up, you agree to GoGoRide's{' '}
+          </Text>
 
           <TouchableOpacity>
             <Text style={styles.service}>Terms of Service and Privacy Policy</Text>
@@ -126,40 +129,38 @@ class Login extends React.Component {
               <Text style={styles.login}>Sign Up</Text>
             </TouchableOpacity>
           </View>
-
         </View>
       </>
     );
   }
-
 }
 
 const styles = StyleSheet.create({
   container: {
-    // flex:1,
-    marginHorizontal: 30,
+    flex: 1,
+    backgroundColor: '#c4fdf7',
   },
 
   name: {
     fontSize: 20,
-    paddingTop: 40,
+    paddingTop: 100,
     marginTop: 10,
     color: 'black',
+    marginHorizontal: 30,
   },
   textBox: {
     borderColor: 'grey',
     backgroundColor: 'white',
     borderWidth: 2,
     padding: 10,
-    // marginHorizontal: 30,
+    marginHorizontal: 30,
     marginTop: 20,
-
   },
   button: {
-    backgroundColor: '#5B7586',
+    backgroundColor: '#006b51',
     height: 50,
     paddingTop: 10,
-    // marginHorizontal: 30,
+    marginHorizontal: 30,
     marginTop: 15,
     borderRadius: 4,
   },
@@ -171,8 +172,7 @@ const styles = StyleSheet.create({
   },
   sign: {
     textAlign: 'center',
-    paddingTop: 200
-
+    paddingTop: 200,
   },
   service: {
     color: 'blue',
@@ -181,25 +181,22 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
-    // marginHorizontal: 30,
+    marginHorizontal: 30,
   },
   account: {
     flexDirection: 'row',
     marginTop: 150,
-    marginHorizontal: 60,
+    marginHorizontal: 90,
   },
   text: {
     textAlign: 'center',
-    fontSize: 15
+    fontSize: 15,
   },
   login: {
     color: 'blue',
     textDecorationLine: 'underline',
-    fontSize: 15
-  }
+    fontSize: 15,
+  },
+});
 
-})
 export default Login;
-
-
-
