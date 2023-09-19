@@ -101,15 +101,6 @@ class Washing extends React.Component {
             errors.pickupAddress = '';
         }
 
-        // if (totalPrice.trim() === '') {
-        //     errors.totalPrice = 'totalPrice can not be empty';
-        //     isValid = false;
-        // } else if (isNaN(totalPrice)) {
-        //     errors.totalPrice = 'totalPrice must be number';
-        //     isValid = false;
-        // } else {
-        //     errors.totalPrice = '';
-        // }
 
         return isValid;
     };
@@ -117,82 +108,18 @@ class Washing extends React.Component {
         this.setState({ pickupAddress: text });
     };
 
-    // handletotalPriceChange = (text) => {
-    //     this.setState({ totalPrice: text });
-    // };
-    // handleDateChange = (event, selectedDate) => {
-    //     if (selectedDate !== undefined) {
-    //         this.setState({ date, showDatePicker: false });
-    //     } else {
-    //         this.setState({ showDatePicker: false });
-    //     }
-    // }
-    // formatDate(date) {
-    //     const day = date.getDate().toString().padStart(2, '0');
-    //     const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    //     const year = date.getFullYear();
-    //     return `${day}-${month}-${year}`;
-    // }
-    // handleTimeChange = (event, selectedTime) => {
-    //     if (selectedTime !== undefined) {
-    //         this.setState({ time, showTimePicker: false });
-    //     } else {
-    //         this.setState({ showTimePicker: false });
-    //     }
-    // }
-
     handlcontinue = () => {
-        const { pickupAddress, date, time } = this.state;
-        const { serviceName,servicePrice } = this.props.route.params;
-        const servicesName=serviceName;
-        const price=servicePrice;
-
-        // const { route, navigation } = useRoute();
-        console.warn(servicesName)
-        console.warn(price)
-
-
         if (this.validateInput()) {
+        const { pickupAddress, date, time } = this.state;
+        const { serviceName, servicePrice } = this.props.route.params;
+        const servicesName = serviceName;
+        const price = servicePrice;
 
-            this.props.navigation.navigate('Confirmation', { pickupAddress, date, time, servicesName, price}); // Navigate to the Confirmation page screen
+         this.props.navigation.navigate('Confirmation', { pickupAddress, date, time, servicesName, price }); // Navigate to the Confirmation page screen
         }
     }
 
-    // showDateTimePicker = (index) => {
-    //     this.setState({ isDateTimePickerVisible: true, activePicker: index });
-    // };
-
-    // hideDateTimePicker = () => {
-    //     this.setState({ isDateTimePickerVisible: false, activePicker: null });
-    // };
-
-    // handleDateTimeConfirm = (datetime) => {
-    //     const { activePicker } = this.state;
-    //     if (activePicker !== null) {
-    //         const updatedSelectedTimes = [...this.state.selectedTimes];
-    //         updatedSelectedTimes[activePicker] = datetime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    //         this.setState({
-    //             selectedTimes: updatedSelectedTimes,
-    //             isDateTimePickerVisible: false,
-    //             activePicker: null,
-    //         });
-    //     }
-    // };
-
-    //for date
-    // onDayPress = (day) => {
-    //     this.setState({
-    //         selectedDate: day.dateString,
-    //     });
-    // };
-    //map link
-    // openMapLink = () => {
-    //     const { latitude, longitude } = this.props;
-    //     const mapUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
-    //     Linking.openURL(mapUrl);
-    // };
-
-    //for stars
+   //for stars
     state = {
         selectedStars: 0,
     };
@@ -203,8 +130,8 @@ class Washing extends React.Component {
     handleIconPressHome = () => {
         this.props.navigation.navigate('Home'); // Navigate to the home screen
     };
-    handleIconPressNotification=()=>{
-        this.props.navigation.navigate('Notification'); 
+    handleIconPressNotification = () => {
+        this.props.navigation.navigate('Notification');
     };
     //for services
     handleIconPressService = () => {
@@ -235,7 +162,7 @@ class Washing extends React.Component {
 
         const { selectedStars } = this.state;
         const { route } = this.props;
-        const { serviceName, serviceDescription,servicePrice} = route.params;
+        const { serviceName, serviceDescription, servicePrice } = route.params;
         const { errors } = this.state;
         const { date, showPicker } = this.state;
         const { time, isDatePickerVisible } = this.state;
@@ -246,262 +173,165 @@ class Washing extends React.Component {
 
                 {/* <Text style={styles.text}>Washing</Text> */}
                 <View style={styles.container}>
-                <ScrollView
-                    Vertical={true}
-                    showsVerticalScrollIndicator={false}
-                >
-                    <Text style={styles.text1}>{serviceName}</Text>
-                    {/* <Text >{servicePrice}</Text> */}
-                    <View style={{ height: 120, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
-
-                        <Image source={require("./Images/Car-Bikes-Wraps.png")} style={{ width: '100%', height: '100%', resizeMode: 'cover' }} />
-
-                        {/* <Image source={require("./Images/Car-Bike.png")}  style={{ width: '100%', height: '100%', resizeMode: 'cover' }} /> */}
-
-                    </View>
-
-                    <View style={styles.about}>
-                        <Text style={styles.text2}>About</Text>
-                        <Text>{serviceDescription}.</Text>
-                    </View>
-
-                    <View style={styles.reviewtext}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Reviews</Text>
-                        <View style={styles.sees}>
-                            <Text>See all</Text>
-                            <MaterialCommunityIcons name="greater-than" size={17} />
-                        </View>
-                    </View>
-
-
-                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                        <View style={{ height: 150, width: 300, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
-                            <View style={styles.review}>
-                                <View style={styles.icons}>
-                                    <AntDesign name="contacts" size={35} color="black" backgroundColor="white" margin={4} />
-
-                                    <Text style={styles.text3}>Mr Xyz</Text>
-                                    <View style={styles.icon}>
-
-
-                                        {[1, 2, 3, 4, 5].map((index) => (
-                                            <TouchableOpacity
-                                                key={index}
-                                                onPress={() => this.handleStarPress(index)}
-                                                style={styles.starmainContainer}
-                                            >
-                                                <Entypo
-                                                    name="star"
-                                                    size={20}
-                                                    color={index <= selectedStars ? 'yellow' : 'gray'}
-                                                />
-
-                                            </TouchableOpacity>
-                                        ))}
-                                    </View>
-                                </View>
-                                <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempore alias eum deserunt recusandae ex rerum qui rem.</Text>
-                            </View>
-                        </View>
-                        <View style={{ height: 150, width: 300, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
-                            <View style={styles.review}>
-                                <View style={styles.icons}>
-                                    <AntDesign name="contacts" size={35} color="black" backgroundColor="white" margin={4} />
-
-                                    <Text style={styles.text3}>Mr Xyz</Text>
-                                    <View style={styles.icon}>
-
-                                        {[1, 2, 3, 4, 5].map((index) => (
-                                            <TouchableOpacity
-                                                key={index}
-                                                onPress={() => this.handleStarPress(index)}
-                                                style={styles.starmainContainer}
-                                            >
-                                                <Entypo
-                                                    name="star"
-                                                    size={20}
-                                                    color={index <= selectedStars ? 'yellow' : 'gray'}
-                                                />
-                                            </TouchableOpacity>
-                                        ))}
-                                    </View>
-                                </View>
-                                <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempore alias eum deserunt recusandae ex rerum qui rem.</Text>
-                            </View>
-                        </View>
-
-                    </ScrollView>
-
-                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address</Text>
-                    {/* <View style={{ height: 50, width: 360, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
-                        <View style={styles.gloss}>
-                            <TouchableOpacity onPress={this.openMapLink}>
-                                <FontAwesome name="map-marker" size={35} color="black" marginBottom={5}/>
-                            </TouchableOpacity>
-                            <Text style={{ fontSize: 15 }}>Amanora Park Town 1284 ABC pickupAddress</Text>
-                            <TouchableOpacity onPress={this.openMapLink}>
-                                <MaterialCommunityIcons name="greater-than" size={17} color="black" />
-                            </TouchableOpacity>
-                        </View>
-                    </View> */}
-                    <TextInput
-                        placeholder="Enter Address"
-                        value={this.state.pickupAddress}
-                        onChangeText={this.handlepickupAddressChange}
-                        style={styles.input}
-                    />
-                    <Text style={styles.errorText}>{errors.pickupAddress}</Text>
-
-                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Choose Date & Time</Text>
-                    {/* <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                        <View style={styles.date}>
-                            <Text style={styles.datetext}>{formattedDate}</Text>
-                        </View>
-                        <View style={styles.date}>
-                            <Text style={styles.datetext}>{formattedDate}</Text>
-                        </View>
-                        <View style={styles.date}>
-                            <Text style={styles.datetext}>{formattedDate}</Text>
-                        </View>
-                        <View style={styles.date}>
-                            <Text style={styles.datetext}>{formattedDate}</Text>
-                        </View>
-                        <View style={styles.date}>
-                            <Text style={styles.datetext}>{formattedDate}</Text>
-                        </View>
-                        <View style={styles.date}>
-                            <Text style={styles.datetext}>{formattedDate}</Text>
-                        </View>
-                        <View style={styles.date}>
-                            <Text style={styles.datetext}>{formattedDate}</Text>
-                        </View>
-
-                    </ScrollView> */}
-                    {/* <View style={{ flexDirection: 'row' }}>
-                        <View style={styles.datepicker}>
- 
-                            <TouchableOpacity
-                                style={{ flexDirection: 'row', alignItems: 'center' }}
-                                onPress={() => this.setState({ showDatePicker: true })}
-                            >
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Icon name="calendar" size={30} color="black" />
-                                    <Text style={{ marginLeft: 10 }}>
-                                        {this.formatDate(this.state.date)}
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-
-
-                            {this.state.showDatePicker && (
-                                <DateTimePicker
-                                    testID="datePicker"
-                                    value={this.state.date}
-                                    mode="date"
-                                    is24Hour={true}
-                                    display="default"
-                                    onChange={this.handleDateChange}
-                                />
-                            )}
-                        </View>
-                        <View style={styles.datepicker}>
-                            <TouchableOpacity
-                                style={{ flexDirection: 'row', alignItems: 'center' }}
-                                onPress={() => this.setState({ showTimePicker: true })}
-                            >
-                                <View style={{ flexDirection: 'row' }}>
-
-                                    <Icon name="clock" size={30} color="blue" />
-                                    <EvilIcons name="clock" size={30} color="black" />
-
-                                    <Text style={{ marginLeft: 10 }}>
-                                        {this.state.time.toLocaleTimeString('en-US', {
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                            hour12: true,
-                                        })}
-                                    </Text>
-                                </View>
-
-
-                            </TouchableOpacity>
-
-
-                            {this.state.showTimePicker && (
-                                <DateTimePicker
-                                    testID="timePicker"
-                                    value={this.state.time}
-                                    mode="time"
-                                    is24Hour={false}
-                                    display="default"
-                                    onChange={this.handleTimeChange}
-                                />
-                            )}
-                        </View>
-                    </View>
-
- */}
-
-                    <View
-                        style={{
-                            height: 65,
-                            width: 360,
-                            backgroundColor: "#F2F3F4",
-                            marginVertical: 10,
-                            marginHorizontal: 20
-                        }}
+                    <ScrollView
+                        Vertical={true}
+                        showsVerticalScrollIndicator={false}
                     >
-                        {/* <Text>{date} |  {time}</Text> */}
+                        <Text style={styles.text1}>{serviceName}</Text>
+                        {/* <Text >{servicePrice}</Text> */}
+                        <View style={{ height: 120, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
 
-                        <View style={{ flexDirection: 'row', margin: 15, }}>
-                            <TouchableOpacity
-                                onPress={() => this.setState({ showPicker: true })}
-                            >
-                                <AntDesign name="calendar" size={35} color="black" />
-                            </TouchableOpacity>
-                            <View style={{ marginLeft: 15, flexDirection: 'row' }}>
-                                {this.state.date && (
-                                    <Text> {moment(this.state.date).format('DD-MM-YYYY')}</Text>
-                                )}
+                            <Image source={require("./Images/Car-Bikes-Wraps.png")} style={{ width: '100%', height: '100%', resizeMode: 'cover' }} />
 
-                                <View style={styles.date1}>
+                            {/* <Image source={require("./Images/Car-Bike.png")}  style={{ width: '100%', height: '100%', resizeMode: 'cover' }} /> */}
 
-                                    <TouchableOpacity onPress={this.showDatePicker}>
-                                        <EvilIcons name="clock" size={35} color="black" />
-                                    </TouchableOpacity>
+                        </View>
 
-                                    {this.state.time && (
-                                        <Text> {moment(this.state.time).format('hh:mm A')}</Text>
+                        <View style={styles.about}>
+                            <Text style={styles.text2}>About</Text>
+                            <Text>{serviceDescription}.</Text>
+                        </View>
+
+                        <View style={styles.reviewtext}>
+                            <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Reviews</Text>
+                            <View style={styles.sees}>
+                                <Text>See all</Text>
+                                <MaterialCommunityIcons name="greater-than" size={17} />
+                            </View>
+                        </View>
+
+
+                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                            <View style={{ height: 150, width: 300, backgroundColor: 'white', marginHorizontal: 20 }}>
+                                <View style={styles.review}>
+                                    <View style={styles.icons}>
+                                        <AntDesign name="contacts" size={35} color="black" backgroundColor="white" margin={4} />
+
+                                        <Text style={styles.text3}>Mr Xyz</Text>
+                                        <View style={styles.icon}>
+
+
+                                            {[1, 2, 3, 4, 5].map((index) => (
+                                                <TouchableOpacity
+                                                    key={index}
+                                                    onPress={() => this.handleStarPress(index)}
+                                                    style={styles.starmainContainer}
+                                                >
+                                                    <Entypo
+                                                        name="star"
+                                                        size={20}
+                                                        color={index <= selectedStars ? 'yellow' : 'gray'}
+                                                    />
+
+                                                </TouchableOpacity>
+                                            ))}
+                                        </View>
+                                    </View>
+                                    <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempore alias eum deserunt recusandae ex rerum qui rem.</Text>
+                                </View>
+                            </View>
+                            <View style={{ height: 150, width: 300, backgroundColor: 'white', marginHorizontal: 20 }}>
+                                <View style={styles.review}>
+                                    <View style={styles.icons}>
+                                        <AntDesign name="contacts" size={35} color="black" backgroundColor="white" margin={4} />
+
+                                        <Text style={styles.text3}>Mr Xyz</Text>
+                                        <View style={styles.icon}>
+
+                                            {[1, 2, 3, 4, 5].map((index) => (
+                                                <TouchableOpacity
+                                                    key={index}
+                                                    onPress={() => this.handleStarPress(index)}
+                                                    style={styles.starmainContainer}
+                                                >
+                                                    <Entypo
+                                                        name="star"
+                                                        size={20}
+                                                        color={index <= selectedStars ? 'yellow' : 'gray'}
+                                                    />
+                                                </TouchableOpacity>
+                                            ))}
+                                        </View>
+                                    </View>
+                                    <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempore alias eum deserunt recusandae ex rerum qui rem.</Text>
+                                </View>
+                            </View>
+
+                        </ScrollView>
+
+                        <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address</Text>
+
+                        <TextInput
+                            placeholder="Enter Address"
+                            value={this.state.pickupAddress}
+                            onChangeText={this.handlepickupAddressChange}
+                            style={styles.input}
+                        />
+                        <Text style={styles.errorText}>{errors.pickupAddress}</Text>
+
+                        <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Choose Date & Time</Text>
+
+
+                        <View
+                            style={{
+                                height: 65,
+                                width: 360,
+                                backgroundColor: "white",
+                                marginVertical: 10,
+                                marginHorizontal: 20
+                            }}
+                        >
+                            {/* <Text>{date} |  {time}</Text> */}
+
+                            <View style={{ flexDirection: 'row', margin: 15, }}>
+                                <TouchableOpacity
+                                    onPress={() => this.setState({ showPicker: true })}
+                                >
+                                    <AntDesign name="calendar" size={35} color="black" />
+                                </TouchableOpacity>
+                                <View style={{ marginLeft: 15, flexDirection: 'row' }}>
+                                    {this.state.date && (
+                                        <Text> {moment(this.state.date).format('DD-MM-YYYY')}</Text>
                                     )}
 
-                                    <DateTimePickerModal
-                                        isVisible={isDatePickerVisible}
-                                        mode="time"
-                                        onConfirm={this.handleDateConfirm}
-                                        onCancel={this.hideDatePicker}
-                                    />
+                                    <View style={styles.date1}>
 
-                                    {showPicker && (
-                                        <DateTimePicker
-                                            value={this.state.date}
-                                            mode="date"
-                                            display="default"
-                                            onChange={this.handleDateChange}
+                                        <TouchableOpacity onPress={this.showDatePicker}>
+                                            <EvilIcons name="clock" size={35} color="black" />
+                                        </TouchableOpacity>
+
+                                        {this.state.time && (
+                                            <Text> {moment(this.state.time).format('hh:mm A')}</Text>
+                                        )}
+
+                                        <DateTimePickerModal
+                                            isVisible={isDatePickerVisible}
+                                            mode="time"
+                                            onConfirm={this.handleDateConfirm}
+                                            onCancel={this.hideDatePicker}
                                         />
-                                    )}
-                                    {/* {this.state.date && (
+
+                                        {showPicker && (
+                                            <DateTimePicker
+                                                value={this.state.date}
+                                                mode="date"
+                                                display="default"
+                                                onChange={this.handleDateChange}
+                                            />
+                                        )}
+                                        {/* {this.state.date && (
                                         <Text> {this.state.date.toLocaleDateString()}</Text>
                                     )} */}
-                                    {/* <Text>{this.state.date.toLocaleDateString()} | {this.formatTime(this.state.time) || "8:30"}</Text> */}
+                                        {/* <Text>{this.state.date.toLocaleDateString()} | {this.formatTime(this.state.time) || "8:30"}</Text> */}
 
+                                    </View>
                                 </View>
                             </View>
                         </View>
-                    </View>
 
 
-                    {/* <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 5 }}>Enter totalPrice</Text> */}
-                    {/* <View style={styles.time1}>
+                        {/* <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 5 }}>Enter totalPrice</Text> */}
+                        {/* <View style={styles.time1}>
                         <View style={styles.date1}>
                             {this.state.selectedTimes.map((time, index) => (
                                 <TouchableOpacity
@@ -536,7 +366,7 @@ class Washing extends React.Component {
                         />
 
                     </View> */}
-                    {/* <TextInput
+                        {/* <TextInput
                         placeholder="Price"
                         value={this.state.totalPrice}
                         onChangeText={this.handletotalPriceChange}
@@ -545,49 +375,49 @@ class Washing extends React.Component {
                     />
                     <Text style={styles.errorText}>{errors.totalPrice}</Text> */}
 
-                </ScrollView>
-                <View style={styles.maincontainer}>
+                    </ScrollView>
+                    <View style={styles.maincontainer}>
 
-                    <TouchableOpacity style={styles.button} onPress={this.handlcontinue}>
-                        <Text style={styles.buttonText}>Continue</Text>
-                    </TouchableOpacity>
-                </View>
+                        <TouchableOpacity style={styles.button} onPress={this.handlcontinue}>
+                            <Text style={styles.buttonText}>Continue</Text>
+                        </TouchableOpacity>
+                    </View>
 
 
-                <View style={styles.footer}>
+                    <View style={styles.footer}>
 
-                    <View style={styles.iconsmainContainer1}>
+                        <View style={styles.iconsmainContainer1}>
 
-                        <View style={styles.text9}>
-                            <TouchableOpacity onPress={this.handleIconPressHome}>
-                                <Entypo name="home" size={30} style={styles.icon4} />
-                            </TouchableOpacity>
-                            <Text style={styles.text10}>Home</Text>
-                        </View>
+                            <View style={styles.text9}>
+                                <TouchableOpacity onPress={this.handleIconPressHome}>
+                                    <Entypo name="home" size={30} style={styles.icon4} />
+                                </TouchableOpacity>
+                                <Text style={styles.text10}>Home</Text>
+                            </View>
 
-                        <View style={styles.text9}>
-                            <TouchableOpacity onPress={this.handleIconPressBooking}>
-                                <Entypo name="calendar" size={30} style={styles.icon4} />
-                            </TouchableOpacity>
-                            <Text style={styles.text10}>Booking</Text>
-                        </View>
+                            <View style={styles.text9}>
+                                <TouchableOpacity onPress={this.handleIconPressBooking}>
+                                    <Entypo name="calendar" size={30} style={styles.icon4} />
+                                </TouchableOpacity>
+                                <Text style={styles.text10}>Booking</Text>
+                            </View>
 
-                        <View style={styles.text9}>
-                            <TouchableOpacity onPress={this.handleIconPressNotification}>
-                                <MaterialIcons name="forward-to-inbox" size={30} style={styles.icon4} />
-                            </TouchableOpacity>
-                            <Text style={styles.text10}>Inbox</Text>
-                        </View>
+                            <View style={styles.text9}>
+                                <TouchableOpacity onPress={this.handleIconPressNotification}>
+                                    <MaterialIcons name="forward-to-inbox" size={30} style={styles.icon4} />
+                                </TouchableOpacity>
+                                <Text style={styles.text10}>Inbox</Text>
+                            </View>
 
-                        <View style={styles.text9}>
-                            <TouchableOpacity onPress={this.openSettings}>
-                                <Ionicons name="settings-sharp" size={30} style={styles.icon4} />
-                            </TouchableOpacity>
+                            <View style={styles.text9}>
+                                <TouchableOpacity onPress={this.openSettings}>
+                                    <Ionicons name="settings-sharp" size={30} style={styles.icon4} />
+                                </TouchableOpacity>
 
-                            <Text style={styles.text10}>Setting</Text>
+                                <Text style={styles.text10}>Setting</Text>
+                            </View>
                         </View>
                     </View>
-                </View>
                 </View>
 
             </>
@@ -596,9 +426,11 @@ class Washing extends React.Component {
     }
 }
 const styles = StyleSheet.create({
-    container:{
+    container: {
         // paddingTop:50,
         // marginTop:50,
+        backgroundColor: '#c4fdf7'
+
     },
     text: {
         textAlign: 'center',
@@ -641,23 +473,18 @@ const styles = StyleSheet.create({
     review: {
         margin: 5,
     },
-    // gloss: {
-    //     paddingTop: 10,
-    //     marginHorizontal: 10,
-    //     flexDirection: 'row',
-    //     justifyContent: 'space-between',
-    // },
+
     input: {
         borderWidth: 1,
         borderColor: 'gray',
         borderRadius: 5,
         padding: 10,
         // marginBottom: 10,
-        marginHorizontal: 20
+        marginHorizontal: 20,
+        backgroundColor: 'white',
     },
     errorText: {
         color: 'red',
-        // marginBottom: 5,
         marginHorizontal: 20
     },
     datepicker: {

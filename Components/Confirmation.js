@@ -45,9 +45,9 @@ class Confirmation extends React.Component {
       clientcarmodelno: '',
       vehicleNumberError: '',
       modelNumberError: '',
-      totalPrice1:'',
-      formattedDate:'',
-      formattedTime:''
+      totalPrice1: '',
+      formattedDate: '',
+      formattedTime: ''
     };
     this.options = [
       { label: 'Pick Up by Agent', value: 'agentPickup', amount: 300 },
@@ -62,9 +62,9 @@ class Confirmation extends React.Component {
     this.setState({ selectedOption });
   };
 
-  handleIconPressNotification=()=>{
-    this.props.navigation.navigate('Notification'); 
-};
+  handleIconPressNotification = () => {
+    this.props.navigation.navigate('Notification');
+  };
   //for home
   handleIconPressHome = () => {
     this.props.navigation.navigate('Home'); // Navigate to the home screen
@@ -92,7 +92,7 @@ class Confirmation extends React.Component {
   validateFields = () => {
     const { clientvehicleno, clientcarmodelno } = this.state;
     let isValid = true;
-  
+
     // Validate Vehicle Number
     if (clientvehicleno.trim() === '') {
       this.setState({ vehicleNumberError: 'Vehicle Number is required' });
@@ -100,7 +100,7 @@ class Confirmation extends React.Component {
     } else {
       this.setState({ vehicleNumberError: '' });
     }
-  
+
     // Validate Model Number
     if (clientcarmodelno.trim() === '') {
       this.setState({ modelNumberError: 'Model Number is required' });
@@ -108,62 +108,53 @@ class Confirmation extends React.Component {
     } else {
       this.setState({ modelNumberError: '' });
     }
-  
+
     return isValid;
   };
   handleSubmit = () => {
     if (this.validateFields()) {
-    const { pickupAddress, date, time, servicesName,status,price} = this.props.route.params;
-    const{ clientcarmodelno,clientvehicleno} = this.state;
-    // const totalPrice=totalPrice1;
-    const taxAmount = price * 0.10;
-    const totalPrice = price + taxAmount ;
-    const formattedDate = moment(date).format('DD-MM-YYYY');
-    const formattedTime = moment(time).format('hh:mm A');
-    fetch('https://car-wash-backend-api.onrender.com/api/bookings', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        date: formattedDate, 
-        time: formattedTime, 
-        pickupAddress: pickupAddress, 
-        servicesName,
-        totalPrice:totalPrice,
-        status: "",
-        agentId:"",
-        clientcarmodelno:clientcarmodelno,
-        clientvehicleno:clientvehicleno,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
+      const { pickupAddress, date, time, servicesName, status, price } = this.props.route.params;
+      const { clientcarmodelno, clientvehicleno } = this.state;
+      // const totalPrice=totalPrice1;
+      const taxAmount = price * 0.10;
+      const totalPrice = price + taxAmount;
+      const formattedDate = moment(date).format('DD-MM-YYYY');
+      const formattedTime = moment(time).format('hh:mm A');
+      fetch('https://car-wash-backend-api.onrender.com/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          date: formattedDate,
+          time: formattedTime,
+          pickupAddress: pickupAddress,
+          servicesName,
+          totalPrice: totalPrice,
+          status: "",
+          agentId: "",
+          clientcarmodelno: clientcarmodelno,
+          clientvehicleno: clientvehicleno,
+        }),
       })
-      .then((data) => {
-        this.setState({ response: data });
-        // if (data.success) {
-        //   // Navigate to the success screen upon successful submission
-        //   this.props.navigation.navigate('Home');
-
-        //   console.log('After navigation');
-        // } else {
-        //   Alert.alert('API Error', 'Failed to submit data.');
-        // }
-
-        this.props.navigation.navigate('Confirm');
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          this.setState({ response: data });
+          this.props.navigation.navigate('Confirm');
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
     }
 
   };
 
-  
+
 
   render() {
     // const { date, showPicker } = this.state;
@@ -173,261 +164,182 @@ class Confirmation extends React.Component {
     const { pickupAddress, date, time } = this.props.route.params;
     const { servicesName, price, amount } = this.props.route.params;
     const taxAmount = price * 0.10;
-    const totalPrice= price + taxAmount ;
-   
+    const totalPrice = price + taxAmount + amount;
+
     const formattedDate = moment(date).format('DD-MM-YYYY');
-const formattedTime = moment(time).format('hh:mm A');
+    const formattedTime = moment(time).format('hh:mm A');
 
 
     return (
       <>
-        <ScrollView
-          Vertical={true}
-          showsVerticalScrollIndicator={false}
-        >
-
-          <View style={styles.container}>
-            {/* <Text style={styles.text}>Confirmation</Text> */}
-            <View
-              style={{
-                height: 65,
-                width: 370,
-                backgroundColor: "#F2F3F4",
-                marginVertical: 10,
-              }}
-            >
+        <View style={styles.header}>
+          <ScrollView
+            Vertical={true}
+            showsVerticalScrollIndicator={false}
+            style={{ flexDirection: 'row' }}
+          >
+            <View style={styles.container}>
+              {/* <Text style={styles.text}>Confirmation</Text> */}
               <View
                 style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  margin: 10,
-                  justifyContent: 'space-between'
+                  height: 65,
+                  width: 360,
+                  backgroundColor: "white",
+                  marginVertical: 10,
                 }}
               >
-                <MaterialCommunityIcons name="car-wash" size={35} color="black" />
-
-                <Text>{servicesName}</Text>
-                <Text>{price}</Text>
-
-              </View>
-            </View>
-            <View
-              style={{
-                height: 65,
-                width: 370,
-                backgroundColor: "#F2F3F4",
-                marginVertical: 10,
-              }}
-            >
-              {/* <Text>{this.state.date.toLocaleDateString()} | {this.formatTime(this.state.time) || "8:30"}</Text>
-              {this.state.date && (
-                <Text> {this.state.date.toLocaleDateString()}</Text>
-              )}
-              {this.state.time && (
-                <Text>{(this.formatTime(this.state.time)) || "8:30"}</Text>
-              )} */}
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 15 }}>
-                <Text>{formattedDate}</Text>
-
-                <Text>{formattedTime}</Text>
-              </View>
-              {/* <View style={{ flexDirection: 'row', margin: 10 }}>
-                <TouchableOpacity
-                  onPress={() => this.setState({ showPicker: true })}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    margin: 10,
+                    justifyContent: 'space-between'
+                  }}
                 >
-                  <AntDesign name="calendar" size={35} color="black" />
-                </TouchableOpacity>
-                <View style={{ marginLeft: 15 }}>
-                  <Text> Date & Time</Text>
+                  <MaterialCommunityIcons name="car-wash" size={35} color="black" />
 
-                  <View style={styles.date1}>
+                  <Text>{servicesName}</Text>
+                  <Text>{price}</Text>
 
-                    <TouchableOpacity onPress={this.showDatePicker}>
-                      <EvilIcons name="clock" size={22} color="black" />
-                    </TouchableOpacity>
-
-                    {this.state.time && (
-                      <Text>{(this.formatTime(this.state.time)) || "8:30"}</Text>
-                    )}
-
-                    <DateTimePickerModal
-                      isVisible={isDatePickerVisible}
-                      mode="time"
-                      onConfirm={this.handleDateConfirm}
-                      onCancel={this.hideDatePicker}
-                    />
-                    <Text>  |  </Text>
-                    {showPicker && (
-                      <DateTimePicker
-                        value={this.state.date}
-                        mode="date"
-                        display="default"
-                        onChange={this.handleDateChange}
-                      />
-                    )}
-                    {this.state.date && (
-                      <Text> {this.state.date.toLocaleDateString()}</Text>
-                    )}
-                  </View>
-                </View>
-              </View> */}
-            </View>
-            {/* <View
-              style={{
-                height: 65,
-                width: 370,
-                backgroundColor: "#F2F3F4",
-
-                marginVertical: 10,
-              }}
-            >
-              <View style={{ flexDirection: 'row' }}>
-                <AntDesign name="exclamationcircle" size={30} color="black" margin={10} />
-                <View style={{ marginLeft: 10, marginTop: 5 }}>
-                  <Text>Note</Text>
-                  <Text>Ipsum Velt ut null null temp</Text>
                 </View>
               </View>
-            </View> */}
-            <Text>Pickup Address</Text>
-            <View
-              style={{
-                height: 50,
-                width: 370,
-                backgroundColor: "#F2F3F4",
-                marginVertical: 10,
-              }}
-            >
-              {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}>
-                <View>
-                  <Text>Pickup pickupAddress</Text>
-                  <Text>PIN Text pickupAddress</Text>
+              <View
+                style={{
+                  height: 65,
+                  width: 360,
+                  backgroundColor: "white",
+                  marginVertical: 10,
+                }}
+              >
+
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 15 }}>
+                  <Text>{formattedDate}</Text>
+
+                  <Text>{formattedTime}</Text>
                 </View>
-                <MaterialCommunityIcons name="greater-than" size={24} color="black" paddingTop={10} />
-              </View> */}
-              <Text style={{ margin: 10 }}>{pickupAddress}</Text>
+
+              </View>
+
+              <Text>Pickup Address</Text>
+              <View
+                style={{
+                  height: 50,
+                  width: 360,
+                  backgroundColor: "white",
+                  marginVertical: 10,
+                }}
+              >
+
+                <Text style={{ margin: 10 }}>{pickupAddress}</Text>
 
 
-            </View>
-            <Text>Enter Vehicle Number</Text>
-            <TextInput
-              placeholder="Vehicle Number"
-              onChangeText={(text) => this.setState({ clientvehicleno: text })}
-              value={this.state.clientvehicleno}
-              style={styles.input}
-            />
-            <Text style={styles.errorText}>{this.state.vehicleNumberError}</Text>
-
-
-            <Text>Enter Model Number</Text>
-
-            <TextInput
-              placeholder="Model Number"
-              onChangeText={(text) => this.setState({ clientcarmodelno: text })}
-              value={this.state.clientcarmodelno}
-              style={styles.input}
-            />
-            <Text style={styles.errorText}>{this.state.modelNumberError}</Text>
-            {/* <Text>Voucher</Text>
-            <View style={styles.voucher1}>
+              </View>
+              <Text>Enter Vehicle Number</Text>
               <TextInput
-                style={styles.text1}
-                placeholder="Enter Voucher Code"
-              ></TextInput>
-              <TouchableOpacity style={styles.apply}>
-                <Text style={{ textAlign: "center", margin: 10 }}>Apply</Text>
-              </TouchableOpacity>
-            </View> */}
-
-            {/* <View style={styles.amount}>
-              <Text style={styles.text2}>TOTAL</Text>
-              <Text style={styles.text2}>{totalPrice}</Text>
-            </View> */}
+                placeholder="Vehicle Number"
+                onChangeText={(text) => this.setState({ clientvehicleno: text })}
+                value={this.state.clientvehicleno}
+                style={styles.input}
+              />
+              <Text style={styles.errorText}>{this.state.vehicleNumberError}</Text>
 
 
-            <Text>Select an option:</Text>
-            <DropDownPicker
-              items={this.options.map((option) => ({ label: option.label, value: option.value }))}
-              defaultValue={this.state.selectedOption}
-              containerStyle={{ height: 50 }}
-              controller={(instance) => (this.dropdown = instance)} // Add this line
-              onChangeItem={(item) => this.setState({ selectedOption: item.value })}
-              searchable={false}
-              placeholder="Select an option"
-              labelStyle={{ fontSize: 16 }}
-            />
-            {this.state.selectedOption && (
-              <View>
-                <Text>Selected Option: {this.state.selectedOption}</Text>
-                <Text>Price: {this.options.find((opt) => opt.value === this.state.selectedOption)?.amount}</Text>
+              <Text>Enter Model Number</Text>
+
+              <TextInput
+                placeholder="Model Number"
+                onChangeText={(text) => this.setState({ clientcarmodelno: text })}
+                value={this.state.clientcarmodelno}
+                style={styles.input}
+              />
+              <Text style={styles.errorText}>{this.state.modelNumberError}</Text>
+
+
+
+              <Text>Select an option:</Text>
+              <DropDownPicker
+                items={this.options.map((option) => ({ label: option.label, value: option.value }))}
+                defaultValue={this.state.selectedOption}
+                containerStyle={{ height: 50 }}
+                controller={(instance) => (this.dropdown = instance)} // Add this line
+                onChangeItem={(item) => this.setState({ selectedOption: item.value })}
+                searchable={false}
+                placeholder="Select an option"
+                labelStyle={{ fontSize: 16, backgroundColor: 'white', height: 50 }}
+              />
+              {this.state.selectedOption && (
+                <View>
+                  <Text>Selected Option: {this.state.selectedOption}</Text>
+                  <Text>Price: {this.options.find((opt) => opt.value === this.state.selectedOption)?.amount}</Text>
+                </View>
+              )}
+
+              <View style={styles.amount}>
+                <Text style={styles.text2}>TAXES</Text>
+                <Text style={styles.text2}>{taxAmount}</Text>
               </View>
-            )}
+              <View style={styles.amount}>
+                <Text style={styles.text2}>Service Price</Text>
+                <Text style={styles.text2}>{price}</Text>
+              </View>
+              <View style={styles.amount}>
+                <Text style={styles.text2}>TOTAL PAYABLE </Text>
+                <Text style={styles.text2}>{totalPrice}</Text>
+              </View>
+            </View>
 
-            <View style={styles.amount}>
-              <Text style={styles.text2}>TAXES</Text>
-              <Text style={styles.text2}>{taxAmount}</Text>
-            </View>
-            <View style={styles.amount}>
-              <Text style={styles.text2}>Service Price</Text>
-              <Text style={styles.text2}>{price}</Text>
-            </View>
-            <View style={styles.amount}>
-              <Text style={styles.text2}>TOTAL PAYABLE </Text>
-              <Text style={styles.text2}>{totalPrice}</Text>
-            </View>
+          </ScrollView>
+          <View style={styles.container}>
+
+            <TouchableOpacity style={styles.button} onPress={this.handleSubmit}>
+              <Text style={styles.buttonText}>Confirm Booking</Text>
+            </TouchableOpacity>
           </View>
-
-        </ScrollView>
-        <View style={styles.container}>
-
-          <TouchableOpacity style={styles.button} onPress={this.handleSubmit}>
-            <Text style={styles.buttonText}>Confirm Booking</Text>
-          </TouchableOpacity>
-        </View>
-        {/* <View>
+          {/* <View>
         <TouchableOpacity style={styles.button} onPress={this.handleIconPressConfirm}>
             <Text style={styles.buttonText}>Confirm Booking</Text>
           </TouchableOpacity>
         </View> */}
 
-        <View style={styles.footer}>
+          <View style={styles.footer}>
 
-          <View style={styles.iconsContainer1}>
-            <View style={styles.text9}>
-              <TouchableOpacity onPress={this.handleIconPressHome}>
-                <Entypo name="home" size={30} style={styles.icon4} />
-              </TouchableOpacity>
-              <Text style={styles.text10}>Home</Text>
-            </View>
+            <View style={styles.iconsContainer1}>
+              <View style={styles.text9}>
+                <TouchableOpacity onPress={this.handleIconPressHome}>
+                  <Entypo name="home" size={30} style={styles.icon4} />
+                </TouchableOpacity>
+                <Text style={styles.text10}>Home</Text>
+              </View>
 
-            <View style={styles.text9}>
-              <TouchableOpacity onPress={this.handleIconPressBooking}>
-                <Entypo name="calendar" size={30} style={styles.icon4} />
-              </TouchableOpacity>
-              <Text style={styles.text10}>Booking</Text>
-            </View>
+              <View style={styles.text9}>
+                <TouchableOpacity onPress={this.handleIconPressBooking}>
+                  <Entypo name="calendar" size={30} style={styles.icon4} />
+                </TouchableOpacity>
+                <Text style={styles.text10}>Booking</Text>
+              </View>
 
-            <View style={styles.text9}>
-              <TouchableOpacity onPress={this.handleIconPressNotification}>
-                <MaterialIcons
-                  name="forward-to-inbox"
-                  size={30}
-                  style={styles.icon4}
-                />
-              </TouchableOpacity>
-              <Text style={styles.text10}>Inbox</Text>
-            </View>
+              <View style={styles.text9}>
+                <TouchableOpacity onPress={this.handleIconPressNotification}>
+                  <MaterialIcons
+                    name="forward-to-inbox"
+                    size={30}
+                    style={styles.icon4}
+                  />
+                </TouchableOpacity>
+                <Text style={styles.text10}>Inbox</Text>
+              </View>
 
-            <View style={styles.text9}>
-              <TouchableOpacity onPress={this.openSettings}>
-                <Ionicons
-                  name="settings-sharp"
-                  size={30}
-                  style={styles.icon4}
-                />
-              </TouchableOpacity>
+              <View style={styles.text9}>
+                <TouchableOpacity onPress={this.openSettings}>
+                  <Ionicons
+                    name="settings-sharp"
+                    size={30}
+                    style={styles.icon4}
+                  />
+                </TouchableOpacity>
 
-              <Text style={styles.text10}>Setting</Text>
+                <Text style={styles.text10}>Setting</Text>
+              </View>
             </View>
           </View>
         </View>
@@ -437,9 +349,14 @@ const formattedTime = moment(time).format('hh:mm A');
   }
 }
 const styles = StyleSheet.create({
+  header: {
+    flex: 1,
+    backgroundColor: '#c4fdf7'
+
+  },
   container: {
     marginHorizontal: 15,
-    paddingTop:45,
+    paddingTop: 15,
     // backgroundColor:'#c4fdf7'
   },
 
@@ -488,18 +405,20 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     padding: 5,
     marginBottom: 5,
+    backgroundColor: 'white',
+    width: 360,
     // marginHorizontal: 10
-},
-errorText: {
+  },
+  errorText: {
     color: 'red',
     // marginBottom: 5,
     // marginHorizontal: 20
-},
-  
+  },
+
   button: {
     backgroundColor: "#5B7586",
     height: 50,
-    width: 370,
+    width: 360,
     paddingTop: 10,
     marginTop: 15,
     borderRadius: 2,

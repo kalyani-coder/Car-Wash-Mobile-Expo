@@ -72,9 +72,9 @@ class Cancled extends React.Component {
       isButton6Pressed: buttonName === "button6",
     });
   };
-  handleIconPressNotification=()=>{
-    this.props.navigation.navigate('Notification'); 
-};
+  handleIconPressNotification = () => {
+    this.props.navigation.navigate('Notification');
+  };
   //for home
   handleIconPressHome = () => {
     this.props.navigation.navigate('Home'); // Navigate to the home screen
@@ -118,13 +118,14 @@ class Cancled extends React.Component {
 
     return (
       <>
-        
-        {/* <View style={styles.flex}>
+
+         <View style={styles.flex}>
         <ScrollView
                         Vertical={true}
                         showsVerticalScrollIndicator={false}
+                        style={{flex:1}}
                     >
-          <View
+         {/* <View
             style={{
               height: 180,
               width: 380,
@@ -293,63 +294,66 @@ class Cancled extends React.Component {
                                 <Text style={styles.buttontext}>Cancel</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
+                    </View>*/}
           </ScrollView>
-        </View> */}
+        
         <View style={styles.footer}>
-        <View style={styles.add}>
-        <TouchableOpacity onPress={this.handleIconPressHome} style={{flexDirection:'row'}}>
-                        <AntDesign name="plus" size={20} color="black" />
-                        <Text>Add New Booking</Text>
-                        </TouchableOpacity>
-                </View>
-        <View style={styles.iconsContainer1}>
-          <View style={styles.text9}>
-            <TouchableOpacity onPress={this.handleIconPressHome}>
-              <Entypo name="home" size={30} style={styles.icon4} />
+          <View style={styles.add}>
+            <TouchableOpacity onPress={this.handleIconPressHome} style={{ flexDirection: 'row' }}>
+              <AntDesign name="plus" size={20} color="black" />
+              <Text>Add New Booking</Text>
             </TouchableOpacity>
-            <Text style={styles.text10}>Home</Text>
+          </View>
+          <View style={styles.iconsContainer1}>
+            <View style={styles.text9}>
+              <TouchableOpacity onPress={this.handleIconPressHome}>
+                <Entypo name="home" size={30} style={styles.icon4} />
+              </TouchableOpacity>
+              <Text style={styles.text10}>Home</Text>
+            </View>
+
+            <View style={styles.text9}>
+              <TouchableOpacity onPress={this.handleIconPressBooking}>
+                <Entypo name="calendar" size={30} style={styles.icon4} />
+              </TouchableOpacity>
+              <Text style={styles.text10}>Booking</Text>
+            </View>
+
+            <View style={styles.text9}>
+              <TouchableOpacity onPress={this.handleIconPressNotification}>
+                <MaterialIcons
+                  name="forward-to-inbox"
+                  size={30}
+                  style={styles.icon4}
+                />
+              </TouchableOpacity>
+              <Text style={styles.text10}>Inbox</Text>
+            </View>
+
+            <View style={styles.text9}>
+              <TouchableOpacity onPress={this.openSettings}>
+                <Ionicons name="settings-sharp" size={30} style={styles.icon4} />
+              </TouchableOpacity>
+
+              <Text style={styles.text10}>Setting</Text>
+            </View>
           </View>
 
-          <View style={styles.text9}>
-            <TouchableOpacity onPress={this.handleIconPressBooking}>
-              <Entypo name="calendar" size={30} style={styles.icon4} />
-            </TouchableOpacity>
-            <Text style={styles.text10}>Booking</Text>
-          </View>
-
-          <View style={styles.text9}>
-            <TouchableOpacity onPress={this.handleIconPressNotification}>
-              <MaterialIcons
-                name="forward-to-inbox"
-                size={30}
-                style={styles.icon4}
-              />
-            </TouchableOpacity>
-            <Text style={styles.text10}>Inbox</Text>
-          </View>
-
-          <View style={styles.text9}>
-            <TouchableOpacity onPress={this.openSettings}>
-              <Ionicons name="settings-sharp" size={30} style={styles.icon4} />
-            </TouchableOpacity>
-
-            <Text style={styles.text10}>Setting</Text>
-          </View>
         </View>
-        </View>
+        </View> 
       </>
     );
   }
 }
 const styles = StyleSheet.create({
-  // flex: {
-  //   flex: 1,
-  //   justifyContent: "space-between",
-  //   flexDirection: "column",
-  //   marginHorizontal: 5,
-  //   marginVertical: 15,
-  // },
+  flex: {
+    flex: 1,
+    // justifyContent: "space-between",
+    // flexDirection: "column",
+    // marginHorizontal: 5,
+    // marginVertical: 15,
+    backgroundColor:'#c4fdf7'
+  },
   // add: {
   //   flexDirection: "row",
   //   marginHorizontal: 120,
@@ -430,31 +434,31 @@ const styles = StyleSheet.create({
   // text5: {
   //   fontSize: 10,
   // },
-    footer:{
-      position: 'relative',
-      // top:550,
-      marginTop:'155%',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      padding: 5,
-      alignItems: 'center',
+  footer: {
+    position: 'relative',
+    // top:550,
+    marginTop: '155%',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 5,
+    alignItems: 'center',
   },
   add: {
-      flexDirection: 'row',
-      marginBottom:15,
+    flexDirection: 'row',
+    marginBottom: 15,
   },
   iconsContainer1: {
-      flexDirection: 'row', 
+    flexDirection: 'row',
   },
   icon4: {
-      marginHorizontal: 20,
+    marginHorizontal: 20,
   },
   text9: {
-      alignItems: 'center',
+    alignItems: 'center',
   },
   text10: {
-      fontSize: 10,
+    fontSize: 10,
   }
 });
 

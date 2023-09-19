@@ -148,13 +148,13 @@ class Signup extends Component {
           // Assuming a successful signup
           const { clientEmail } = this.state;
 
-          try {
-            // Store the user's email in AsyncStorage
-            await AsyncStorage.setItem('userEmail', clientEmail);
-            // Continue with other actions, such as navigation
-          } catch (error) {
-            console.error('Error storing user email:', error);
-          }
+          // try {
+          //   // Store the user's email in AsyncStorage
+          //   await AsyncStorage.setItem('userEmail', clientEmail);
+          //   // Continue with other actions, such as navigation
+          // } catch (error) {
+          //   console.error('Error storing user email:', error);
+          // }
 
 
 

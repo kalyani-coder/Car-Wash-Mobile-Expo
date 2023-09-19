@@ -147,44 +147,10 @@ class Upcoming extends React.Component {
                             </View>
 
                         ))}
-                        {/* <View style={{ height: 180, width: 380, backgroundColor: '#E5E5E5', borderWidth: 2, borderColor: 'white' }}>
-                            <View style={styles.wash}>
-                                <TouchableOpacity style={styles.date}>
-                                    <Text style={styles.datetext}>{formattedDate}</Text>
-                                </TouchableOpacity>
-                                <Text>Wash</Text>
-                                <TouchableOpacity style={styles.btn3}>
-                                    <Text style={styles.btntext}>Confirmed</Text>
-                                </TouchableOpacity>
-
-                            </View>
-                            <View style={styles.clock}>
-                                <EvilIcons name="clock" size={24} color="black" />
-                                <Text>{formattedTime}</Text>
-                            </View>
-                            <View style={styles.button}>
-                                <TouchableOpacity onPress={() => this.handleButtonPress('button1')}
-                                    style={[
-                                        styles.btn1,
-                                        { backgroundColor: isButton1Pressed ? 'grey' : 'white' },
-                                    ]}
-                                    underlayColor="grey">
-                                    <Text style={styles.buttontext}>Reschedule</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.handleButtonPress('button2')}
-                                    style={[
-                                        styles.btn2,
-                                        { backgroundColor: isButton2Pressed ? 'grey' : 'white' },
-                                    ]}
-                                    underlayColor="grey">
-                                    <Text style={styles.buttontext}>Cancel</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View> */}
-
+                        
                     </ScrollView>
 
-                </View >
+                
                 <View style={styles.footer}>
                     <View style={styles.add}>
                     <TouchableOpacity onPress={this.handleIconPressHome} style={{flexDirection:'row'}}>
@@ -223,6 +189,7 @@ class Upcoming extends React.Component {
                         </View>
                     </View>
                 </View>
+                </View >
             </>
         );
     }

@@ -120,12 +120,13 @@ class Completed extends React.Component {
         return (
             <>
 
-                {/* <View style={styles.flex}>
+                 <View style={styles.flex}>
                     <ScrollView
                         Vertical={true}
                         showsVerticalScrollIndicator={false}
+                        style={{flex:1}}
                     >
-                        <View style={{ height: 180, width: 380, backgroundColor: '#E5E5E5', borderWidth: 2, borderColor: 'white' }}>
+                      {/*  <View style={{ height: 180, width: 380, backgroundColor: '#E5E5E5', borderWidth: 2, borderColor: 'white' }}>
                             <View style={styles.wash}>
                                 <TouchableOpacity style={styles.date}>
                                     <Text style={styles.datetext}>{formattedDate}</Text>
@@ -259,9 +260,9 @@ class Completed extends React.Component {
                                     <Text style={styles.buttontext}>Cancel</Text>
                                 </TouchableOpacity>
                             </View>
-                        </View>
+                        </View>*/}
                     </ScrollView>
-                </View> */}
+                
                 <View style={styles.footer}>
                     <View style={styles.add}>
                     <TouchableOpacity onPress={this.handleIconPressHome} style={{flexDirection:'row'}}>
@@ -301,7 +302,7 @@ class Completed extends React.Component {
                         </View>
                     </View>
                 </View>
-
+                </View> 
 
 
             </>
@@ -397,6 +398,11 @@ const styles = StyleSheet.create({
     // text5: {
     //     fontSize: 10,
     // },
+    flex:{
+        flex:1,
+        backgroundColor:'#c4fdf7'
+
+    },
     footer: {
         position: 'fixed',
         marginTop:'155%',

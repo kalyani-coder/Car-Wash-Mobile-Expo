@@ -10,16 +10,30 @@ class Profile extends Component {
     };
 
     componentDidMount() {
-        // Fetch user data from your API
-        fetch('https://car-wash-backend-api.onrender.com/api/clients')
-            .then(response => response.json())
-            .then(data => {
-                // Assuming you have a way to identify the current user (maybe through authentication)
-                const currentUser = data.find(client => client.clientEmail === 'chitkutepratiksha@gmail.com');
-                this.setState({ user: currentUser });
-            })
-            .catch(error => console.error('Error:', error));
+        this.loadUserData();
     }
+
+    loadUserData = async () => {
+        try {
+            // Retrieve the user ID from AsyncStorage
+            const userId = await AsyncStorage.getItem('userId');
+
+            if (userId) {
+                // Fetch user data from your API using the user ID
+                const response = await fetch(`https://car-wash-backend-api.onrender.com/api/clients/${userId}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const userData = await response.json();
+                this.setState({ user: userData });
+            } else {
+                // Handle the case where the user ID is not found in AsyncStorage
+                console.error('User ID not found in AsyncStorage');
+            }
+        } catch (error) {
+            console.error('Error loading user data:', error);
+        }
+    };
 
     handleLogout = async () => {
         // Clear AsyncStorage

@@ -73,7 +73,7 @@ class Login extends React.Component {
         // Store user data in AsyncStorage
         try {
           await AsyncStorage.setItem('userId', user._id);
-          await AsyncStorage.setItem('phoneNumber', this.state.clientPhone);
+          // await AsyncStorage.setItem('phoneNumber', this.state.clientPhone);
         } catch (error) {
           console.error('Error storing user data:', error);
         }
