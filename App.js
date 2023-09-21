@@ -16,6 +16,13 @@ import Notification from './Components/Notification';
 import Confirm from './Components/Confirm';
 import Profile from './Components/Profile';
 import Signup from './Components/Signup';
+import Promotion from './Components/Promotion';
+import PromotionConfirmation from './Components/PromotionConfirmation';
+import Topservice from './Components/Topservice';
+import Topserviceconfirmation from './Components/Topserviceconfirmation';
+import Booknow from './Components/Booknow';
+// import BookConfirmation from './Components/BookConfirmation';
+
 import AddressPicker from './Components/AddressPicker';
 
 
@@ -35,6 +42,12 @@ function App() {
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
           <Stack.Screen name="Washing" component={Washing} options={{ headerShown: false }}/>
           <Stack.Screen name="Confirmation" component={Confirmation} options={{ headerShown: false }}/>
+          <Stack.Screen name="Promotion" component={Promotion} options={{ headerShown: false }}/>
+          <Stack.Screen name="PromotionConfirmation" component={PromotionConfirmation} options={{ headerShown: false }}/>
+          <Stack.Screen name="Topservice" component={Topservice} options={{ headerShown: false }}/>
+          <Stack.Screen name="Topserviceconfirmation" component={Topserviceconfirmation} options={{ headerShown: false }}/>
+          {/* <Stack.Screen name="BookConfirmation" component={BookConfirmation} options={{ headerShown: false }}/> */}
+          <Stack.Screen name="Booknow" component={Booknow} options={{ headerShown: false }}/>
           <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }}/>
           <Stack.Screen name="Confirm" component={Confirm} options={{ headerShown: false }}/>
           <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }}/>

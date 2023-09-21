@@ -2,10 +2,10 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import DocumentPicker from 'react-native-document-picker';
+
 async function checkEmailUniqueness(email) {
   try {
-    // Make an API request to fetch the existing clientEmail data
+    
     const response = await fetch('https://car-wash-backend-api.onrender.com/api/clients', {
       method: 'GET',
       headers: {
@@ -148,13 +148,13 @@ class Signup extends Component {
           // Assuming a successful signup
           const { clientEmail } = this.state;
 
-          // try {
-          //   // Store the user's email in AsyncStorage
-          //   await AsyncStorage.setItem('userEmail', clientEmail);
-          //   // Continue with other actions, such as navigation
-          // } catch (error) {
-          //   console.error('Error storing user email:', error);
-          // }
+          try {
+            // Store the user's email in AsyncStorage
+            await AsyncStorage.setItem('userEmail', clientEmail);
+            // Continue with other actions, such as navigation
+          } catch (error) {
+            console.error('Error storing user email:', error);
+          }
 
 
 
@@ -214,34 +214,6 @@ class Signup extends Component {
     this.setState({ errors });
     return Object.keys(errors).length === 0;
   }
-
-
-
-
-  // handleFilePick = async () => {
-  //   try {
-  //     const result = await DocumentPicker.pick({
-  //       type: [DocumentPicker.types.allFiles],
-  //     });
-
-  //     this.setState({
-  //       selectedFile: result,
-  //     });
-  //   } catch (err) {
-  //     if (DocumentPicker.isCancel(err)) {
-  //       // User cancelled the picker
-  //     } else {
-  //       throw err;
-  //     }
-  //   }
-  // };
-
-
-
-  // handleFileUpload = file => {
-  //   // Handle file upload logic here
-  //   this.setState({ file });
-  // };
 
 
 

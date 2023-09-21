@@ -28,13 +28,14 @@ import { Ionicons } from '@expo/vector-icons';
 
 
 
-class Washing extends React.Component {
+class Booknow extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             isDateTimePickerVisible: false,
-            selectedTimes: Array(3).fill(null),
+            selectedTimes: Array(3).fill(null), // Initialize an array to store selected times
+            activePicker: null,
             pickupAddress: '',
             totalPrice: '',
             date: new Date(),
@@ -49,7 +50,6 @@ class Washing extends React.Component {
 
         };
     }
-
 
     // for time
     showDatePicker = () => {
@@ -106,11 +106,10 @@ class Washing extends React.Component {
     handlcontinue = () => {
         if (this.validateInput()) {
             const { pickupAddress, date, time } = this.state;
-            const { serviceName, servicePrice } = this.props.route.params;
-            const servicesName = serviceName;
-            const price = servicePrice;
-
-            this.props.navigation.navigate('Confirmation', { pickupAddress, date, time, servicesName, price }); // Navigate to the Confirmation page screen
+            const { homeservicesName, totalPrice, image } = this.props.route.params;
+            const servicesName = homeservicesName;
+            const price1 = totalPrice;
+            this.props.navigation.navigate('PromotionConfirmation', { pickupAddress, date, time, servicesName, price1 }); // Navigate to the Confirmation page screen
         }
     }
 
@@ -157,11 +156,11 @@ class Washing extends React.Component {
 
         const { selectedStars } = this.state;
         const { route } = this.props;
-        const { serviceName, serviceDescription, servicePrice } = route.params;
+
         const { errors } = this.state;
         const { date, showPicker } = this.state;
         const { time, isDatePickerVisible } = this.state;
-
+        const { homeservicesName, description, totalPrice, image } = this.props.route.params;
 
 
         return (
@@ -174,28 +173,32 @@ class Washing extends React.Component {
                         Vertical={true}
                         showsVerticalScrollIndicator={false}
                     >
-                        <Text style={styles.text1}>{serviceName}</Text>
+                        {/* <Text style={styles.text1}>{service}</Text> */}
+
+                        <Text style={styles.text1}>{homeservicesName}</Text>
 
                         {/* <Text >{servicePrice}</Text> */}
                         <View style={{ height: 150, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
 
-                            {/* <Image source={require("./Images/Car-Bikes-Wraps.png")} style={{ flex: 1, resizeMode: 'fill', width: "100", height: "100" }} /> */}
-                            <Image source={{ uri: 'https://imageio.forbes.com/specials-images/imageserve/5d35eacaf1176b0008974b54/2020-Chevrolet-Corvette-Stingray/0x0.jpg?format=jpg&crop=4560,2565,x790,y784,safe&width=960' }} style={styles.item} />
+                            {/* <Image source={require("./Images/Car-Bikes-Wraps.png")} style={{ width: '100%', height: '100%', resizeMode: 'cover' }} /> */}
+                            <Image source={{ uri: image }} style={{ width: '100%', height: '100%', resizeMode: 'cover' }} />
+
                             {/* <Image source={require("./Images/Car-Bike.png")}  style={{ width: '100%', height: '100%', resizeMode: 'cover' }} /> */}
 
                         </View>
 
                         <View style={styles.about}>
                             <Text style={styles.text2}>About</Text>
-                            <Text>{serviceDescription}</Text>
+                            <Text>{description}</Text>
+
 
                         </View>
 
                         <View style={styles.reviewtext}>
                             <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Reviews</Text>
                             <View style={styles.sees}>
-                                {/* <Text>See all</Text>
-                                <MaterialCommunityIcons name="greater-than" size={17} /> */}
+                                {/* <Text>See all</Text> */}
+                                {/* <MaterialCommunityIcons name="greater-than" size={17} /> */}
                             </View>
                         </View>
 
@@ -318,13 +321,61 @@ class Washing extends React.Component {
                                                 onChange={this.handleDateChange}
                                             />
                                         )}
-                                       
+                                        {/* {this.state.date && (
+                                        <Text> {this.state.date.toLocaleDateString()}</Text>
+                                    )} */}
+                                        {/* <Text>{this.state.date.toLocaleDateString()} | {this.formatTime(this.state.time) || "8:30"}</Text> */}
 
                                     </View>
                                 </View>
                             </View>
                         </View>
 
+
+                        {/* <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 5 }}>Enter totalPrice</Text> */}
+                        {/* <View style={styles.time1}>
+                        <View style={styles.date1}>
+                            {this.state.selectedTimes.map((time, index) => (
+                                <TouchableOpacity
+                                    key={index}
+                                    onPress={() => this.showDateTimePicker(index)}
+                                    style={styles.timePicker}
+                                >
+                                    <Text style={styles.datetext1}>
+                                        {time || '8:30'}
+                                    </Text>
+                                </TouchableOpacity>
+                            ))}
+                            <DateTimePickerModal
+                                isVisible={this.state.isDateTimePickerVisible}
+                                mode="time"
+                                is24Hour={true}
+                                display="spinner"
+                                onConfirm={this.handleDateTimeConfirm}
+                                onCancel={this.hideDateTimePicker}
+                            />
+                        </View>
+                    </View >
+                    <View style={styles.timepicker}>
+                        <DateTimePickerModal
+                            isVisible={this.state.isDateTimePickerVisible}
+                            mode="time"
+                            is24Hour={true}
+                            display="spinner"
+                            onConfirm={this.handleDateTimeConfirm}
+                            onCancel={this.hideDateTimePicker}
+
+                        />
+
+                    </View> */}
+                        {/* <TextInput
+                        placeholder="Price"
+                        value={this.state.totalPrice}
+                        onChangeText={this.handletotalPriceChange}
+                        style={styles.input}
+
+                    />
+                    <Text style={styles.errorText}>{errors.totalPrice}</Text> */}
 
                     </ScrollView>
                     <View style={styles.maincontainer}>
@@ -334,43 +385,42 @@ class Washing extends React.Component {
                         </TouchableOpacity>
                     </View>
 
-                 
-                        <View style={styles.footer}>
 
-                            <View style={styles.iconsmainContainer1}>
+                    <View style={styles.footer}>
 
-                                <View style={styles.text9}>
-                                    <TouchableOpacity onPress={this.handleIconPressHome}>
-                                        <Entypo name="home" size={30} style={styles.icon4} />
-                                    </TouchableOpacity>
-                                    <Text style={styles.text10}>Home</Text>
-                                </View>
+                        <View style={styles.iconsmainContainer1}>
 
-                                <View style={styles.text9}>
-                                    <TouchableOpacity onPress={this.handleIconPressBooking}>
-                                        <Entypo name="calendar" size={30} style={styles.icon4} />
-                                    </TouchableOpacity>
-                                    <Text style={styles.text10}>Booking</Text>
-                                </View>
+                            <View style={styles.text9}>
+                                <TouchableOpacity onPress={this.handleIconPressHome}>
+                                    <Entypo name="home" size={30} style={styles.icon4} />
+                                </TouchableOpacity>
+                                <Text style={styles.text10}>Home</Text>
+                            </View>
 
-                                <View style={styles.text9}>
-                                    <TouchableOpacity onPress={this.handleIconPressNotification}>
-                                        <MaterialIcons name="forward-to-inbox" size={30} style={styles.icon4} />
-                                    </TouchableOpacity>
-                                    <Text style={styles.text10}>Inbox</Text>
-                                </View>
+                            <View style={styles.text9}>
+                                <TouchableOpacity onPress={this.handleIconPressBooking}>
+                                    <Entypo name="calendar" size={30} style={styles.icon4} />
+                                </TouchableOpacity>
+                                <Text style={styles.text10}>Booking</Text>
+                            </View>
 
-                                <View style={styles.text9}>
-                                    <TouchableOpacity onPress={this.openSettings}>
-                                        <Ionicons name="settings-sharp" size={30} style={styles.icon4} />
-                                    </TouchableOpacity>
+                            <View style={styles.text9}>
+                                <TouchableOpacity onPress={this.handleIconPressNotification}>
+                                    <MaterialIcons name="forward-to-inbox" size={30} style={styles.icon4} />
+                                </TouchableOpacity>
+                                <Text style={styles.text10}>Inbox</Text>
+                            </View>
 
-                                    <Text style={styles.text10}>Setting</Text>
-                                </View>
+                            <View style={styles.text9}>
+                                <TouchableOpacity onPress={this.openSettings}>
+                                    <Ionicons name="settings-sharp" size={30} style={styles.icon4} />
+                                </TouchableOpacity>
+
+                                <Text style={styles.text10}>Setting</Text>
                             </View>
                         </View>
                     </View>
-            
+                </View>
 
             </>
         );
@@ -405,7 +455,8 @@ const styles = StyleSheet.create({
     reviewtext: {
         flexDirection: 'row',
         marginHorizontal: 20,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        // backgroundColor:'yellow'
     },
     sees: {
         flexDirection: 'row',
@@ -479,6 +530,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#5B7586",
         height: 45,
         width: 360,
+        paddingTop: 10,
+        marginTop: 15,
         borderRadius: 2,
     },
     buttonText: {
@@ -486,7 +539,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
         textAlign: "center",
-        marginTop:10
 
     },
     footer: {
@@ -510,12 +562,6 @@ const styles = StyleSheet.create({
     },
     text10: {
         fontSize: 10,
-    },
-    item:{
-        width: '100%', 
-        height: '100%',
-        resizeMode: 'cover' 
     }
-    
 })
-export default Washing;
+export default Booknow;

@@ -164,7 +164,7 @@ class Confirmation extends React.Component {
     const { pickupAddress, date, time } = this.props.route.params;
     const { servicesName, price, amount } = this.props.route.params;
     const taxAmount = price * 0.10;
-    const totalPrice = price + taxAmount + amount;
+    const totalPrice = price + taxAmount ;
 
     const formattedDate = moment(date).format('DD-MM-YYYY');
     const formattedTime = moment(time).format('hh:mm A');
@@ -176,7 +176,7 @@ class Confirmation extends React.Component {
           <ScrollView
             Vertical={true}
             showsVerticalScrollIndicator={false}
-            style={{ flexDirection: 'row' }}
+            style={{flex:1  }}
           >
             <View style={styles.container}>
               {/* <Text style={styles.text}>Confirmation</Text> */}
@@ -191,9 +191,9 @@ class Confirmation extends React.Component {
                 <View
                   style={{
                     flexDirection: "row",
-                    alignItems: "center",
-                    margin: 10,
-                    justifyContent: 'space-between'
+                    padding:'4%',
+                    justifyContent: 'space-evenly',
+                  
                   }}
                 >
                   <MaterialCommunityIcons name="car-wash" size={35} color="black" />
@@ -244,10 +244,10 @@ class Confirmation extends React.Component {
               <Text style={styles.errorText}>{this.state.vehicleNumberError}</Text>
 
 
-              <Text>Enter Model Number</Text>
+              <Text>Enter Make/Model Number</Text>
 
               <TextInput
-                placeholder="Model Number"
+                placeholder="Ex. Suzuki/Swift"
                 onChangeText={(text) => this.setState({ clientcarmodelno: text })}
                 value={this.state.clientcarmodelno}
                 style={styles.input}
@@ -351,7 +351,9 @@ class Confirmation extends React.Component {
 const styles = StyleSheet.create({
   header: {
     flex: 1,
-    backgroundColor: '#c4fdf7'
+    backgroundColor: '#c4fdf7',
+    width:'100%',
+    margin:'1em'
 
   },
   container: {
@@ -374,7 +376,6 @@ const styles = StyleSheet.create({
   },
   date1: {
     flexDirection: 'row',
-
   },
   voucher1: {
     flexDirection: "row",
@@ -431,7 +432,7 @@ const styles = StyleSheet.create({
     margin: 4,
   },
   footer: {
-    position: 'fixed',
+    position: 'Sticky',
     bottom: 0,
     left: 0,
     right: 0,
