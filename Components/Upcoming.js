@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'column',
         marginHorizontal: 5,
-        backgroundColor:'#c4fdf7'
+        backgroundColor:'#a7a7a7'
     },
     card: {
         height: 180,
@@ -273,10 +273,11 @@ const styles = StyleSheet.create({
         height: 40,
         borderRadius: 8,
         // borderWidth: 1,
-        backgroundColor:'green'
+        backgroundColor:'#2a2a2a',
+        color: 'white'
     },
     buttontext: {
-        color: 'black',
+        color: 'white',
         fontSize: 15,
         textAlign: 'center',
         margin: 8

@@ -342,7 +342,7 @@ class BookConfirmation extends React.Component {
 const styles = StyleSheet.create({
     header: {
         flex: 1,
-        backgroundColor: '#c4fdf7'
+        backgroundColor: '#a7a7a7'
 
     },
     container: {

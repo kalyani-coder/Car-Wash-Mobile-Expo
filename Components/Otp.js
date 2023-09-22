@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   container:{
     paddingTop:40,
     flex:1,
-    backgroundColor:'#c4fdf7'
+    backgroundColor:'#a7a7a7'
   },
   log: {
     textAlign: 'center',
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   button: {
-    backgroundColor: '#006b51',
+    backgroundColor: '#5B7586',
     height: 50,
     paddingTop: 10,
     marginHorizontal: 30,

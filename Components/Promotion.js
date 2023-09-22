@@ -178,7 +178,7 @@ class Promotion extends React.Component {
         <Text style={styles.text1}>{service}</Text>
                       
                     
-                        <View style={{ height: 150, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
+                        <View style={{ height: 130, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
 
                             {/* <Image source={require("./Images/Car-Bikes-Wraps.png")} style={{ width: '100%', height: '100%', resizeMode: 'cover' }} /> */}
                             <Image source={{ uri: 'https://global-uploads.webflow.com/6275222db3d827ed1bb5c030/628d5275e8398c96485950a6_pexels-maria-geller-2127022.jpg' }} style={styles.item} />
@@ -430,7 +430,7 @@ const styles = StyleSheet.create({
     container: {
         // paddingTop:50,
         // marginTop:50,
-        backgroundColor: '#c4fdf7'
+        backgroundColor: '#a7a7a7'
 
     },
     text: {

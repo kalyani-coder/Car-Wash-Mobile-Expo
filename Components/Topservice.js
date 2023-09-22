@@ -177,7 +177,7 @@ class Topservice extends React.Component {
                         <Text style={styles.text1}>{title}</Text>
 
                         {/* <Text >{servicePrice}</Text> */}
-                        <View style={{ height: 150, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
+                        <View style={{ height: 125, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
 
                             {/* <Image source={require("./Images/Car-Bikes-Wraps.png")} style={{ flex: 1, resizeMode: 'fill', width: "100", height: "100" }} /> */}
 
@@ -433,7 +433,7 @@ const styles = StyleSheet.create({
     container: {
         // paddingTop:50,
         // marginTop:50,
-        backgroundColor: '#c4fdf7'
+        backgroundColor: '#a7a7a7'
 
     },
     text: {

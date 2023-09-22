@@ -227,8 +227,8 @@ class Signup extends Component {
 
     return (
       <View style={styles.container}>
-        <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 8 }}>Enter Your Information</Text>
-
+        <Text style={{ fontWeight: 'bold', fontSize: 16, marginBottom: 8 ,textAlign: 'center' }}>Enter Your Information</Text>
+          <TextInput style={{ fontWeight: 'bold', fontSize: 14, }}>Enter Your Full Name</TextInput>
         <TextInput
           placeholder="Full Name"
 
@@ -239,6 +239,7 @@ class Signup extends Component {
         />
         <Text style={styles.errorText}>{errors.clientName}</Text>
 
+        <TextInput style={{ fontWeight: 'bold', fontSize: 14, marginTop:-22}}>Enter Your Email</TextInput>
         <TextInput
           placeholder="Email"
 
@@ -249,6 +250,8 @@ class Signup extends Component {
         />
         <Text style={styles.errorText}>{errors.clientEmail}</Text>
 
+
+        <TextInput style={{ fontWeight: 'bold', fontSize: 14, marginTop:-22}}>Enter Your Phone Number</TextInput>
         <TextInput
           placeholder="Phone Number"
 
@@ -274,6 +277,7 @@ class Signup extends Component {
         <Text style={styles.errorText}>{errors.clientdob}</Text> */}
 
 
+        <TextInput style={{ fontWeight: 'bold', fontSize: 14, marginTop:-22}}>Enter Your Address</TextInput>
         <TextInput
           placeholder="Address"
 
@@ -317,7 +321,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     paddingTop: 80,
-    backgroundColor: '#c4fdf7'
+    backgroundColor: '#a7a7a7'
   },
   input: {
     borderWidth: 1,
@@ -348,7 +352,7 @@ const styles = StyleSheet.create({
 
   },
   button: {
-    backgroundColor: '#006b51',
+    backgroundColor: '#5B7586',
     height: 50,
     paddingTop: 10,
     borderRadius: 5,

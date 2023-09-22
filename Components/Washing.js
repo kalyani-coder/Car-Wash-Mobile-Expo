@@ -177,7 +177,7 @@ class Washing extends React.Component {
                         <Text style={styles.text1}>{serviceName}</Text>
 
                         {/* <Text >{servicePrice}</Text> */}
-                        <View style={{ height: 150, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
+                        <View style={{ height: 133, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
 
                             {/* <Image source={require("./Images/Car-Bikes-Wraps.png")} style={{ flex: 1, resizeMode: 'fill', width: "100", height: "100" }} /> */}
                             <Image source={{ uri: 'https://imageio.forbes.com/specials-images/imageserve/5d35eacaf1176b0008974b54/2020-Chevrolet-Corvette-Stingray/0x0.jpg?format=jpg&crop=4560,2565,x790,y784,safe&width=960' }} style={styles.item} />
@@ -381,7 +381,7 @@ const styles = StyleSheet.create({
     container: {
         // paddingTop:50,
         // marginTop:50,
-        backgroundColor: '#c4fdf7'
+        backgroundColor: '#a7a7a7'
 
     },
     text: {
@@ -480,6 +480,7 @@ const styles = StyleSheet.create({
         height: 45,
         width: 360,
         borderRadius: 2,
+        marginBottom:10
     },
     buttonText: {
         color: "white",

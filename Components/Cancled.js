@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
     // flexDirection: "column",
     // marginHorizontal: 5,
     // marginVertical: 15,
-    backgroundColor:'#c4fdf7'
+    backgroundColor:'#a7a7a7'
   },
   // add: {
   //   flexDirection: "row",

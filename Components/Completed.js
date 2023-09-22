@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
     // },
     flex:{
         flex:1,
-        backgroundColor:'#c4fdf7'
+        backgroundColor:'#a7a7a7'
 
     },
     footer: {
