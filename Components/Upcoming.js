@@ -31,33 +31,7 @@ class Upcoming extends React.Component {
 
         };
     }
-    //for time
-
-    // componentDidMount() {
-    //     this.interval = setInterval(() => {
-    //         this.setState({ currentTime: new Date() });
-    //     }, 60000); // Update every minute
-    // }
-
-    // componentWillUnmount() {
-    //     clearInterval(this.interval);
-    // }
-
-    // formatTime = (date) => {
-    //     const hours = date.getHours();
-    //     const minutes = date.getMinutes();
-    //     const ampm = hours >= 12 ? 'PM' : 'AM';
-    //     const formattedHours = hours % 12 || 12;  // Convert to 12-hour format
-    //     return `${formattedHours}:${minutes < 10 ? '0' : ''}${minutes} ${ampm}`;
-    // };
-
-    // //for date
-    // onDayPress = (day) => {
-    //     this.setState({
-    //         selectedDate: day.dateString,
-    //     });
-    // };
-
+    
 
     componentDidMount() {
         // Make an API request to fetch data and update the state

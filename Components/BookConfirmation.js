@@ -342,15 +342,15 @@ class BookConfirmation extends React.Component {
 const styles = StyleSheet.create({
     header: {
         flex: 1,
-        backgroundColor: '#a7a7a7'
-
+        paddingTop:30,
+        height:'100%',
+        backgroundColor: '#a7a7a7', 
     },
     container: {
         marginHorizontal: 15,
-        paddingTop: 15,
+        // paddingTop: 80,
         // backgroundColor:'#c4fdf7'
     },
-
     text: {
         fontSize: 15,
         fontWeight: "bold",

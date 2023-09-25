@@ -35,7 +35,7 @@ class Promotion extends React.Component {
         this.state = {
             isDateTimePickerVisible: false,
             selectedTimes: Array(3).fill(null), // Initialize an array to store selected times
-            activePicker: null, 
+            activePicker: null,
             pickupAddress: '',
             totalPrice: '',
             date: new Date(),
@@ -105,15 +105,15 @@ class Promotion extends React.Component {
 
     handlcontinue = () => {
         if (this.validateInput()) {
-        const { pickupAddress, date, time } = this.state;
-        const { service, fixedAmount } = this.props.route.params;
-        const servicesName = service;
-        const price1 = fixedAmount;
-         this.props.navigation.navigate('PromotionConfirmation', { pickupAddress, date, time,servicesName,price1 }); // Navigate to the Confirmation page screen
+            const { pickupAddress, date, time } = this.state;
+            const { service, fixedAmount } = this.props.route.params;
+            const servicesName = service;
+            const price1 = fixedAmount;
+            this.props.navigation.navigate('PromotionConfirmation', { pickupAddress, date, time, servicesName, price1 }); // Navigate to the Confirmation page screen
         }
     }
 
-   //for stars
+    //for stars
     state = {
         selectedStars: 0,
     };
@@ -156,13 +156,13 @@ class Promotion extends React.Component {
 
         const { selectedStars } = this.state;
         const { route } = this.props;
-    
+
         const { errors } = this.state;
         const { date, showPicker } = this.state;
         const { time, isDatePickerVisible } = this.state;
-        const { service, fixedAmount, description} = this.props.route.params;
+        const { service, fixedAmount, description } = this.props.route.params;
 
-       
+
         return (
             <>
 
@@ -173,11 +173,11 @@ class Promotion extends React.Component {
                         Vertical={true}
                         showsVerticalScrollIndicator={false}
                     >
-                     
-                       
-        <Text style={styles.text1}>{service}</Text>
-                      
-                    
+
+
+                        <Text style={styles.text1}>{service}</Text>
+
+
                         <View style={{ height: 130, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
 
                             {/* <Image source={require("./Images/Car-Bikes-Wraps.png")} style={{ width: '100%', height: '100%', resizeMode: 'cover' }} /> */}
@@ -189,8 +189,8 @@ class Promotion extends React.Component {
                         <View style={styles.about}>
                             <Text style={styles.text2}>About</Text>
                             <Text>{description}</Text>
-                            
-                        
+
+
                         </View>
 
                         <View style={styles.reviewtext}>
@@ -260,7 +260,8 @@ class Promotion extends React.Component {
 
                         </ScrollView>
 
-                        <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address</Text>
+                        <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address
+                        <Text style={{color:'red'}}> *</Text></Text>
 
                         <TextInput
                             placeholder="Enter Address"
@@ -561,10 +562,10 @@ const styles = StyleSheet.create({
     text10: {
         fontSize: 10,
     },
-    item:{
-        width: '100%', 
+    item: {
+        width: '100%',
         height: '100%',
-     resizeMode: 'cover' 
+        resizeMode: 'cover'
     }
 })
 export default Promotion;

@@ -8,7 +8,11 @@ import {
   TextInput,
   ScrollView,
 
+
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { Picker } from '@react-native-picker/picker';
 import moment from 'moment';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Entypo } from "@expo/vector-icons";
@@ -40,27 +44,36 @@ class Confirmation extends React.Component {
       date: '',
       time: '',
       pickupAddress: '',
-      selectedOption: null,
+
       clientvehicleno: '',
       clientcarmodelno: '',
       vehicleNumberError: '',
       modelNumberError: '',
       totalPrice1: '',
       formattedDate: '',
-      formattedTime: ''
+      formattedTime: '',
+      selectedOption: 'pickup',
     };
-    this.options = [
-      { label: 'Pick Up by Agent', value: 'agentPickup', amount: 300 },
-      { label: 'Self Drive', value: 'selfDrive', amount: 0 },
-    ];
+
   }
 
-
-
-  //for dropdown
-  handleOptionChange = (selectedOption) => {
-    this.setState({ selectedOption });
+  fetchClientData = async () => {
+    try {
+      const response = await fetch('https://car-wash-backend-api.onrender.com/api/clients');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const clientData = await response.json();
+      this.setState({ clientData }); // Store client data in state
+    } catch (error) {
+      console.error('Error fetching client data:', error);
+    }
   };
+
+  componentDidMount() {
+    this.fetchClientData();
+  }
+
 
   handleIconPressNotification = () => {
     this.props.navigation.navigate('Notification');
@@ -95,7 +108,7 @@ class Confirmation extends React.Component {
 
     // Validate Vehicle Number
     if (clientvehicleno.trim() === '') {
-      this.setState({ vehicleNumberError: 'Vehicle Number is required' });
+      this.setState({ vehicleNumberError: '*Vehicle Number is required' });
       isValid = false;
     } else {
       this.setState({ vehicleNumberError: '' });
@@ -103,7 +116,7 @@ class Confirmation extends React.Component {
 
     // Validate Model Number
     if (clientcarmodelno.trim() === '') {
-      this.setState({ modelNumberError: 'Model Number is required' });
+      this.setState({ modelNumberError: '*Model Number is required' });
       isValid = false;
     } else {
       this.setState({ modelNumberError: '' });
@@ -111,60 +124,94 @@ class Confirmation extends React.Component {
 
     return isValid;
   };
-  handleSubmit = () => {
+  handleSubmit = async () => {
     if (this.validateFields()) {
+      // Determine the values for pickuptoagent and selfdrive based on the selected option
+      const pickuptoagent = this.state.selectedOption === "pickup" ? "pickuptoagent" : "No";
+      const selfdrive = this.state.selectedOption === "selfdrive" ? "selfdrive" : "No";
+
       const { pickupAddress, date, time, servicesName, status, price } = this.props.route.params;
       const { clientcarmodelno, clientvehicleno } = this.state;
-      // const totalPrice=totalPrice1;
+
       const taxAmount = price * 0.10;
-      const totalPrice = price + taxAmount;
+      let selectedOptionValue = 0;
+
+      if (this.state.selectedOption === 'pickup') {
+        selectedOptionValue = 300;
+      }
+      const totalPrice = price + taxAmount + selectedOptionValue;
       const formattedDate = moment(date).format('DD-MM-YYYY');
       const formattedTime = moment(time).format('hh:mm A');
-      fetch('https://car-wash-backend-api.onrender.com/api/bookings', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          date: formattedDate,
-          time: formattedTime,
-          pickupAddress: pickupAddress,
-          servicesName,
-          totalPrice: totalPrice,
-          status: "",
-          agentId: "",
-          clientcarmodelno: clientcarmodelno,
-          clientvehicleno: clientvehicleno,
-        }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then((data) => {
-          this.setState({ response: data });
-          this.props.navigation.navigate('Confirm');
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
+
+      try {
+        // Retrieve the user ID from AsyncStorage
+        const userId = await AsyncStorage.getItem('userId');
+
+        // Retrieve the selected client from the fetched client data
+        const selectedClient = this.state.clientData.find(client => client._id === userId);
+
+        if (selectedClient) {
+          // Make the booking API request with user ID, client ID, and client name
+          fetch('https://car-wash-backend-api.onrender.com/api/bookings', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              date: formattedDate,
+              time: formattedTime,
+              pickupAddress: pickupAddress,
+              servicesName,
+              totalPrice: totalPrice,
+              status: "",
+              agentId: "",
+              clientcarmodelno: clientcarmodelno,
+              clientvehicleno: clientvehicleno,
+              pickuptoagent: pickuptoagent,
+              selfdrive: selfdrive,
+              userId: userId,
+              clientId: selectedClient._id, // Include the client ID in the request
+              clientName: selectedClient.clientName, // Include the client name in the request
+            }),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.json();
+            })
+            .then((data) => {
+              this.setState({ response: data });
+              this.props.navigation.navigate('Confirm');
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+        } else {
+          console.error('Selected client not found in client data.');
+        }
+      } catch (error) {
+        console.error('Error retrieving user ID from AsyncStorage:', error);
+      }
+
     }
+
 
   };
 
 
 
   render() {
-    // const { date, showPicker } = this.state;
-    // const { time, isDatePickerVisible } = this.state;
-    const { route } = this.props;
-    // const { serviceName } = route.params;
+
+    let selectedOptionValue = 0; // Default value for "Self Drive"
+    if (this.state.selectedOption === 'pickup') {
+      selectedOptionValue = 300; // Set the value for "Pickup by Agent"
+    }
+
     const { pickupAddress, date, time } = this.props.route.params;
     const { servicesName, price, amount } = this.props.route.params;
     const taxAmount = price * 0.10;
-    const totalPrice = price + taxAmount ;
+    const totalPrice = price + taxAmount + selectedOptionValue;
 
     const formattedDate = moment(date).format('DD-MM-YYYY');
     const formattedTime = moment(time).format('hh:mm A');
@@ -176,7 +223,7 @@ class Confirmation extends React.Component {
           <ScrollView
             Vertical={true}
             showsVerticalScrollIndicator={false}
-            style={{flex:1  }}
+            style={{ flex: 1 }}
           >
             <View style={styles.container}>
               {/* <Text style={styles.text}>Confirmation</Text> */}
@@ -186,14 +233,15 @@ class Confirmation extends React.Component {
                   width: 360,
                   backgroundColor: "white",
                   marginVertical: 10,
+                  borderRadius:4
                 }}
               >
                 <View
                   style={{
                     flexDirection: "row",
-                    padding:'4%',
+                    padding: '4%',
                     justifyContent: 'space-evenly',
-                  
+
                   }}
                 >
                   <MaterialCommunityIcons name="car-wash" size={35} color="black" />
@@ -209,6 +257,7 @@ class Confirmation extends React.Component {
                   width: 360,
                   backgroundColor: "white",
                   marginVertical: 10,
+                  borderRadius:4
                 }}
               >
 
@@ -227,6 +276,7 @@ class Confirmation extends React.Component {
                   width: 360,
                   backgroundColor: "white",
                   marginVertical: 10,
+                  borderRadius:4
                 }}
               >
 
@@ -234,7 +284,7 @@ class Confirmation extends React.Component {
 
 
               </View>
-              <Text>Enter Vehicle Number</Text>
+              <Text>Enter Vehicle Number<Text style={{ color: 'red' }}> *</Text></Text>
               <TextInput
                 placeholder="Vehicle Number"
                 onChangeText={(text) => this.setState({ clientvehicleno: text })}
@@ -244,7 +294,7 @@ class Confirmation extends React.Component {
               <Text style={styles.errorText}>{this.state.vehicleNumberError}</Text>
 
 
-              <Text>Enter Make/Model Number</Text>
+              <Text>Enter Make/Model Number<Text style={{ color: 'red' }}> *</Text></Text>
 
               <TextInput
                 placeholder="Ex. Suzuki/Swift"
@@ -255,31 +305,46 @@ class Confirmation extends React.Component {
               <Text style={styles.errorText}>{this.state.modelNumberError}</Text>
 
 
+              <View>
+                <Text>Select an option:</Text>
+                <Picker
+                  style={styles.picker}
+                  selectedValue={this.state.selectedOption}
+                  onValueChange={(itemValue) => {
+                    this.setState({ selectedOption: itemValue }, () => {
+                      // Calculate selectedOptionValue here and update the state
+                      let selectedOptionValue = 0;
+                      if (this.state.selectedOption === 'pickup') {
+                        selectedOptionValue = 300;
+                      }
+                      this.setState({ selectedOptionValue });
+                    });
+                  }}
+                >
+                  <Picker.Item label="Pickup by Agent" value="pickup" />
+                  <Picker.Item label="Self Drive" value="selfdrive" />
+                </Picker>
 
-              <Text>Select an option:</Text>
-              <DropDownPicker
-                items={this.options.map((option) => ({ label: option.label, value: option.value }))}
-                defaultValue={this.state.selectedOption}
-                containerStyle={{ height: 50 }}
-                controller={(instance) => (this.dropdown = instance)} // Add this line
-                onChangeItem={(item) => this.setState({ selectedOption: item.value })}
-                searchable={false}
-                placeholder="Select an option"
-                labelStyle={{ fontSize: 16, backgroundColor: 'white', height: 50 }}
-              />
-              {this.state.selectedOption && (
-                <View>
-                  <Text>Selected Option: {this.state.selectedOption}</Text>
-                  <Text>Price: {this.options.find((opt) => opt.value === this.state.selectedOption)?.amount}</Text>
+
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ fontWeight: 'bold' }}>
+                    {this.state.selectedOption === 'pickup' ? 'Pickup By Agent' : 'Self Drive'}
+                  </Text>
+                  <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                    <Text style={{ fontWeight: 'bold' }}>
+                      {this.state.selectedOption === 'pickup' ? selectedOptionValue : '0'}
+                    </Text>
+                  </View>
                 </View>
-              )}
+
+              </View>
 
               <View style={styles.amount}>
                 <Text style={styles.text2}>TAXES</Text>
                 <Text style={styles.text2}>{taxAmount}</Text>
               </View>
               <View style={styles.amount}>
-                <Text style={styles.text2}>Service Price</Text>
+                <Text style={styles.text2}>SERVICE PRICE</Text>
                 <Text style={styles.text2}>{price}</Text>
               </View>
               <View style={styles.amount}>
@@ -352,12 +417,14 @@ const styles = StyleSheet.create({
   header: {
     flex: 1,
     backgroundColor: '#a7a7a7',
-    width:'100%',
-    margin:'1em'
+    width: '100%',
+    height: '100%',
+    padding: 15,
+    // margin: '5em'
 
   },
   container: {
-    marginHorizontal: 15,
+    // marginHorizontal: 15,
     paddingTop: 15,
     // backgroundColor:'#c4fdf7'
   },
@@ -369,7 +436,7 @@ const styles = StyleSheet.create({
   },
   text1: {
     height: 45,
-    width: 250,
+    // width: 250,/
     borderWidth: 2,
     borderColor: "grey",
     paddingLeft: 15,
@@ -384,7 +451,7 @@ const styles = StyleSheet.create({
   },
   apply: {
     height: 45,
-    width: 100,
+    // width: 100,
     borderWidth: 2,
     borderColor: "grey",
     backgroundColor: "yellow",
@@ -412,14 +479,22 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
-    // marginBottom: 5,
-    // marginHorizontal: 20
+
+  },
+  picker: {
+    backgroundColor: 'white',
+    fontWeight: 'bold',
+  },
+  selectedOptionText: {
+    //  paddingLeft:20,
+    fontWeight: 'bold',
+    marginTop: 5,
   },
 
   button: {
     backgroundColor: "#5B7586",
     height: 50,
-    width: 360,
+    // width: 360,
     paddingTop: 10,
     marginTop: 15,
     borderRadius: 2,

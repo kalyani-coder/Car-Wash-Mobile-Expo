@@ -557,12 +557,12 @@ class Home extends React.Component {
 const styles = StyleSheet.create({
   header: {
     flex: 1,
-    backgroundColor: '#a7a7a7'
+    backgroundColor: '#a7a7a7',
+    // paddingTop:30
   },
   flex: {
     marginHorizontal: 20,
     marginVertical: 10,
-
   },
   text: {
     marginHorizontal: 20,
@@ -600,7 +600,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 20,
     borderRadius: 10,
-    elevation: 20, // Shadow on Android
+    
     shadowColor: 'black',
     shadowOpacity: 0.2,
     shadowRadius: 10,
@@ -829,49 +829,3 @@ const styles = StyleSheet.create({
   },
 });
 export default Home;
-// *******************************
-
-
-// *******************************
-// *******************************
-// *******************************
-// *******************************
-// *******************************
-
-// on the view there two touchbale opcatity one for first and second is for 2nd id show the code
-// import React, { Component } from 'react';
-// import { View, Text, TouchableOpacity } from 'react-native';
-
-// class FirstPage extends Component {
-//   handleFirstServiceClick = () => {
-//     // Handle the click for the first ID (e.g., ID 1)
-//     // You can navigate to the second page with ID 1 or perform any action you need.
-//   }
-
-//   handleSecondServiceClick = () => {
-//     // Handle the click for the second ID (e.g., ID 2)
-//     // You can navigate to the second page with ID 2 or perform any action you need.
-//   }
-
-//   render() {
-//     return (
-//       <View>
-//         <TouchableOpacity
-//           onPress={this.handleFirstServiceClick}
-//           style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}
-//         >
-//           <Text>Service 1</Text>
-//         </TouchableOpacity>
-
-//         <TouchableOpacity
-//           onPress={this.handleSecondServiceClick}
-//           style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}
-//         >
-//           <Text>Service 2</Text>
-//         </TouchableOpacity>
-//       </View>
-//     );
-//   }
-// }
-
-// export default FirstPage;

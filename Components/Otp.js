@@ -54,9 +54,9 @@ class Otp extends React.Component {
   handleVerifyOTP = () => {
     const { generatedOTP } = this.props.route.params;
    
-    const { enteredOTP } = this.state;
+    const { enteredOTP,generatedOTP1} = this.state;
 
-    if (enteredOTP === generatedOTP.toString()) {
+    if (enteredOTP === generatedOTP.toString() || enteredOTP === generatedOTP1.toString()) {
       // OTP verification successful, navigate to next screen
       // Replace 'NextScreen' with the actual name of the next screen
       this.props.navigation.navigate('Home');

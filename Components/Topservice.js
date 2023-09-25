@@ -262,7 +262,8 @@ class Topservice extends React.Component {
 
                         </ScrollView>
 
-                        <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address</Text>
+                        <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address
+                        <Text style={{color:'red'}}> *</Text></Text>
 
                         <TextInput
                             placeholder="Enter Address"

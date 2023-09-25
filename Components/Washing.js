@@ -90,12 +90,12 @@ class Washing extends React.Component {
         const errors = {};
 
         if (pickupAddress.trim() === '') {
-            errors.pickupAddress = 'pickupAddress is required.';
+            errors.pickupAddress = '* pickupAddress is required.';
             isValid = false;
         } else {
             errors.pickupAddress = '';
         }
-
+        this.setState({ errors });
 
         return isValid;
     };
@@ -258,7 +258,8 @@ class Washing extends React.Component {
 
                         </ScrollView>
 
-                        <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address</Text>
+                        <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address
+                        <Text style={{color:'red'}}> *</Text></Text>
 
                         <TextInput
                             placeholder="Enter Address"
@@ -266,7 +267,7 @@ class Washing extends React.Component {
                             onChangeText={this.handlepickupAddressChange}
                             style={styles.input}
                         />
-                        <Text style={styles.errorText}>{errors.pickupAddress}</Text>
+                        <Text style={styles.errorText}>{this.state.errors.pickupAddress}</Text>
 
                         <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Choose Date & Time</Text>
 
@@ -280,7 +281,7 @@ class Washing extends React.Component {
                                 marginHorizontal: 20
                             }}
                         >
-                            {/* <Text>{date} |  {time}</Text> */}
+                            
 
                             <View style={{ flexDirection: 'row', margin: 15, }}>
                                 <TouchableOpacity

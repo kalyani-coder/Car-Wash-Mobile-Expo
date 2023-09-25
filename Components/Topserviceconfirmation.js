@@ -10,6 +10,7 @@ import {
 
 } from "react-native";
 import moment from 'moment';
+import { Picker } from '@react-native-picker/picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -47,15 +48,11 @@ class Topserviceconfirmation extends React.Component {
             modelNumberError: '',
             totalPrice1: '',
             formattedDate: '',
-            formattedTime: ''
+            formattedTime: '',
+            selectedOption: 'pickup',
         };
-        this.options = [
-            { label: 'Pick Up by Agent', value: 'agentPickup', amount: 300 },
-            { label: 'Self Drive', value: 'selfDrive', amount: 0 },
-        ];
+
     }
-
-
 
     //for dropdown
     handleOptionChange = (selectedOption) => {
@@ -113,11 +110,19 @@ class Topserviceconfirmation extends React.Component {
     };
     handleSubmit = () => {
         if (this.validateFields()) {
+            // Determine the values for pickuptoagent and selfdrive based on the selected option
+            const pickuptoagent = this.state.selectedOption === "pickup" ? "Yes" : "No";
+            const selfdrive = this.state.selectedOption === "selfdrive" ? "Yes" : "No";
             const { pickupAddress, date, time } = this.props.route.params;
             const { clientcarmodelno, clientvehicleno } = this.state;
-            const { servicesName, price1,  } = this.props.route.params;
+            const { servicesName, price1, } = this.props.route.params;
+            let selectedOptionValue = 0;
+
+            if (this.state.selectedOption === 'pickup') {
+              selectedOptionValue = 300;
+            }
             const taxAmount = price1 * 0.10;
-            const totalPrice = price1 + taxAmount;
+            const totalPrice = price1 + taxAmount + selectedOptionValue;
             const formattedDate = moment(date).format('DD-MM-YYYY');
             const formattedTime = moment(time).format('hh:mm A');
             fetch('https://car-wash-backend-api.onrender.com/api/bookings', {
@@ -135,6 +140,8 @@ class Topserviceconfirmation extends React.Component {
                     agentId: "",
                     clientcarmodelno: clientcarmodelno,
                     clientvehicleno: clientvehicleno,
+                    pickuptoagent: pickuptoagent,
+                    selfdrive: selfdrive,
                 }),
             })
                 .then((response) => {
@@ -157,20 +164,17 @@ class Topserviceconfirmation extends React.Component {
 
 
     render() {
-        // const { date, showPicker } = this.state;
-        // const { time, isDatePickerVisible } = this.state;
-        const { route } = this.props;
-        // const { serviceName } = route.params;
-        const { pickupAddress, date, time } = this.props.route.params;
-        // const { services,price1 } = this.props.route.params;
-        // const taxAmount = price * 0.10;
-        // const totalPrice = price + taxAmount + amount;
+        let selectedOptionValue = 0; // Default value for "Self Drive"
+        if (this.state.selectedOption === 'pickup') {
+            selectedOptionValue = 300; // Set the value for "Pickup by Agent"
+        }
 
+        const { pickupAddress, date, time } = this.props.route.params;
         const formattedDate = moment(date).format('DD-MM-YYYY');
         const formattedTime = moment(time).format('hh:mm A');
-        const { servicesName, price1,  } = this.props.route.params;
-            const taxAmount = price1 * 0.10;
-            const totalPrice = price1 + taxAmount;
+        const { servicesName, price1, } = this.props.route.params;
+        const taxAmount = price1 * 0.10;
+        const totalPrice = price1 + taxAmount + selectedOptionValue;
 
         return (
             <>
@@ -178,7 +182,7 @@ class Topserviceconfirmation extends React.Component {
                     <ScrollView
                         Vertical={true}
                         showsVerticalScrollIndicator={false}
-                        style={{ flex:1 }}
+                        style={{ flex: 1 }}
                     >
                         <View style={styles.container}>
                             {/* <Text style={styles.text}>Confirmation</Text> */}
@@ -235,7 +239,7 @@ class Topserviceconfirmation extends React.Component {
 
 
                             </View>
-                            <Text>Enter Vehicle Number</Text>
+                            <Text>Enter Vehicle Number<Text style={{color:'red'}}> *</Text></Text>
                             <TextInput
                                 placeholder="Vehicle Number"
                                 onChangeText={(text) => this.setState({ clientvehicleno: text })}
@@ -245,7 +249,7 @@ class Topserviceconfirmation extends React.Component {
                             <Text style={styles.errorText}>{this.state.vehicleNumberError}</Text>
 
 
-                            <Text>Enter Model Number</Text>
+                            <Text>Enter Model Number<Text style={{color:'red'}}> *</Text></Text>
 
                             <TextInput
                                 placeholder="Model Number"
@@ -257,24 +261,39 @@ class Topserviceconfirmation extends React.Component {
 
 
 
-                            <Text>Select an option:</Text>
-                            <DropDownPicker
-                                items={this.options.map((option) => ({ label: option.label, value: option.value }))}
-                                defaultValue={this.state.selectedOption}
-                                containerStyle={{ height: 50 }}
-                                controller={(instance) => (this.dropdown = instance)} // Add this line
-                                onChangeItem={(item) => this.setState({ selectedOption: item.value })}
-                                searchable={false}
-                                placeholder="Select an option"
-                                labelStyle={{ fontSize: 16, backgroundColor: 'white', height: 50 }}
-                            />
-                            {this.state.selectedOption && (
-                                <View>
-                                    <Text>Selected Option: {this.state.selectedOption}</Text>
-                                    <Text>Price: {this.options.find((opt) => opt.value === this.state.selectedOption)?.amount}</Text>
-                                </View>
-                            )}
+                            <View>
+                                <Text>Select an option:</Text>
+                                <Picker
+                                    style={styles.picker}
+                                    selectedValue={this.state.selectedOption}
+                                    onValueChange={(itemValue) => {
+                                        this.setState({ selectedOption: itemValue }, () => {
+                                            // Calculate selectedOptionValue here and update the state
+                                            let selectedOptionValue = 0;
+                                            if (this.state.selectedOption === 'pickup') {
+                                                selectedOptionValue = 300;
+                                            }
+                                            this.setState({ selectedOptionValue });
+                                        });
+                                    }}
+                                >
+                                    <Picker.Item label="Pickup by Agent" value="pickup" />
+                                    <Picker.Item label="Self Drive" value="selfdrive" />
+                                </Picker>
 
+
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text style={{ fontWeight: 'bold' }}>
+                                        {this.state.selectedOption === 'pickup' ? 'Pickup By Agent' : 'Self Drive'}
+                                    </Text>
+                                    <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                                        <Text style={{ fontWeight: 'bold' }}>
+                                            {this.state.selectedOption === 'pickup' ? selectedOptionValue : '0'}
+                                        </Text>
+                                    </View>
+                                </View>
+
+                            </View>
                             <View style={styles.amount}>
                                 <Text style={styles.text2}>TAXES</Text>
                                 <Text style={styles.text2}>{taxAmount}</Text>
@@ -414,6 +433,15 @@ const styles = StyleSheet.create({
         color: 'red',
         // marginBottom: 5,
         // marginHorizontal: 20
+    },
+    picker: {
+        backgroundColor: 'white',
+        fontWeight: 'bold',
+    },
+    selectedOptionText: {
+        //  paddingLeft:20,
+        fontWeight: 'bold',
+        marginTop: 5,
     },
 
     button: {

@@ -51,6 +51,14 @@ class Booknow extends React.Component {
         };
     }
 
+    responsiveFontSize(size) {
+        const { width } = Dimensions.get('window');
+        const baseFontSize = 16;
+        const scale = width / 320; // Adjust the base width as needed
+        const newSize = baseFontSize * scale;
+        return Math.round(PixelRatio.roundToNearestPixel(newSize));
+      }
+
     // for time
     showDatePicker = () => {
         this.setState({ isDatePickerVisible: true });
@@ -178,7 +186,7 @@ class Booknow extends React.Component {
                         <Text style={styles.text1}>{homeservicesName}</Text>
 
                         {/* <Text >{servicePrice}</Text> */}
-                        <View style={{ height: 130, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
+                        <View style={{ height: 130, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 ,marginTop:10}}>
 
                             {/* <Image source={require("./Images/Car-Bikes-Wraps.png")} style={{ width: '100%', height: '100%', resizeMode: 'cover' }} /> */}
                             <Image source={{ uri: image }} style={{ width: '100%', height: '100%', resizeMode: 'cover' }} />
@@ -261,7 +269,8 @@ class Booknow extends React.Component {
 
                         </ScrollView>
 
-                        <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address</Text>
+                        <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address
+                        <Text style={{color:'red'}}> *</Text></Text>
 
                         <TextInput
                             placeholder="Enter Address"
@@ -321,10 +330,7 @@ class Booknow extends React.Component {
                                                 onChange={this.handleDateChange}
                                             />
                                         )}
-                                        {/* {this.state.date && (
-                                        <Text> {this.state.date.toLocaleDateString()}</Text>
-                                    )} */}
-                                        {/* <Text>{this.state.date.toLocaleDateString()} | {this.formatTime(this.state.time) || "8:30"}</Text> */}
+                                       
 
                                     </View>
                                 </View>
@@ -332,50 +338,7 @@ class Booknow extends React.Component {
                         </View>
 
 
-                        {/* <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 5 }}>Enter totalPrice</Text> */}
-                        {/* <View style={styles.time1}>
-                        <View style={styles.date1}>
-                            {this.state.selectedTimes.map((time, index) => (
-                                <TouchableOpacity
-                                    key={index}
-                                    onPress={() => this.showDateTimePicker(index)}
-                                    style={styles.timePicker}
-                                >
-                                    <Text style={styles.datetext1}>
-                                        {time || '8:30'}
-                                    </Text>
-                                </TouchableOpacity>
-                            ))}
-                            <DateTimePickerModal
-                                isVisible={this.state.isDateTimePickerVisible}
-                                mode="time"
-                                is24Hour={true}
-                                display="spinner"
-                                onConfirm={this.handleDateTimeConfirm}
-                                onCancel={this.hideDateTimePicker}
-                            />
-                        </View>
-                    </View >
-                    <View style={styles.timepicker}>
-                        <DateTimePickerModal
-                            isVisible={this.state.isDateTimePickerVisible}
-                            mode="time"
-                            is24Hour={true}
-                            display="spinner"
-                            onConfirm={this.handleDateTimeConfirm}
-                            onCancel={this.hideDateTimePicker}
-
-                        />
-
-                    </View> */}
-                        {/* <TextInput
-                        placeholder="Price"
-                        value={this.state.totalPrice}
-                        onChangeText={this.handletotalPriceChange}
-                        style={styles.input}
-
-                    />
-                    <Text style={styles.errorText}>{errors.totalPrice}</Text> */}
+                       
 
                     </ScrollView>
                     <View style={styles.maincontainer}>
@@ -431,8 +394,8 @@ const styles = StyleSheet.create({
     container: {
         // paddingTop:50,
         // marginTop:50,
-        backgroundColor: '#a7a7a7'
-
+        backgroundColor: '#a7a7a7',
+        height:'100%',
     },
     text: {
         textAlign: 'center',
@@ -443,7 +406,8 @@ const styles = StyleSheet.create({
     text1: {
         textAlign: 'center',
         fontSize: 15,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        // marginTop:30
     },
     text2: {
         fontSize: 15,
