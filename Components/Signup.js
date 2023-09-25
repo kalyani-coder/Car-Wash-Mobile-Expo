@@ -147,6 +147,7 @@ class Signup extends Component {
         <Text style={styles.label}>Full Name<Text style={styles.required}> *</Text></Text>
         <TextInput
           placeholder="Full Name"
+          placeholderTextColor="#000"
           onChangeText={(text) => this.setState({ clientName: text })}
           value={this.state.clientName}
           onBlur={this.validateclientName}
@@ -158,6 +159,7 @@ class Signup extends Component {
         <Text style={styles.label}>Email<Text style={styles.required}> *</Text></Text>
         <TextInput
           placeholder="Email"
+          placeholderTextColor="#000"
           onChangeText={(text) => {
             this.setState({ clientEmail: text, errors: { ...this.state.errors, clientEmail: '' } });
           }}
@@ -171,6 +173,7 @@ class Signup extends Component {
         <Text style={styles.label}>Phone Number<Text style={styles.required}> *</Text></Text>
         <TextInput
           placeholder="Phone Number"
+          placeholderTextColor="#000"
           onChangeText={(text) => {
             this.setState({ clientPhone: text, errors: { ...this.state.errors, clientPhone: '' } });
           }}
@@ -186,6 +189,7 @@ class Signup extends Component {
         <Text style={styles.label}>Address<Text style={styles.required}> *</Text></Text>
         <TextInput
           placeholder="Address"
+          placeholderTextColor="#000"
           onChangeText={(text) => this.setState({ clientAddress: text })}
           value={this.state.clientAddress}
           onBlur={this.validateclientAddress}

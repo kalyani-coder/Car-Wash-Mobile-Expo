@@ -9,6 +9,7 @@ import {
     ScrollView,
 
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from '@react-native-picker/picker';
 import moment from 'moment';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -54,6 +55,23 @@ class PromotionConfirmation extends React.Component {
 
     }
 
+    fetchClientData = async () => {
+        try {
+          const response = await fetch('https://car-wash-backend-api.onrender.com/api/clients');
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const clientData = await response.json();
+          this.setState({ clientData }); // Store client data in state
+        } catch (error) {
+          console.error('Error fetching client data:', error);
+        }
+      };
+    
+      componentDidMount() {
+        this.fetchClientData();
+      }
+    
 
 
     //for dropdown
@@ -110,12 +128,14 @@ class PromotionConfirmation extends React.Component {
 
         return isValid;
     };
-    handleSubmit = () => {
+    handleSubmit = async () => {
         if (this.validateFields()) {
             // Determine the values for pickuptoagent and selfdrive based on the selected option
-            const pickuptoagent = this.state.selectedOption === "pickup" ? "Yes" : "No";
-            const selfdrive = this.state.selectedOption === "selfdrive" ? "Yes" : "No";
-            const { pickupAddress, date, time, servicesName, status, price1 } = this.props.route.params;
+            const pickuptoagent = this.state.selectedOption === "pickup" ? "pickuptoagent" : "No";
+            const selfdrive = this.state.selectedOption === "selfdrive" ? "selfdrive" : "No";
+
+
+            const { pickupAddress, date, time, servicesName, price1 } = this.props.route.params;
             const { clientcarmodelno, clientvehicleno } = this.state;
             // const { serviceName, price1,  } = this.props.route.params;
             let selectedOptionValue = 0;
@@ -127,38 +147,58 @@ class PromotionConfirmation extends React.Component {
             const totalPrice = price1 + taxAmount + selectedOptionValue;
             const formattedDate = moment(date).format('DD-MM-YYYY');
             const formattedTime = moment(time).format('hh:mm A');
-            fetch('https://car-wash-backend-api.onrender.com/api/bookings', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    date: formattedDate,
-                    time: formattedTime,
-                    pickupAddress: pickupAddress,
-                    servicesName,
-                    totalPrice: totalPrice,
-                    status: "",
-                    agentId: "",
-                    clientcarmodelno: clientcarmodelno,
-                    clientvehicleno: clientvehicleno,
-                    pickuptoagent: pickuptoagent,
-                    selfdrive: selfdrive,
-                }),
+
+            try {
+        // Retrieve the user ID from AsyncStorage
+        const userId = await AsyncStorage.getItem('userId');
+
+        // Retrieve the selected client from the fetched client data
+        const selectedClient = this.state.clientData.find(client => client._id === userId);
+
+        if (selectedClient) {
+          // Make the booking API request with user ID, client ID, and client name
+          fetch('https://car-wash-backend-api.onrender.com/api/bookings', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              date: formattedDate,
+              time: formattedTime,
+              pickupAddress: pickupAddress,
+              servicesName,
+              totalPrice: totalPrice,
+              status: "",
+              agentId: "",
+              clientcarmodelno: clientcarmodelno,
+              clientvehicleno: clientvehicleno,
+              pickuptoagent: pickuptoagent,
+              selfdrive: selfdrive,
+              userId: userId,
+              clientId: selectedClient._id, // Include the client ID in the request
+              clientName: selectedClient.clientName,
+              clientContact: selectedClient.clientPhone,
+            }),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.json();
             })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    this.setState({ response: data });
-                    this.props.navigation.navigate('Confirm');
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+            .then((data) => {
+              this.setState({ response: data });
+              this.props.navigation.navigate('Confirm');
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+        } else {
+          console.error('Selected client not found in client data.');
+        }
+      } catch (error) {
+        console.error('Error retrieving user ID from AsyncStorage:', error);
+      }
         }
 
     };
@@ -195,6 +235,7 @@ class PromotionConfirmation extends React.Component {
                                     width: 360,
                                     backgroundColor: "white",
                                     marginVertical: 10,
+                                    borderRadius:8
                                 }}
                             >
                                 <View
@@ -217,6 +258,7 @@ class PromotionConfirmation extends React.Component {
                                     width: 360,
                                     backgroundColor: "white",
                                     marginVertical: 10,
+                                    borderRadius:8
                                 }}
                             >
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 15 }}>
@@ -233,6 +275,7 @@ class PromotionConfirmation extends React.Component {
                                     width: 360,
                                     backgroundColor: "white",
                                     marginVertical: 10,
+                                    borderRadius:8
                                 }}
                             >
 
@@ -283,7 +326,7 @@ class PromotionConfirmation extends React.Component {
                                 </Picker>
 
 
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center',marginTop:5,marginVertical: 5, }}>
                                     <Text style={{ fontWeight: 'bold' }}>
                                         {this.state.selectedOption === 'pickup' ? 'Pickup By Agent' : 'Self Drive'}
                                     </Text>
@@ -419,7 +462,7 @@ const styles = StyleSheet.create({
     input: {
         borderWidth: 1,
         borderColor: 'gray',
-        borderRadius: 2,
+        borderRadius:8,
         padding: 5,
         marginBottom: 5,
         backgroundColor: 'white',

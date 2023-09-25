@@ -44,7 +44,6 @@ class Confirmation extends React.Component {
       date: '',
       time: '',
       pickupAddress: '',
-
       clientvehicleno: '',
       clientcarmodelno: '',
       vehicleNumberError: '',
@@ -171,7 +170,8 @@ class Confirmation extends React.Component {
               selfdrive: selfdrive,
               userId: userId,
               clientId: selectedClient._id, // Include the client ID in the request
-              clientName: selectedClient.clientName, // Include the client name in the request
+              clientName: selectedClient.clientName,
+              clientContact: selectedClient.clientPhone,
             }),
           })
             .then((response) => {
@@ -196,10 +196,7 @@ class Confirmation extends React.Component {
 
     }
 
-
   };
-
-
 
   render() {
 
@@ -233,7 +230,7 @@ class Confirmation extends React.Component {
                   width: 360,
                   backgroundColor: "white",
                   marginVertical: 10,
-                  borderRadius:4
+                  borderRadius: 8
                 }}
               >
                 <View
@@ -245,9 +242,14 @@ class Confirmation extends React.Component {
                   }}
                 >
                   <MaterialCommunityIcons name="car-wash" size={35} color="black" />
-
-                  <Text>{servicesName}</Text>
-                  <Text>{price}</Text>
+                  <View>
+                    <Text style={{fontWeight:'bold'}}>Service Name</Text>
+                    <Text>{servicesName}</Text>
+                  </View>
+                  <View>
+                    <Text style={{fontWeight:'bold'}}>Price</Text>
+                    <Text>{price}</Text>
+                  </View>
 
                 </View>
               </View>
@@ -257,36 +259,46 @@ class Confirmation extends React.Component {
                   width: 360,
                   backgroundColor: "white",
                   marginVertical: 10,
-                  borderRadius:4
+                  borderRadius: 8
                 }}
               >
 
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 15 }}>
-                  <Text>{formattedDate}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-around', margin: 15 }}>
+                  <View>
+                    <Text style={{fontWeight:'bold'}}>Date</Text>
+                    <Text>{formattedDate}</Text>
+                  </View>
 
-                  <Text>{formattedTime}</Text>
+                  <View>
+                    <Text style={{fontWeight:'bold'}}>Time</Text>
+                    <Text>{formattedTime}</Text>
+                  </View>
+
                 </View>
 
               </View>
 
-              <Text>Pickup Address</Text>
+
               <View
                 style={{
-                  height: 50,
+                  height: 60,
                   width: 360,
                   backgroundColor: "white",
                   marginVertical: 10,
-                  borderRadius:4
+                  borderRadius: 8
                 }}
               >
-
-                <Text style={{ margin: 10 }}>{pickupAddress}</Text>
+                <View style={{flexDirection:'row',padding:10}}>
+                <Text style={{fontWeight:'bold'}}>Address: </Text>
+                <Text>{pickupAddress}</Text>
+                </View>
 
 
               </View>
-              <Text>Enter Vehicle Number<Text style={{ color: 'red' }}> *</Text></Text>
+              <Text style={{fontWeight:'bold'}}>Enter Vehicle Number<Text style={{ color: 'red' }}> *</Text></Text>
               <TextInput
                 placeholder="Vehicle Number"
+                placeholderTextColor="#000"
                 onChangeText={(text) => this.setState({ clientvehicleno: text })}
                 value={this.state.clientvehicleno}
                 style={styles.input}
@@ -294,10 +306,11 @@ class Confirmation extends React.Component {
               <Text style={styles.errorText}>{this.state.vehicleNumberError}</Text>
 
 
-              <Text>Enter Make/Model Number<Text style={{ color: 'red' }}> *</Text></Text>
+              <Text style={{fontWeight:'bold'}}>Enter Make/Model Number<Text style={{ color: 'red' }}> *</Text></Text>
 
               <TextInput
                 placeholder="Ex. Suzuki/Swift"
+                placeholderTextColor="#000"
                 onChangeText={(text) => this.setState({ clientcarmodelno: text })}
                 value={this.state.clientcarmodelno}
                 style={styles.input}
@@ -305,10 +318,10 @@ class Confirmation extends React.Component {
               <Text style={styles.errorText}>{this.state.modelNumberError}</Text>
 
 
-              <View>
-                <Text>Select an option:</Text>
+              <View style={styles.pickerContainer}>
+                <Text style={{fontWeight:'bold'}}>Select an option:</Text>
                 <Picker
-                  style={styles.picker}
+                  style={[styles.picker, { borderRadius: 8 }]}
                   selectedValue={this.state.selectedOption}
                   onValueChange={(itemValue) => {
                     this.setState({ selectedOption: itemValue }, () => {
@@ -325,19 +338,19 @@ class Confirmation extends React.Component {
                   <Picker.Item label="Self Drive" value="selfdrive" />
                 </Picker>
 
-
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ fontWeight: 'bold' }}>
-                    {this.state.selectedOption === 'pickup' ? 'Pickup By Agent' : 'Self Drive'}
-                  </Text>
-                  <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <Text style={{ fontWeight: 'bold' }}>
-                      {this.state.selectedOption === 'pickup' ? selectedOptionValue : '0'}
-                    </Text>
-                  </View>
-                </View>
-
               </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5, marginVertical: 5, }}>
+                <Text style={{ fontWeight: 'bold' }}>
+                  {this.state.selectedOption === 'pickup' ? 'Pickup By Agent' : 'Self Drive'}
+                </Text>
+                <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                  <Text style={{ fontWeight: 'bold' }}>
+                    {this.state.selectedOption === 'pickup' ? selectedOptionValue : '0'}
+                  </Text>
+                </View>
+              </View>
+
+
 
               <View style={styles.amount}>
                 <Text style={styles.text2}>TAXES</Text>
@@ -470,25 +483,33 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: 'gray',
-    borderRadius: 2,
+    borderRadius: 8,
     padding: 5,
     marginBottom: 5,
     backgroundColor: 'white',
     width: 360,
-    // marginHorizontal: 10
+    height: 60
+
   },
   errorText: {
     color: 'red',
 
   },
+  pickerContainer: {
+    
+    marginTop: 5, 
+    marginBottom: 10, 
+    borderRadius:8
+  },
   picker: {
     backgroundColor: 'white',
     fontWeight: 'bold',
+    borderRadius:8
   },
   selectedOptionText: {
     //  paddingLeft:20,
     fontWeight: 'bold',
-    marginTop: 5,
+    // marginTop: 5,
   },
 
   button: {
@@ -496,8 +517,8 @@ const styles = StyleSheet.create({
     height: 50,
     // width: 360,
     paddingTop: 10,
-    marginTop: 15,
-    borderRadius: 2,
+    // marginTop: 15,
+    borderRadius: 4,
   },
   buttonText: {
     color: "white",

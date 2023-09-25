@@ -188,7 +188,7 @@ class Topservice extends React.Component {
                         <View style={styles.about}>
                             <Text style={styles.text2}>About</Text>
                             <Text>{description}</Text>
-                            <Text>{price}</Text>
+                            {/* <Text>{price}</Text> */}
 
                             
                         </View>
