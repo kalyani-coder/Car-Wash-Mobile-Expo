@@ -1,65 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  
 } from 'react-native';
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Button as PaperButton, Text as PaperText, Provider as PaperProvider } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      phoneNumber: '',
-      phoneNumberError: '',
-      apiResponse: [],
-    };
-  }
+const Login = ({ navigation }) => {
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumberError, setPhoneNumberError] = useState('');
+  const [apiResponse, setApiResponse] = useState([]);
 
-  componentDidMount() {
-    // Fetch the client's phone number from your API here
-    this.props.navigation.addListener('focus', () => {
-      this.fetchAPIResponse();
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchAPIResponse();
     });
-  }
 
-  fetchAPIResponse = async () => {
+    return unsubscribe;
+  }, [navigation]);
+
+  const fetchAPIResponse = async () => {
     try {
-      // Make an API request to fetch data
-      const response = await fetch('https://car-wash-backend-api.onrender.com/api/clients');
+      const response = await fetch(
+        'https://car-wash-backend-api.onrender.com/api/clients'
+      );
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-
-      // Set the API response object in the state
-      this.setState({ apiResponse: data });
+      setApiResponse(data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
 
-  handlePhoneNumberChange = (text) => {
-    // Remove non-numeric characters from the input
+  const handlePhoneNumberChange = (text) => {
     const numericValue = text.replace(/[^0-9]/g, '');
 
-    // Limit the input to 10 characters
-    if (numericValue.length > 10) {
-      return;
+    if (numericValue.length <= 10) {
+      setPhoneNumber(numericValue);
+      setPhoneNumberError('');
     }
-
-    // Update the state with the validated input
-    this.setState({ phoneNumber: numericValue, phoneNumberError: '' });
   };
 
-  handleLogin = async () => {
-    const { phoneNumber, apiResponse } = this.state;
-
-    // Reset error message
-    this.setState({ phoneNumberError: '' });
+  const handleLogin = async () => {
+    setPhoneNumberError('');
 
     if (phoneNumber.length === 10) {
       const user = apiResponse.find(
@@ -67,75 +55,67 @@ class Login extends React.Component {
       );
 
       if (user) {
-        // Valid phone number, navigate to OTP screen
         const generatedOTP = Math.floor(1000 + Math.random() * 9000);
 
-        // Store user data in AsyncStorage
         try {
           await AsyncStorage.setItem('userId', user._id);
-          // await AsyncStorage.setItem('phoneNumber', this.state.clientPhone);
         } catch (error) {
           console.error('Error storing user data:', error);
         }
 
-        this.props.navigation.navigate('Otp', {
+        navigation.navigate('Otp', {
           phoneNumber,
           generatedOTP,
         });
       } else {
-        this.setState({ phoneNumberError: '* Phone number not found' });
+        setPhoneNumberError('* Phone number not found');
       }
     } else {
-      this.setState({ phoneNumberError: '* Phone number should be 10 digits' });
+      setPhoneNumberError('* Phone number should be 10 digits');
     }
   };
 
-  handleIconPressSignup = () => {
-    this.props.navigation.navigate('Signup'); // Navigate to the Signup screen
+  const handleIconPressSignup = () => {
+    navigation.navigate('Signup');
   };
 
-  render() {
-    const { phoneNumber, phoneNumberError } = this.state;
+  return (
+    <>
+      <View style={styles.container}>
+        <Text style={styles.name}>Enter Your Phone Number</Text>
+        <TextInput
+          style={styles.textBox}
+          placeholder="Phone Number"
+          placeholderTextColor='#000'
+          onChangeText={handlePhoneNumberChange}
+          value={phoneNumber}
+          keyboardType={'numeric'}
+          maxLength={10}
+        />
+        {phoneNumberError !== '' && (
+          <Text style={styles.errorText}>{phoneNumberError}</Text>
+        )}
 
-    return (
-      <>
-        <View style={styles.container}>
-          <Text style={styles.name}>Enter your phone number</Text>
-          <TextInput
-            style={styles.textBox}
-            placeholder="Enter Phone Number"
-            onChangeText={this.handlePhoneNumberChange}
-            value={phoneNumber}
-            keyboardType={'numeric'}
-            maxLength={10}
-          />
-          {phoneNumberError !== '' && (
-            <Text style={styles.errorText}>{phoneNumberError}</Text>
-          )}
+        <PaperButton style={styles.button} onPress={handleLogin}>
+          <PaperText  style={styles.buttonText}>Continue</PaperText>
+        </PaperButton>
 
-          <TouchableOpacity style={styles.button} onPress={this.handleLogin}>
-            <Text style={styles.buttonText}>Continue</Text>
+        <Text style={styles.sign}>By signing up, you agree to GoGoRide's </Text>
+
+        <TouchableOpacity>
+          <Text style={styles.service}>Terms of Service and Privacy Policy</Text>
+        </TouchableOpacity>
+
+        <View style={styles.account}>
+          <Text style={styles.text}>Don't have an account? </Text>
+          <TouchableOpacity onPress={handleIconPressSignup}>
+            <Text style={styles.login}>Sign Up</Text>
           </TouchableOpacity>
-
-          <Text style={styles.sign}>
-            By signing up, you agree to GoGoRide's{' '}
-          </Text>
-
-          <TouchableOpacity>
-            <Text style={styles.service}>Terms of Service and Privacy Policy</Text>
-          </TouchableOpacity>
-
-          <View style={styles.account}>
-            <Text style={styles.text}>Don't have an account? </Text>
-            <TouchableOpacity onPress={this.handleIconPressSignup}>
-              <Text style={styles.login}>Sign Up</Text>
-            </TouchableOpacity>
-          </View>
         </View>
-      </>
-    );
-  }
-}
+      </View>
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -153,6 +133,7 @@ const styles = StyleSheet.create({
   textBox: {
     borderColor: 'grey',
     backgroundColor: 'white',
+    borderRadius:6,
     borderWidth: 2,
     padding: 10,
     marginHorizontal: 30,
@@ -161,14 +142,14 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#5B7586',
     height: 50,
-    paddingTop: 10,
+    paddingTop: 5,
     marginHorizontal: 30,
     marginTop: 15,
     borderRadius: 4,
   },
   buttonText: {
-    color: 'white',
-    fontSize: 16,
+    color: '#000',
+    fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
   },

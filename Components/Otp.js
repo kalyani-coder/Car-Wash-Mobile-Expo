@@ -1,139 +1,93 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Button,
+} from 'react-native';
 
-} from 'react-native'
+const Otp = ({ route, navigation }) => {
+  // Define state variables using the useState hook
+  const [enteredOTP, setEnteredOTP] = useState('');
+  const [otpError, setOtpError] = useState('');
+  const [generatedOTP1, setGeneratedOTP1] = useState('');
+  const { generatedOTP } = route.params;
 
-//*********************** 
-//**********************
-// #f7db03 YELLOW
-//#006b51 DARK GREEN
-//#c4fcf7 FAINT GREEN
-// #659b9c MADIUM GREEN
+  useEffect(() => {
+    generateOTP();
+  }, []);
 
-
-class Otp extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      enteredOTP: '',
-      OtpError:'',
-      generatedOTP1: '',
-    };
-  }
-  componentDidMount() {
-    this.generateOTP();
-  }
-
-  // generateOTP = () => {
-  //   // Generate a random 4-digit OTP
-   
-  //   const generatedOTP1= Math.floor(1000 + Math.random() * 9000);
-  //   this.setState({ generatedOTP1});
-  // };
-
-  // handleResendOTP = () => {
-  //   // Regenerate OTP and enable Resend button
-  //   this.generateOTP();
-  // };
-  handleResendOTP = () => {
-    // Regenerate OTP and enable Resend button
-    const newOTP = this.generateOTP();
-    this.setState({ generatedOTP1: newOTP });
+  // Function to generate a random 4-digit OTP
+  const generateOTP = () => {
+    const newOTP = Math.floor(1000 + Math.random() * 9000).toString();
+    setGeneratedOTP1(newOTP);
   };
 
-  generateOTP = () => {
-    // Generate a random 4-digit OTP
-    return Math.floor(1000 + Math.random() * 9000).toString();
-  };
-  handleVerifyOTP = () => {
-    const { generatedOTP } = this.props.route.params;
-   
-    const { enteredOTP,generatedOTP1} = this.state;
+  // Function to handle OTP verification
+  const handleVerifyOTP = () => {
+    const { generatedOTP } = route.params;
 
     if (enteredOTP === generatedOTP.toString() || enteredOTP === generatedOTP1.toString()) {
-      // OTP verification successful, navigate to next screen
-      // Replace 'NextScreen' with the actual name of the next screen
-      this.props.navigation.navigate('Home');
+      // OTP verification successful, navigate to the next screen
+      navigation.navigate('Home');
     } else {
-      // Show an error message or alert about incorrect OTP
-      this.setState({ OtpError: 'Enter The Correct OTP' });
-
+      // Show an error message for incorrect OTP
+      setOtpError('Enter the correct OTP');
     }
-  }
-  render() {
-    const { phoneNumber,generatedOTP } = this.props.route.params;
-    const {  OtpError,generatedOTP1 } = this.state;
-   
-    return (
-      <>
-        {/* <Text>Enter OTP sent to {phoneNumber}</Text> */}
-        <View style={styles.container}>
-       
-        <Text>Generated OTP: {generatedOTP}</Text> 
-        <Text>ReGenerated OTP: {this.state.generatedOTP1}</Text>
- 
+  };
+
+  return (
+    <>
+      <View style={styles.container}>
+      <Text style={styles.generatedOTP}>Generated OTP: {generatedOTP}</Text>
+      <Text style={styles.generatedOTP}>Regenerated OTP: {generatedOTP1}</Text>
         
         <Text style={styles.log}>Verify OTP</Text>
 
-       
+        <Text style={styles.name}>Enter OTP</Text>
+        <TextInput
+          style={styles.textBox}
+          placeholder="Enter OTP"
+          placeholderTextColor='#000'
+          keyboardType={'numeric'}
+          maxLength={6}
+          onChangeText={text => setEnteredOTP(text)}
+        />
+        {otpError !== '' && <Text style={styles.errorText}>{otpError}</Text>}
 
-          <Text style={styles.name}>Enter OTP</Text>
-          <TextInput
-            style={styles.textBox}
-            placeholder="Enter OTP"
-            keyboardType={'numeric'}
-            maxLength={6}
-            onChangeText={enteredOTP => this.setState({ enteredOTP })}
-            >
-          </TextInput>
-          {OtpError !== '' && <Text style={styles.errorText}>{OtpError}</Text>}
+        <TouchableOpacity style={styles.button} onPress={handleVerifyOTP}>
+          <Text style={styles.buttonText}>Verify</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button} onPress={this.handleVerifyOTP}>
-            <Text style={styles.buttonText}>Verify</Text>
-          </TouchableOpacity>
+        <TouchableOpacity onPress={generateOTP}>
+          <Text style={styles.service}>Resend OTP?</Text>
+        </TouchableOpacity>
 
-          
-          <TouchableOpacity onPress={this.handleResendOTP}>
-            <Text style={styles.service}>Resend OTP ?</Text>
-          </TouchableOpacity>
+        <Text style={{ textAlign: 'center', paddingTop: 30,marginHorizontal:20 }}>
+          By signing up, you agree to GoGoRide's Terms of Service and Privacy Policy
+        </Text>
 
-
-          <Text style={{ textAlign: 'center', paddingTop: 30 }}>By signing up,you agree to GoGoRide's Terms of</Text>
-
-          <TouchableOpacity>
-            <Text style={styles.service}>Service and Privacy Policy</Text>
-          </TouchableOpacity>
-          
-          <View style={styles.account}>
-          <Text style={styles.text}>Already had an account? </Text>
+        {/* <View style={styles.account}>
+          <Text style={styles.text}>Already have an account? </Text>
           <TouchableOpacity>
             <Text style={styles.login}>Log in</Text>
           </TouchableOpacity>
-          </View>
-
-        </View>
-      </>
-    );
-  }
-
-}
+        </View> */}
+      </View>
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
-  container:{
-    paddingTop:40,
-    flex:1,
-    backgroundColor:'#a7a7a7'
+  container: {
+    paddingTop: 40,
+    flex: 1,
+    backgroundColor: '#a7a7a7',
   },
   log: {
     textAlign: 'center',
     fontSize: 25,
-    // fontWeight: 'bold',
     paddingTop: 50,
     paddingBottom: 50,
   },
@@ -146,6 +100,7 @@ const styles = StyleSheet.create({
   textBox: {
     borderColor: 'grey',
     backgroundColor: 'white',
+    borderRadius:6,
     borderWidth: 2,
     padding: 10,
     marginHorizontal: 30,
@@ -160,8 +115,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   buttonText: {
-    color: 'white',
-    fontSize: 16,
+    color: '#000',
+    fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -173,21 +128,22 @@ const styles = StyleSheet.create({
     color: 'blue',
     textDecorationLine: 'underline',
     textAlign: 'center',
-    marginVertical:5
+    marginVertical: 5,
   },
-  account:{
-    flexDirection:'row',
-    marginTop:200,
-    marginHorizontal:90,
+  account: {
+    flexDirection: 'row',
+    marginTop: 200,
+    marginHorizontal: 90,
   },
-  text:{
-    textAlign:'center',
-    fontSize:15
+  text: {
+    textAlign: 'center',
+    fontSize: 15,
   },
-  login:{
-    color:'blue',
-    textDecorationLine:'underline',
-    fontSize:15
-  }
-})
+  login: {
+    color: 'blue',
+    textDecorationLine: 'underline',
+    fontSize: 15,
+  },
+});
+
 export default Otp;
