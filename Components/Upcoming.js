@@ -7,28 +7,41 @@ import {
     Linking,
     ScrollView
 } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from 'moment';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { EvilIcons } from '@expo/vector-icons';
+
 
 const Upcoming = ({ navigation }) => {
     const [data, setData] = useState([]);
     const currentTime = new Date();
 
     useEffect(() => {
-        // Make an API request to fetch data and update the state
-        fetch('https://car-wash-backend-api.onrender.com/api/bookings/clientId/65087fb78514ae2843142d73')
-            .then((response) => response.json())
-            .then((data) => {
-                setData(data);
+        // Retrieve the user's ID from AsyncStorage
+        AsyncStorage.getItem('userId')
+            .then((userId) => {
+                if (userId) {
+                    // Make an API request to fetch data for the user's ID
+                    fetch(`https://car-wash-backend-api.onrender.com/api/bookings/clientId/${userId}`)
+                        .then((response) => response.json())
+                        .then((data) => {
+                            // Filter the data based on status
+                            const filteredData = data.filter(item => item.status === 'Accepted' || item.status === 'Pending');
+                            setData(filteredData);
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                        });
+                }
             })
             .catch((error) => {
-                console.error(error);
+                console.error('Error retrieving user ID:', error);
             });
     }, []);
+    
 
     const handleIconPressNotification = () => {
         navigation.navigate('Notification');
@@ -56,13 +69,16 @@ const Upcoming = ({ navigation }) => {
 
     return (
         <>
-            <View style={styles.flex}>
+            <View style={styles.header}>
                 <ScrollView
                     Vertical={true}
                     showsVerticalScrollIndicator={false}
+                    style={{flex:1}}
                 >
+                    <View style={styles.container}>
                     {data.map((item) => (
-                        <View key={item.id} style={styles.card}>
+                        <View key={item._id} style={styles.card}>
+                            {/* console.log('Item ID:', item.id);  */}
                             <View style={styles.wash}>
                                 <Text style={styles.date}>{moment(item.date).format('D MMM')}</Text>
                                 <View>
@@ -70,8 +86,8 @@ const Upcoming = ({ navigation }) => {
                                     <Text>{item.totalPrice}</Text>
                                 </View>
                                 <Text style={item.status === 'Accepted' ? styles.confirmedStatus : styles.pendingStatus}>
-  {item.status === 'Accepted' ? 'Confirmed' : 'Pending'}
-</Text>
+                                    {item.status }
+                                </Text>
 
                             </View>
                             <Text style={styles.clock}>Time:{item.time}</Text>
@@ -89,6 +105,7 @@ const Upcoming = ({ navigation }) => {
                             </View>
                         </View>
                     ))}
+                    </View>
                 </ScrollView>
 
                 <View style={styles.footer}>
@@ -134,21 +151,26 @@ const Upcoming = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    flex: {
+    header: {
         flex: 1,
-        justifyContent: 'space-between',
-        flexDirection: 'column',
-        marginHorizontal: 5,
         backgroundColor: '#a7a7a7',
     },
+    container:{
+        justifyContent: 'space-between',
+        flexDirection: 'column',
+        width: '100%',
+        
+    },
     card: {
+       
         height: 180,
-        width: 370,
+        // width: '100%',
         backgroundColor: 'white',
         borderWidth: 2,
         borderColor: 'white',
         margin: 5,
         padding: 10,
+      
     },
     info: {
         flex: 1,
@@ -188,9 +210,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 4,
         color: '#000', // Text color for Confirmed
-      },
-    
-      pendingStatus: {
+    },
+
+    pendingStatus: {
         backgroundColor: 'orange',
         borderRadius: 20,
         width: 80,
@@ -198,7 +220,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 4,
         color: '#000', // Text color for Pending
-      },
+    },
     btntext: {
         textAlign: 'center',
         margin: 4,
@@ -206,6 +228,7 @@ const styles = StyleSheet.create({
     clock: {
         flexDirection: 'row',
         marginHorizontal: 20,
+        
     },
     button: {
         flexDirection: 'row',
@@ -230,30 +253,34 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         margin: 8,
     },
+  
     footer: {
-        position: 'fixed',
+        position: 'relative',
+        backgroundColor: "#fff",
         bottom: 0,
         left: 0,
         right: 0,
-        padding: 5,
+        padding: 10,
         alignItems: 'center',
-    },
-    add: {
+        zIndex: 2,
+      },
+      add: {
         flexDirection: 'row',
         marginBottom: 15,
+     
     },
-    iconsContainer1: {
-        flexDirection: 'row',
-    },
-    icon4: {
+      iconsContainer1: {
+        flexDirection: "row",
+      },
+      icon4: {
         marginHorizontal: 20,
-    },
-    text9: {
+      },
+      text9: {
         alignItems: 'center',
-    },
-    text10: {
+      },
+      text10: {
         fontSize: 10,
-    },
+      },
 });
 
 export default Upcoming;

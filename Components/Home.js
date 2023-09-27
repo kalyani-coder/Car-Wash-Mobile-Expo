@@ -598,25 +598,32 @@ const styles = StyleSheet.create({
     marginRight: 20,
     padding: 10,
   },
-  text9: {
-    alignItems: "center",
-  },
+ 
+  
   footer: {
-    backgroundColor: "#a7a7a7",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    position: 'relative',
+    backgroundColor: "#fff",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 10,
+    alignItems: 'center',
+    zIndex: 2,
+    
   },
   iconsContainer1: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginHorizontal: 70,
-    marginVertical: 10,
+    alignItems:'center', 
+  },
+  text9: {
+    alignItems: "center",
   },
   text10: {
     fontSize: 10,
   },
   icon4: {
-    marginHorizontal: 15,
+    marginHorizontal: 20,
+   
   },
 });
 

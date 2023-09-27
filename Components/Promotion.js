@@ -273,7 +273,7 @@ const Promotion = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <View style={styles.footer}>
-        <View style={styles.iconsmainContainer1}>
+        <View style={styles.iconsContainer1}>
           <View style={styles.text9}>
             <TouchableOpacity onPress={handleIconPressHome}>
               <Entypo name="home" size={30} style={styles.icon4} />
@@ -306,6 +306,7 @@ const Promotion = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: '#a7a7a7'
   },
   text1: {
@@ -385,16 +386,24 @@ const styles = StyleSheet.create({
     margin: 5,
     paddingTop: 8
   },
+  item: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover'
+  },
   maincontainer: {
-    marginHorizontal: 15,
-    marginTop:20
+    // marginHorizontal: 15,
+    // marginTop:10
+    position:'relative'
   },
   button: {
+    position:'relative',
     backgroundColor: "#5B7586",
     height: 45,
     width: 360,
     paddingTop: 10,
-    marginTop: 15,
+    marginHorizontal: 15,
+    marginBottom: 10,
     borderRadius: 2,
   },
   buttonText: {
@@ -403,17 +412,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
+  
   footer: {
-    position: 'fixed',
+    position: 'relative',
+    backgroundColor: "#fff",
     bottom: 0,
     left: 0,
     right: 0,
-    padding: 5,
+    padding: 10,
     alignItems: 'center',
     zIndex: 2,
   },
-  iconsmainContainer1: {
-    flexDirection: 'row',
+  iconsContainer1: {
+    flexDirection: "row",
   },
   icon4: {
     marginHorizontal: 20,
@@ -424,11 +435,7 @@ const styles = StyleSheet.create({
   text10: {
     fontSize: 10,
   },
-  item: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover'
-  }
+ 
 });
 
 export default Promotion;

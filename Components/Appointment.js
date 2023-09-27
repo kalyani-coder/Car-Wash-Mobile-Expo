@@ -11,11 +11,13 @@ const Appointment = () => {
     <Tab.Navigator
       initialRouteName="Upcoming"
       screenOptions={{
-        // tabStyle: { width: 120 },
+        
         tabBarActiveTintColor: 'black',
-        tabBarInactiveTintColor: 'gray',
-        tabBarStyle: { backgroundColor: 'transparent' },
-        tabBarIndicatorStyle: { backgroundColor: 'yellow' },
+        tabBarInactiveTintColor: 'grey',
+        tabBarStyle: {
+          backgroundColor: '#fff', 
+        },
+        
       }}>
       <Tab.Screen name="Upcoming" component={Upcoming} options={{ tabBarLabel: 'Upcoming' }} />
       <Tab.Screen name="Completed" component={Completed} options={{ tabBarLabel: 'Completed' }} />

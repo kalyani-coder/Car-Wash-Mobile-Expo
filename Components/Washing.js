@@ -281,7 +281,7 @@ const Washing = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.footer}>
-                    <View style={styles.iconsmainContainer1}>
+                    <View style={styles.iconsContainer1}>
                         <View style={styles.text9}>
                             <TouchableOpacity onPress={handleIconPressHome}>
                                 <Entypo name="home" size={30} style={styles.icon4} />
@@ -370,43 +370,48 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     maincontainer: {
-        marginHorizontal: 15,
-    },
-    button: {
+        // marginHorizontal: 15,
+        // marginTop:10
+        position:'relative'
+      },
+      button: {
+        position:'relative',
         backgroundColor: "#5B7586",
         height: 45,
         width: 360,
-        borderRadius: 2,
+        paddingTop: 10,
+        marginHorizontal: 15,
         marginBottom: 10,
-    },
-    buttonText: {
+        borderRadius: 2,
+      },
+      buttonText: {
         color: "#000",
         fontSize: 16,
         fontWeight: "bold",
         textAlign: "center",
-        marginTop: 10,
-    },
+      },
     footer: {
-        position: 'fixed',
+        position: 'relative',
+        backgroundColor: "#fff",
         bottom: 0,
         left: 0,
         right: 0,
-        padding: 5,
+        padding: 10,
         alignItems: 'center',
         zIndex: 2,
-    },
-    iconsmainContainer1: {
-        flexDirection: 'row',
-    },
-    icon4: {
+      },
+      iconsContainer1: {
+        flexDirection: "row",
+      },
+      icon4: {
         marginHorizontal: 20,
-    },
-    text9: {
+      },
+      text9: {
         alignItems: 'center',
-    },
-    text10: {
+      },
+      text10: {
         fontSize: 10,
-    },
+      },
     item: {
         width: '100%',
         height: '100%',
