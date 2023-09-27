@@ -5,7 +5,8 @@ import {
     StyleSheet,
     TouchableOpacity,
     Linking,
-    ScrollView
+    ScrollView,
+    Alert
 } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from 'moment';
@@ -15,30 +16,74 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
 
-const Cancled = ({ navigation }) => {
+const Canceled = ({ navigation }) => {
     const [data, setData] = useState([]);
     const currentTime = new Date();
 
-    useEffect(() => {
-        // Retrieve the user's ID from AsyncStorage
-        AsyncStorage.getItem('userId')
-            .then((userId) => {
-                if (userId) {
-                    // Make an API request to fetch data for the user's ID
-                    fetch(`https://car-wash-backend-api.onrender.com/api/bookings/clientId/${userId}/status/Declined`)
-                        .then((response) => response.json())
-                        .then((data) => {
-                            setData(data);
-                        })
-                        .catch((error) => {
-                            console.error(error);
-                        });
+    const fetchData = async () => {
+        try {
+            const userId = await AsyncStorage.getItem('userId');
+            if (userId) {
+                const response = await fetch(`https://car-wash-backend-api.onrender.com/api/bookings/clientId/${userId}/status/Declined`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setData(data);
+                } else {
+                    console.error('Failed to fetch data');
                 }
-            })
-            .catch((error) => {
-                console.error('Error retrieving user ID:', error);
-            });
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        // Initial data fetch
+        fetchData();
+
+        // Polling interval (e.g., every 5 seconds)
+        const pollingInterval = setInterval(() => {
+            fetchData();
+        }, 5000); // Adjust the interval as needed
+
+        // Cleanup the interval on component unmount
+        return () => clearInterval(pollingInterval);
     }, []);
+
+    const handleCancelAppointment = (appointmentId) => {
+        Alert.alert(
+            'Confirm Cancellation',
+            'Are you sure you want to cancel this appointment?',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Confirm',
+                    onPress: () => {
+                        // Make a DELETE request to the API to cancel the appointment
+                        fetch(`https://car-wash-backend-api.onrender.com/api/bookings/${appointmentId}`, {
+                            method: 'DELETE',
+                        })
+                            .then((response) => {
+                                if (response.ok) {
+                                    // Appointment was successfully canceled
+                                    // Remove the canceled appointment from the local state
+                                    const updatedData = data.filter((item) => item._id !== appointmentId);
+                                    setData(updatedData);
+                                } else {
+                                    console.error('Failed to cancel appointment');
+                                }
+                            })
+                            .catch((error) => {
+                                console.error('Error canceling appointment:', error);
+                            });
+                    },
+                },
+            ]
+        );
+    };
 
     const handleIconPressNotification = () => {
         navigation.navigate('Notification');
@@ -53,7 +98,7 @@ const Cancled = ({ navigation }) => {
     };
 
     const handleIconPressBook = () => {
-        props.navigation.navigate('Appointment');
+        navigation.navigate('Appointment');
     };
 
     const openSettings = async () => {
@@ -70,38 +115,40 @@ const Cancled = ({ navigation }) => {
                 <ScrollView
                     Vertical={true}
                     showsVerticalScrollIndicator={false}
-                    style={{flex:1}}
+                    style={{ flex: 1 }}
                 >
                     <View style={styles.container}>
-                    {data.map((item) => (
-                        <View key={item._id} style={styles.card}>
-                            {/* console.log('Item ID:', item.id);  */}
-                            <View style={styles.wash}>
-                                <Text style={styles.date}>{moment(item.date).format('D MMM')}</Text>
-                                <View>
-                                    <Text>{item.servicesName}</Text>
-                                    <Text>{item.totalPrice}</Text>
-                                </View>
-                                <Text style={{backgroundColor:'red'}}>
-                                    {item.status}
-                                </Text>
+                        {data.map((item) => (
+                            <View key={item._id} style={styles.card}>
+                                {/* console.log('Item ID:', item.id);  */}
+                                <View style={styles.wash}>
+                                    <Text style={styles.date}>{moment(item.date).format('D MMM')}</Text>
+                                    <View>
+                                        <Text>{item.servicesName}</Text>
+                                        <Text>{item.totalPrice}</Text>
+                                    </View>
+                                    <Text style={{ backgroundColor: 'red' }}>
+                                        {item.status}
+                                    </Text>
 
+                                </View>
+                                <Text style={styles.clock}>Time:{item.time}</Text>
+                                <View style={styles.button}>
+                                    <TouchableOpacity
+                                        style={styles.btn1}
+                                    >
+                                        <Text style={styles.buttontext}>Reschedule</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={styles.btn2}
+                                        onPress={() => handleCancelAppointment(item._id)} // Pass the appointment ID to the handler
+                                    >
+                                        <Text style={styles.buttontext}>Cancel</Text>
+                                    </TouchableOpacity>
+
+                                </View>
                             </View>
-                            <Text style={styles.clock}>Time:{item.time}</Text>
-                            <View style={styles.button}>
-                                <TouchableOpacity
-                                    style={styles.btn1}
-                                >
-                                    <Text style={styles.buttontext}>Reschedule</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    style={styles.btn2}
-                                >
-                                    <Text style={styles.buttontext}>Cancel</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    ))}
+                        ))}
                     </View>
                 </ScrollView>
 
@@ -152,22 +199,18 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#a7a7a7',
     },
-    container:{
+    container: {
         justifyContent: 'space-between',
         flexDirection: 'column',
         width: '100%',
-        
     },
     card: {
-       
         height: 180,
-        // width: '100%',
         backgroundColor: 'white',
         borderWidth: 2,
         borderColor: 'white',
         margin: 5,
         padding: 10,
-      
     },
     info: {
         flex: 1,
@@ -199,24 +242,14 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 4,
     },
-    confirmedStatus: {
+    status: {
         backgroundColor: 'green',
         borderRadius: 20,
         width: 80,
         height: 30,
         textAlign: 'center',
         padding: 4,
-        color: '#000', // Text color for Confirmed
-    },
-
-    pendingStatus: {
-        backgroundColor: 'orange',
-        borderRadius: 20,
-        width: 80,
-        height: 30,
-        textAlign: 'center',
-        padding: 4,
-        color: '#000', // Text color for Pending
+        color: '#000',
     },
     btntext: {
         textAlign: 'center',
@@ -225,7 +258,6 @@ const styles = StyleSheet.create({
     clock: {
         flexDirection: 'row',
         marginHorizontal: 20,
-        
     },
     button: {
         flexDirection: 'row',
@@ -250,7 +282,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         margin: 8,
     },
-  
     footer: {
         position: 'relative',
         backgroundColor: "#fff",
@@ -260,24 +291,22 @@ const styles = StyleSheet.create({
         padding: 10,
         alignItems: 'center',
         zIndex: 2,
-      },
-      add: {
+    },
+    add: {
         flexDirection: 'row',
         marginBottom: 15,
-     
     },
-      iconsContainer1: {
+    iconsContainer1: {
         flexDirection: "row",
-      },
-      icon4: {
+    },
+    icon4: {
         marginHorizontal: 20,
-      },
-      text9: {
+    },
+    text9: {
         alignItems: 'center',
-      },
-      text10: {
+    },
+    text10: {
         fontSize: 10,
-      },
+    },
 });
-
-export default Cancled;
+export default Canceled;

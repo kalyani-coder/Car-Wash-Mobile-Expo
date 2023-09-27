@@ -22,6 +22,20 @@ const Login = ({ navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
+  useEffect(() => {
+    // Check if a user ID is stored in AsyncStorage
+    AsyncStorage.getItem('userId')
+      .then((userId) => {
+        if (userId) {
+          // If the user is already registered, navigate to the Home page
+          navigation.navigate('Home');
+        }
+      })
+      .catch((error) => {
+        console.error('Error checking AsyncStorage:', error);
+      });
+  }, [navigation]);
+
   const fetchAPIResponse = async () => {
     try {
       const response = await fetch(
@@ -49,6 +63,7 @@ const Login = ({ navigation }) => {
   const handleLogin = async () => {
     setPhoneNumberError('');
 
+
     if (phoneNumber.length === 10) {
       const user = apiResponse.find(
         (element) => element.clientPhone === parseInt(phoneNumber)
@@ -74,6 +89,8 @@ const Login = ({ navigation }) => {
       setPhoneNumberError('* Phone number should be 10 digits');
     }
   };
+
+ 
 
   const handleIconPressSignup = () => {
     navigation.navigate('Signup');
