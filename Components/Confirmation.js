@@ -8,6 +8,7 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
+import { Appearance } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from '@react-native-picker/picker';
 import moment from 'moment';
@@ -43,6 +44,7 @@ const Confirmation = ({ route, navigation }) => {
   
   const [selectedOption, setSelectedOption] = useState('pickup');
   const [clientData, setClientData] = useState([]);
+  const colorScheme = Appearance.getColorScheme();
  
 
   useEffect(() => {
@@ -189,9 +191,14 @@ const Confirmation = ({ route, navigation }) => {
   const formattedDate = moment(date).format('DD-MM-YYYY');
   const formattedTime = moment(time).format('hh:mm A');
 
+  const commonStyles = {
+    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+    color: colorScheme === 'dark' ? '#fff' : '#000',
+  };
+
   return (
     <>
-      <View style={styles.header}>
+      <View style={[styles.header,commonStyles]}>
         <ScrollView
           Vertical={true}
           showsVerticalScrollIndicator={false}
@@ -265,7 +272,7 @@ const Confirmation = ({ route, navigation }) => {
             <TextInput
               placeholder="Vehicle Number"
               placeholderTextColor="#000"
-              onChangeText={(text) => setClientVehicleNo(text)}
+              onChangeText={(text) => setClientVehicleNo(text.toUpperCase())}
               value={clientvehicleno}
               style={styles.input}
             />
@@ -274,7 +281,7 @@ const Confirmation = ({ route, navigation }) => {
             <TextInput
               placeholder="Ex. Suzuki/Swift"
               placeholderTextColor="#000"
-              onChangeText={(text) => setClientCarModelNo(text)}
+              onChangeText={(text) => setClientCarModelNo(text.toUpperCase())}
               value={clientcarmodelno}
               style={styles.input}
             />
@@ -321,7 +328,7 @@ const Confirmation = ({ route, navigation }) => {
             </View>
           </View>
         </ScrollView>
-        <View style={styles.container}>
+        <View style={styles.maincontainer}>
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Confirm Booking</Text>
           </TouchableOpacity>

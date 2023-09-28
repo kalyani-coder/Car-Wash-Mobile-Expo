@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
     View,
     Text,
@@ -11,6 +11,7 @@ import {
     Dimensions,
     PixelRatio,
 } from 'react-native';
+import { Appearance } from 'react-native';
 import { useRoute } from "@react-navigation/native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -33,6 +34,8 @@ function Booknow(props) {
     const [showPicker, setShowPicker] = useState(false);
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
     const [time, setTime] = useState(new Date());
+    const [reviews, setReviews] = useState([]);
+const colorScheme = Appearance.getColorScheme();
     const [errors, setErrors] = useState({
         pickupAddress: '',
         totalPrice: ''
@@ -158,7 +161,21 @@ function Booknow(props) {
             console.error('Error opening settings:', error);
         }
     };
+    useEffect(() => {
+        fetch('https://car-wash-backend-api.onrender.com/api/reviews')
+            .then((response) => response.json())
+            .then((data) => {
+                setReviews(data);
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
 
+const commonStyles = {
+    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+    color: colorScheme === 'dark' ? '#fff' : '#000',
+  };
     // Get current date
     const currentDate = moment();
     const formattedDate = currentDate.format('D MMM');
@@ -167,7 +184,7 @@ function Booknow(props) {
 
     return (
         <>
-            <View style={styles.container}>
+            <View style={[styles.container,commonStyles]}>
                 <ScrollView
                     Vertical={true}
                     showsVerticalScrollIndicator={false}
@@ -185,54 +202,13 @@ function Booknow(props) {
                         <View style={styles.sees}></View>
                     </View>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                        <View style={{ height: 150, width: 300, backgroundColor: 'white', marginHorizontal: 20 }}>
-                            <View style={styles.review}>
-                                <View style={styles.icons}>
-                                    <AntDesign name="contacts" size={35} color="black" backgroundColor="white" margin={4} />
-                                    <Text style={styles.text3}>Mr Xyz</Text>
-                                    <View style={styles.icon}>
-                                        {[1, 2, 3, 4, 5].map((index) => (
-                                            <TouchableOpacity
-                                                key={index}
-                                                onPress={() => handleStarPress(index)}
-                                                style={styles.starmainContainer}
-                                            >
-                                                <Entypo
-                                                    name="star"
-                                                    size={20}
-                                                    color={index <= selectedStars ? 'yellow' : 'gray'}
-                                                />
-                                            </TouchableOpacity>
-                                        ))}
-                                    </View>
-                                </View>
-                                <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempore alias eum deserunt recusandae ex rerum qui rem.</Text>
+                    {reviews.map((review) => (
+                            <View key={review._id} style={styles.reviewCard}>
+                                {/* Review content goes here */}
+                                <Text style={styles.reviewText}>{review.message}</Text>
                             </View>
-                        </View>
-                        <View style={{ height: 150, width: 300, backgroundColor: 'white', marginHorizontal: 20 }}>
-                            <View style={styles.review}>
-                                <View style={styles.icons}>
-                                    <AntDesign name="contacts" size={35} color="black" backgroundColor="white" margin={4} />
-                                    <Text style={styles.text3}>Mr Xyz</Text>
-                                    <View style={styles.icon}>
-                                        {[1, 2, 3, 4, 5].map((index) => (
-                                            <TouchableOpacity
-                                                key={index}
-                                                onPress={() => handleStarPress(index)}
-                                                style={styles.starmainContainer}
-                                            >
-                                                <Entypo
-                                                    name="star"
-                                                    size={20}
-                                                    color={index <= selectedStars ? 'yellow' : 'gray'}
-                                                />
-                                            </TouchableOpacity>
-                                        ))}
-                                    </View>
-                                </View>
-                                <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempore alias eum deserunt recusandae ex rerum qui rem.</Text>
-                            </View>
-                        </View>
+                        ))}
+
                     </ScrollView>
                     <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address
                         <Text style={{ color: 'red' }}> *</Text>
@@ -297,7 +273,7 @@ function Booknow(props) {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.footer}>
-                    <View style={styles.iconsContainer1}>
+                    <View style={styles.maincontainer}>
                         <View style={styles.text9}>
                             <TouchableOpacity onPress={handleIconPressHome}>
                                 <Entypo name="home" size={30} style={styles.icon4} />
@@ -355,6 +331,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
     },
+    reviewCard: {
+        width: 300,
+        height: 150,
+        backgroundColor: 'white',
+        marginHorizontal: 20,
+        marginVertical: 10, // Add vertical margin to separate cards
+        padding: 10,
+        borderRadius: 10,
+        borderColor: '#ccc',
+        borderWidth: 1,
+    },
+    reviewText: {
+        fontSize: 16,
+    },
     icons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -384,50 +374,50 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         flexDirection: 'row',
         justifyContent: 'space-between',
-    },
-    maincontainer: {
-        // marginHorizontal: 15,
-        // marginTop:10
-        position:'relative'
-      },
-      button: {
-        position:'relative',
-        backgroundColor: "#5B7586",
-        height: 45,
-        width: 360,
-        paddingTop: 10,
-        marginHorizontal: 15,
-        marginBottom: 10,
-        borderRadius: 2,
-      },
-      buttonText: {
-        color: "#000",
-        fontSize: 16,
-        fontWeight: "bold",
-        textAlign: "center",
-      },
-    footer: {
-        position: 'relative',
-        backgroundColor: "#fff",
-        bottom: 0,
-        left: 0,
-        right: 0,
-        padding: 10,
-        alignItems: 'center',
-        zIndex: 2,
-      },
-      iconsContainer1: {
-        flexDirection: "row",
-      },
-      icon4: {
-        marginHorizontal: 20,
-      },
-      text9: {
-        alignItems: 'center',
-      },
-      text10: {
-        fontSize: 10,
-      },
+  },
+  maincontainer: {
+    // marginHorizontal: 15,
+    // marginTop:10
+    position: 'relative'
+},
+button: {
+    position: 'relative',
+    backgroundColor: "#5B7586",
+    height: 45,
+    width: 360,
+    paddingTop: 10,
+    marginHorizontal: 15,
+    marginBottom: 10,
+    borderRadius: 2,
+},
+buttonText: {
+    color: "#000",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+},
+footer: {
+    position: 'relative',
+    backgroundColor: "#fff",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 10,
+    alignItems: 'center',
+    zIndex: 2,
+},
+iconsContainer1: {
+    flexDirection: "row",
+},
+icon4: {
+    marginHorizontal: 20,
+},
+text9: {
+    alignItems: 'center',
+},
+text10: {
+    fontSize: 10,
+},
 });
 
 export default Booknow;

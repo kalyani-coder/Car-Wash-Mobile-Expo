@@ -9,7 +9,11 @@ import {
   Linking,
   TextInput,
   Modal,
+
 } from "react-native";
+import { Appearance } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -36,13 +40,52 @@ function Home(props) {
   const [promotions, setPromotions] = useState([]);
   const [myFetchedData, setMyFetchedData] = useState([]);
   const [homeOffers, setHomeOffers] = useState([]);
+  const colorScheme = Appearance.getColorScheme();
+  const [upcomingdata, setupcomingData] = useState([]);
 
   useEffect(() => {
     callApiOffers();
     callApiPromotion();
     callApiService();
     fetchservices();
+
   }, []);
+
+  useEffect(() => {
+    // Initial data fetch
+    fetchData();
+
+    // Polling interval (e.g., every 5 seconds)
+    const pollingInterval = setInterval(() => {
+      fetchData();
+    }, 5000); // Adjust the interval as needed
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(pollingInterval);
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const userId = await AsyncStorage.getItem('userId');
+      if (userId) {
+        const response = await fetch(
+          `https://car-wash-backend-api.onrender.com/api/bookings/clientId/${userId}`
+        );
+        if (response.ok) {
+          const allData = await response.json();
+
+          // Filter the data based on status
+          const filteredData = allData.filter(item => item.status === 'Accepted' || item.status === '');
+
+          setupcomingData(filteredData);
+        } else {
+          console.error('Failed to fetch data');
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   async function callApiOffers() {
     const apiUrl = 'https://car-wash-backend-api.onrender.com/api/homeoffers';
@@ -189,25 +232,19 @@ function Home(props) {
     }
   }
 
-  // for time
-  // const formattedTime = formatTime(currentTime);
-  // const { selectedDate, showPicker } = this.state;
-  // const { selectedTime, isDatePickerVisible } = this.state;
-  // const { services } = this.state;
-  // const { isSearchBarOpen, searchText } = this.state;
-  // const { myFetchedData } = this.state;
-  // const { servicesData } = this.state;
-
-  // const { data } = this.state;
+  const commonStyles = {
+    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+    color: colorScheme === 'dark' ? '#fff' : '#000',
+  };
 
   if (servicesData.length === 0) {
     return <Text>Loading...</Text>;
   }
-  
+
 
   return (
     <>
-      <View style={styles.header}>
+      <View style={[styles.header, commonStyles]}>
         <View style={styles.container1}>
           <Text style={styles.text}>Hello</Text>
           <View style={styles.iconsContainer}>
@@ -290,47 +327,42 @@ function Home(props) {
             </View>
           </ScrollView>
           <Text style={styles.text4}>Upcoming Booking</Text>
-          <View style={{ height: 100, width: 350, backgroundColor: "#F2F3F4", marginHorizontal: 20 }}>
-            <View style={styles.booking}>
-              <Ionicons name="car-sharp" size={40} color="black" margin={4} />
-              <Text style={styles.carwash}>Car Wash:car 1</Text>
-              <TouchableOpacity style={styles.btn3}>
-                <Text style={styles.btntext}>Pending</Text>
-              </TouchableOpacity>
+          
+            <View style={styles.containerBooking}>
+            <ScrollView
+      horizontal={true} // Enable horizontal scrolling
+      showsHorizontalScrollIndicator={false} // Hide horizontal scroll bar
+      style={{flex:1}}
+      
+    >
+              {upcomingdata.map((item) => (
+                <View key={item._id} style={styles.cardBooking}>
+                  {/* console.log('Item ID:', item.id);  */}
+                  <View style={styles.washBooking}>
+                    <Text style={styles.dateBooking}>
+                      {moment(item.date).format('D MMM')}
+                    </Text>
+                    <View>
+                      <Text>{item.servicesName}</Text>
+                      <Text>{item.totalPrice}</Text>
+                    </View>
+                    <Text
+                      style={
+                        item.status === 'Accepted'
+                          ? styles.confirmedStatus
+                          : styles.pendingStatus
+                      }
+                    >
+                      {item.status == '' ? 'Pending' : item.status}
+                    </Text>
+                  </View>
+                  <Text style={styles.clockBooking}>Time:{item.time}</Text>
+                </View>
+              ))}
+              </ScrollView>
             </View>
-            <View style={styles.clocktime}>
-              <View style={styles.clock}>
-                <TouchableOpacity onPress={showDatePicker}>
-                  <EvilIcons name="clock" size={22} color="black" />
-                </TouchableOpacity>
-                {selectedTime && (
-                  <Text>{(formatTime(selectedTime)) || "8:30"}</Text>
-                )}
-                <DateTimePickerModal
-                  isVisible={isDatePickerVisible}
-                  mode="time"
-                  onConfirm={handleDateConfirm}
-                  onCancel={hideDatePicker}
-                />
-              </View>
-              <View style={styles.time}>
-                <TouchableOpacity onPress={() => setShowPicker(true)}>
-                  <AntDesign name="calendar" size={24} color="black" />
-                </TouchableOpacity>
-                {showPicker && (
-                  <DateTimePicker
-                    value={selectedDate}
-                    mode="date"
-                    display="default"
-                    onChange={handleDateChange}
-                  />
-                )}
-                {selectedDate && (
-                  <Text> {selectedDate.toLocaleDateString()}</Text>
-                )}
-              </View>
-            </View>
-          </View>
+            
+            
           <View style={styles.promotion1}>
             <Text style={styles.text5}>Promotions</Text>
           </View>
@@ -505,6 +537,57 @@ const styles = StyleSheet.create({
   servicePrice: {
     color: 'green',
   },
+  containerBooking: {
+    // justifyContent: 'space-between',
+    flexDirection: 'row',
+    width: 360
+  },
+  cardBooking: {
+    height: 100,
+    width: 340,
+    backgroundColor: 'white',
+    borderRadius:8,
+    borderWidth: 2,
+    borderColor: 'white',
+    // margin: 5,
+    padding: 8,
+    marginHorizontal: 20,
+  },
+  info: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  washBooking: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+    // marginVertical: 15,
+  },
+  dateBooking: {
+    height: 70,
+    width: 55,
+    backgroundColor: 'white',
+    fontSize: 16,
+    padding: 5,
+  },
+  confirmedStatus: {
+    backgroundColor: 'green',
+    borderRadius: 20,
+    width: 80,
+    height: 30,
+    textAlign: 'center',
+    padding: 4,
+    color: '#000', // Text color for Confirmed
+  },
+  pendingStatus: {
+    backgroundColor: 'orange',
+    borderRadius: 20,
+    width: 80,
+    height: 30,
+    textAlign: 'center',
+    padding: 4,
+    color: '#000', // Text color for Pending
+  },
   wash: {
     fontSize: 15,
     margin: 10,
@@ -515,6 +598,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 15,
   },
+
   booking: {
     flexDirection: "row",
     margin: 3,
@@ -598,8 +682,8 @@ const styles = StyleSheet.create({
     marginRight: 20,
     padding: 10,
   },
- 
-  
+
+
   footer: {
     position: 'relative',
     backgroundColor: "#fff",
@@ -609,11 +693,11 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'center',
     zIndex: 2,
-    
+
   },
   iconsContainer1: {
     flexDirection: "row",
-    alignItems:'center', 
+    alignItems: 'center',
   },
   text9: {
     alignItems: "center",
@@ -623,7 +707,7 @@ const styles = StyleSheet.create({
   },
   icon4: {
     marginHorizontal: 20,
-   
+
   },
 });
 

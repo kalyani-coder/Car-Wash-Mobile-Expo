@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
     View,
     Text,
@@ -9,6 +9,7 @@ import {
     TextInput,
     Image
 } from 'react-native';
+import { Appearance } from 'react-native';
 import { useRoute } from "@react-navigation/native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -31,6 +32,8 @@ const Topservice = ({ route, navigation }) => {
     const [date, setDate] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
     const [time, setTime] = useState(new Date());
+    const [reviews, setReviews] = useState([]);
+    const colorScheme = Appearance.getColorScheme();
     const [errors, setErrors] = useState({
         pickupAddress: '',
         totalPrice: ''
@@ -127,12 +130,28 @@ const Topservice = ({ route, navigation }) => {
         }
     };
 
+    useEffect(() => {
+        fetch('https://car-wash-backend-api.onrender.com/api/reviews')
+            .then((response) => response.json())
+            .then((data) => {
+                setReviews(data);
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
+
     const currentDate = moment();
     const formattedDate = currentDate.format('D MMM');
 
+
+    const commonStyles = {
+        // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+        color: colorScheme === 'dark' ? '#fff' : '#000',
+      };
     return (
         <>
-            <View style={styles.container}>
+            <View style={[styles.container,commonStyles]}>
                 <ScrollView
                     Vertical={true}
                     showsVerticalScrollIndicator={false}
@@ -157,54 +176,13 @@ const Topservice = ({ route, navigation }) => {
                     </View>
 
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                        <View style={{ height: 150, width: 300, backgroundColor: 'white', marginHorizontal: 20 }}>
-                            <View style={styles.review}>
-                                <View style={styles.icons}>
-                                    <AntDesign name="contacts" size={35} color="black" backgroundColor="white" margin={4} />
-                                    <Text style={styles.text3}>Mr Xyz</Text>
-                                    <View style={styles.icon}>
-                                        {[1, 2, 3, 4, 5].map((index) => (
-                                            <TouchableOpacity
-                                                key={index}
-                                                onPress={() => handleStarPress(index)}
-                                                style={styles.starmainContainer}
-                                            >
-                                                <Entypo
-                                                    name="star"
-                                                    size={20}
-                                                    color={index <= selectedStars ? 'yellow' : 'gray'}
-                                                />
-                                            </TouchableOpacity>
-                                        ))}
-                                    </View>
-                                </View>
-                                <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempore alias eum deserunt recusandae ex rerum qui rem.</Text>
+                    {reviews.map((review) => (
+                            <View key={review._id} style={styles.reviewCard}>
+                                {/* Review content goes here */}
+                                <Text style={styles.reviewText}>{review.message}</Text>
                             </View>
-                        </View>
-                        <View style={{ height: 150, width: 300, backgroundColor: 'white', marginHorizontal: 20 }}>
-                            <View style={styles.review}>
-                                <View style={styles.icons}>
-                                    <AntDesign name="contacts" size={35} color="black" backgroundColor="white" margin={4} />
-                                    <Text style={styles.text3}>Mr Xyz</Text>
-                                    <View style={styles.icon}>
-                                        {[1, 2, 3, 4, 5].map((index) => (
-                                            <TouchableOpacity
-                                                key={index}
-                                                onPress={() => handleStarPress(index)}
-                                                style={styles.starmainContainer}
-                                            >
-                                                <Entypo
-                                                    name="star"
-                                                    size={20}
-                                                    color={index <= selectedStars ? 'yellow' : 'gray'}
-                                                />
-                                            </TouchableOpacity>
-                                        ))}
-                                    </View>
-                                </View>
-                                <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempore alias eum deserunt recusandae ex rerum qui rem.</Text>
-                            </View>
-                        </View>
+                        ))}
+
                     </ScrollView>
 
                     <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address<Text style={{ color: 'red' }}> *</Text></Text>
@@ -327,6 +305,20 @@ const styles = StyleSheet.create({
     sees: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
+    },
+    reviewCard: {
+        width: 300,
+        height: 150,
+        backgroundColor: 'white',
+        marginHorizontal: 20,
+        marginVertical: 10, // Add vertical margin to separate cards
+        padding: 10,
+        borderRadius: 10,
+        borderColor: '#ccc',
+        borderWidth: 1,
+    },
+    reviewText: {
+        fontSize: 16,
     },
     icons: {
         flexDirection: 'row',

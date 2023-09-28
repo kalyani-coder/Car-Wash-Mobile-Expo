@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { Appearance } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Signup = ({ navigation }) => {
@@ -8,6 +9,7 @@ const Signup = ({ navigation }) => {
   const [clientPhone, setClientPhone] = useState('');
   const [clientAddress, setClientAddress] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const colorScheme = Appearance.getColorScheme();
   const [errors, setErrors] = useState({
     clientName: '',
     clientEmail: '',
@@ -114,8 +116,12 @@ const Signup = ({ navigation }) => {
     return Object.keys(errors).length === 0;
   };
 
+  const commonStyles = {
+    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+    color: colorScheme === 'dark' ? '#fff' : '#000',
+  };
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,commonStyles]}>
       <Text style={styles.header}>Sign Up</Text>
   
       {/* Full Name */}

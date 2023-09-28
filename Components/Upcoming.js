@@ -8,6 +8,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
+import { Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import { Entypo } from '@expo/vector-icons';
@@ -17,6 +18,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 const Upcoming = ({ navigation }) => {
   const [data, setData] = useState([]);
+  const colorScheme = Appearance.getColorScheme();
   const currentTime = new Date();
 
   const fetchData = async () => {
@@ -30,7 +32,7 @@ const Upcoming = ({ navigation }) => {
             const allData = await response.json();
         
             // Filter the data based on status
-            const filteredData = allData.filter(item => item.status === 'Accepted' || item.status === 'Pending');
+            const filteredData = allData.filter(item => item.status === 'Accepted' || item.status === '');
             
             setData(filteredData);
         } else {
@@ -119,9 +121,14 @@ const Upcoming = ({ navigation }) => {
     }
   };
 
+  const commonStyles = {
+    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+    color: colorScheme === 'dark' ? '#fff' : '#000',
+  };
+
   return (
     <>
-      <View style={styles.header}>
+      <View style={[styles.header,commonStyles]}>
         <ScrollView
           Vertical={true}
           showsVerticalScrollIndicator={false}
@@ -146,10 +153,13 @@ const Upcoming = ({ navigation }) => {
                         : styles.pendingStatus
                     }
                   >
-                    {item.status}
+                    {item.status==''? 'Pending':item.status}
                   </Text>
                 </View>
+               
                 <Text style={styles.clock}>Time:{item.time}</Text>
+               
+                
                 <View style={styles.button}>
                   <TouchableOpacity style={styles.btn1}>
                     <Text style={styles.buttontext}>Reschedule</Text>
@@ -293,6 +303,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: 20,
   },
+
   button: {
     flexDirection: 'row',
     justifyContent: 'space-between',

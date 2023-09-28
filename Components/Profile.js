@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Appearance } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
+import { faUser, faEnvelope, faPhone, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = ({ navigation }) => {
-  // Define user state using the useState hook
   const [user, setUser] = useState(null);
+  const colorScheme = Appearance.getColorScheme();
 
   useEffect(() => {
     loadUserData();
   }, []);
 
-  // Function to load user data from AsyncStorage
   const loadUserData = async () => {
     try {
-      // Retrieve the user ID from AsyncStorage
       const userId = await AsyncStorage.getItem('userId');
 
       if (userId) {
-        // Fetch user data from your API using the user ID
         const response = await fetch(`https://car-wash-backend-api.onrender.com/api/clients/${userId}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -27,7 +25,6 @@ const Profile = ({ navigation }) => {
         const userData = await response.json();
         setUser(userData);
       } else {
-        // Handle the case where the user ID is not found in AsyncStorage
         console.error('User ID not found in AsyncStorage');
       }
     } catch (error) {
@@ -35,12 +32,9 @@ const Profile = ({ navigation }) => {
     }
   };
 
-  // Function to handle user logout
   const handleLogout = async () => {
-    // Clear AsyncStorage
     try {
       await AsyncStorage.clear();
-      // Navigate to the Login screen
       navigation.navigate('Login');
     } catch (error) {
       console.error('Error clearing AsyncStorage:', error);
@@ -50,44 +44,39 @@ const Profile = ({ navigation }) => {
   if (!user) {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Loading...</Text>
+        <Text style={styles.loadingText}>Loading...</Text>
       </View>
     );
   }
-
+  const commonStyles = {
+    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+    color: colorScheme === 'dark' ? '#fff' : '#000',
+  };
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Profile</Text>
-
-      <View style={{ alignItems: 'center' }}>
-        <FontAwesomeIcon icon={faUser} size={30} color="#02ccfe" />
+    <View style={[styles.container,commonStyles]}>
+      <View style={styles.header}>
+        <Text style={styles.headingText}>Profile</Text>
       </View>
 
-      <View style={styles.infoContainer}>
-        <Text>Name</Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text>{user.clientName}</Text>
+      <View style={styles.infoCard}>
+        <View style={styles.iconContainer}>
+          <FontAwesomeIcon icon={faUser} size={30} color="#02ccfe" />
+          <Text style={styles.infoText}>{user.clientName}</Text>
         </View>
-      </View>
 
-      <View style={styles.infoContainer}>
-        <Text>Phone</Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text>{user.clientPhone}</Text>
+        <View style={styles.iconContainer}>
+          <FontAwesomeIcon icon={faPhone} size={30} color="#02ccfe" />
+          <Text style={styles.infoText}>{user.clientPhone}</Text>
         </View>
-      </View>
 
-      <View style={styles.infoContainer}>
-        <Text>Email</Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text>{user.clientEmail}</Text>
+        <View style={styles.iconContainer}>
+          <FontAwesomeIcon icon={faEnvelope} size={30} color="#02ccfe" />
+          <Text style={styles.infoText}>{user.clientEmail}</Text>
         </View>
-      </View>
 
-      <View style={styles.infoContainer}>
-        <Text>Address</Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text>{user.clientAddress}</Text>
+        <View style={styles.iconContainer}>
+          <FontAwesomeIcon icon={faMapMarkerAlt} size={30} color="#02ccfe" />
+          <Text style={styles.infoText}>{user.clientAddress}</Text>
         </View>
       </View>
 
@@ -101,21 +90,34 @@ const Profile = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 20,
     paddingTop: 40,
+    backgroundColor: '#f0f0f0',
   },
-  text: {
+  header: {
+    // backgroundColor: '#02ccfe',
+     color:'blue',
+    paddingVertical: 20,
+  },
+  headingText: {
     fontSize: 30,
     color: '#02ccfe',
     textAlign: 'center',
     fontWeight: 'bold',
   },
-  infoContainer: {
-    height: 70,
-    width: 360,
-    backgroundColor: "#F2F3F4",
-    marginVertical: 10,
-    padding: 10,
+  infoCard: {
+    backgroundColor: '#fff',
+    margin: 20,
+    borderRadius: 10,
+    padding: 20,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  infoText: {
+    fontSize: 18,
+    marginLeft: 10,
   },
   logoutButton: {
     backgroundColor: "#FF5733",
@@ -127,9 +129,15 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   logoutText: {
-    color: '#000',
-    fontSize: 16,
+    color: '#fff',
+    fontSize: 18,
     fontWeight: 'bold',
+  },
+  loadingText: {
+    fontSize: 20,
+    color: '#000',
+    textAlign: 'center',
+    marginTop: 50,
   },
 });
 

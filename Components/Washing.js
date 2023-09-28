@@ -9,6 +9,7 @@ import {
     TextInput,
     Image
 } from 'react-native';
+import { Appearance } from 'react-native';
 import { useRoute } from "@react-navigation/native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -32,6 +33,9 @@ const Washing = ({ navigation }) => {
     const [showPicker, setShowPicker] = useState(false);
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
     const [time, setTime] = useState(new Date());
+    const [reviews, setReviews] = useState([]);
+    const colorScheme = Appearance.getColorScheme();
+
     const [errors, setErrors] = useState({
         pickupAddress: '',
         totalPrice: ''
@@ -146,17 +150,33 @@ const Washing = ({ navigation }) => {
         }
     };
 
+    useEffect(() => {
+        fetch('https://car-wash-backend-api.onrender.com/api/reviews')
+            .then((response) => response.json())
+            .then((data) => {
+                setReviews(data);
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
+
+
     // Route parameters
     const route = useRoute();
     const { serviceName, serviceDescription, servicePrice } = route.params;
+    const commonStyles = {
+        // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+        color: colorScheme === 'dark' ? '#fff' : '#000',
+      };
 
     return (
         <>
-            <View style={styles.container}>
+            <View style={[styles.container,commonStyles]}>
                 <ScrollView
                     Vertical={true}
                     showsVerticalScrollIndicator={false}
-                    style={{flex:1}}
+                    style={{ flex: 1 }}
                 >
                     <Text style={styles.text1}>{serviceName}</Text>
                     <View style={{ height: 133, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
@@ -171,54 +191,14 @@ const Washing = ({ navigation }) => {
                         <View style={styles.sees}></View>
                     </View>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                        <View style={{ height: 150, width: 300, backgroundColor: 'white', marginHorizontal: 20 }}>
-                            <View style={styles.review}>
-                                <View style={styles.icons}>
-                                    <AntDesign name="contacts" size={35} color="black" backgroundColor="white" margin={4} />
-                                    <Text style={styles.text3}>Mr Xyz</Text>
-                                    <View style={styles.icon}>
-                                        {[1, 2, 3, 4, 5].map((index) => (
-                                            <TouchableOpacity
-                                                key={index}
-                                                onPress={() => handleStarPress(index)}
-                                                style={styles.starmainContainer}
-                                            >
-                                                <Entypo
-                                                    name="star"
-                                                    size={20}
-                                                    color={index <= selectedStars ? 'yellow' : 'gray'}
-                                                />
-                                            </TouchableOpacity>
-                                        ))}
-                                    </View>
-                                </View>
-                                <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempore alias eum deserunt recusandae ex rerum qui rem.</Text>
+                        {reviews.map((review) => (
+                            <View key={review._id} style={styles.reviewCard}>
+                                {/* Review content goes here */}
+                                <Text style={styles.reviewText}>{review.message}</Text>
                             </View>
-                        </View>
-                        <View style={{ height: 150, width: 300, backgroundColor: 'white', marginHorizontal: 20 }}>
-                            <View style={styles.review}>
-                                <View style={styles.icons}>
-                                    <AntDesign name="contacts" size={35} color="black" backgroundColor="white" margin={4} />
-                                    <Text style={styles.text3}>Mr Xyz</Text>
-                                    <View style={styles.icon}>
-                                        {[1, 2, 3, 4, 5].map((index) => (
-                                            <TouchableOpacity
-                                                key={index}
-                                                onPress={() => handleStarPress(index)}
-                                                style={styles.starmainContainer}
-                                            >
-                                                <Entypo
-                                                    name="star"
-                                                    size={20}
-                                                    color={index <= selectedStars ? 'yellow' : 'gray'}
-                                                />
-                                            </TouchableOpacity>
-                                        ))}
-                                    </View>
-                                </View>
-                                <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempore alias eum deserunt recusandae ex rerum qui rem.</Text>
-                            </View>
-                        </View>
+                        ))}
+
+
                     </ScrollView>
                     <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address<Text style={{ color: 'red' }}> *</Text></Text>
                     <TextInput
@@ -315,7 +295,7 @@ const Washing = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
+        flex: 1,
         backgroundColor: '#a7a7a7',
     },
     text1: {
@@ -338,6 +318,20 @@ const styles = StyleSheet.create({
     sees: {
         flexDirection: 'row',
         justifyContent: 'flex-end',
+    },
+    reviewCard: {
+        width: 300,
+        height: 150,
+        backgroundColor: 'white',
+        marginHorizontal: 20,
+        marginVertical: 10, // Add vertical margin to separate cards
+        padding: 10,
+        borderRadius: 10,
+        borderColor: '#ccc',
+        borderWidth: 1,
+    },
+    reviewText: {
+        fontSize: 16,
     },
     icons: {
         flexDirection: 'row',
@@ -372,10 +366,10 @@ const styles = StyleSheet.create({
     maincontainer: {
         // marginHorizontal: 15,
         // marginTop:10
-        position:'relative'
-      },
-      button: {
-        position:'relative',
+        position: 'relative'
+    },
+    button: {
+        position: 'relative',
         backgroundColor: "#5B7586",
         height: 45,
         width: 360,
@@ -383,13 +377,13 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         marginBottom: 10,
         borderRadius: 2,
-      },
-      buttonText: {
+    },
+    buttonText: {
         color: "#000",
         fontSize: 16,
         fontWeight: "bold",
         textAlign: "center",
-      },
+    },
     footer: {
         position: 'relative',
         backgroundColor: "#fff",
@@ -399,19 +393,19 @@ const styles = StyleSheet.create({
         padding: 10,
         alignItems: 'center',
         zIndex: 2,
-      },
-      iconsContainer1: {
+    },
+    iconsContainer1: {
         flexDirection: "row",
-      },
-      icon4: {
+    },
+    icon4: {
         marginHorizontal: 20,
-      },
-      text9: {
+    },
+    text9: {
         alignItems: 'center',
-      },
-      text10: {
+    },
+    text10: {
         fontSize: 10,
-      },
+    },
     item: {
         width: '100%',
         height: '100%',

@@ -9,6 +9,7 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
+import { Appearance } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from '@react-native-picker/picker';
 import moment from 'moment';
@@ -39,6 +40,7 @@ const TopserviceConfirmation = ({ route, navigation }) => {
   const [clientcarmodelno, setClientCarModelNo] = useState('');
   const [vehicleNumberError, setVehicleNumberError] = useState('');
   const [modelNumberError, setModelNumberError] = useState('');
+  const colorScheme = Appearance.getColorScheme();
  
   const [selectedOption, setSelectedOption] = useState('pickup');
   const [clientData, setClientData] = useState([]);
@@ -190,9 +192,14 @@ const taxAmount = price1 * 0.10;
   const formattedDate = moment(date).format('DD-MM-YYYY');
   const formattedTime = moment(time).format('hh:mm A');
 
+  const commonStyles = {
+    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+    color: colorScheme === 'dark' ? '#fff' : '#000',
+  };
+
   return (
     <>
-      <View style={styles.header}>
+      <View style={[styles.header,commonStyles]}>
         <ScrollView
           Vertical={true}
           showsVerticalScrollIndicator={false}
@@ -266,7 +273,7 @@ const taxAmount = price1 * 0.10;
             <TextInput
               placeholder="Vehicle Number"
               placeholderTextColor="#000"
-              onChangeText={(text) => setClientVehicleNo(text)}
+              onChangeText={(text) => setClientVehicleNo(text.toUpperCase())}
               value={clientvehicleno}
               style={styles.input}
             />
@@ -275,7 +282,7 @@ const taxAmount = price1 * 0.10;
             <TextInput
               placeholder="Ex. Suzuki/Swift"
               placeholderTextColor="#000"
-              onChangeText={(text) => setClientCarModelNo(text)}
+              onChangeText={(text) => setClientCarModelNo(text.toUpperCase())}
               value={clientcarmodelno}
               style={styles.input}
             />

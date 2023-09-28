@@ -6,21 +6,29 @@ import {
   TouchableOpacity,
   Linking,
 } from "react-native";
+import { Appearance } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const Confirm = ({ navigation }) => {
+  const colorScheme = Appearance.getColorScheme();
   const handleIconPressContinue = () => {
     navigation.navigate('Home'); // Navigate to the home screen
   };
 
+  const commonStyles = {
+    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+    color: colorScheme === 'dark' ? '#fff' : '#000',
+  };
   return (
     <>
+    <View style={{commonStyles}}>
       <View style={styles.icon}>
         <Ionicons name="checkmark-done-circle-outline" size={80} color="black"/>
         <Text style={styles.text}>Done</Text>
         <TouchableOpacity style={styles.button} onPress={handleIconPressContinue}>
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
+      </View>
       </View>
     </>
   );

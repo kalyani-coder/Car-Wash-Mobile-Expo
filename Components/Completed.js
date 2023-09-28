@@ -8,6 +8,7 @@ import {
     ScrollView,
     Alert
 } from 'react-native';
+import { Appearance } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from 'moment';
 import { Entypo } from '@expo/vector-icons';
@@ -18,6 +19,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 const Completed = ({ navigation }) => {
     const [data, setData] = useState([]);
+    const colorScheme = Appearance.getColorScheme();
     const currentTime = new Date();
 
     const fetchData = async () => {
@@ -100,6 +102,9 @@ const Completed = ({ navigation }) => {
     const handleIconPressBook = () => {
         navigation.navigate('Appointment');
     };
+    const handlePress = () => {
+        navigation.navigate('Review'); 
+      };
 
     const openSettings = async () => {
         try {
@@ -109,9 +114,14 @@ const Completed = ({ navigation }) => {
         }
     };
 
+    const commonStyles = {
+        // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+        color: colorScheme === 'dark' ? '#fff' : '#000',
+      };
+
     return (
         <>
-            <View style={styles.header}>
+            <View style={[styles.header,commonStyles]}>
                 <ScrollView
                     Vertical={true}
                     showsVerticalScrollIndicator={false}
@@ -132,7 +142,14 @@ const Completed = ({ navigation }) => {
                                     </Text>
 
                                 </View>
+
+                                <View style={{flexDirection: 'row', justifyContent: 'space-between',  marginVertical: 10,marginHorizontal:10}}>
                                 <Text style={styles.clock}>Time:{item.time}</Text>
+                                 <TouchableOpacity style={styles.reviews} onPress={handlePress}>
+                                    <Text style={{padding:4,textAlign:'center'}}>Add Review</Text>
+                                    </TouchableOpacity>
+                                 </View>
+
                                 <View style={styles.button}>
                                     <TouchableOpacity
                                         style={styles.btn1}
@@ -203,6 +220,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'column',
         width: '100%',
+        // marginVertical:10
     },
     card: {
         height: 180,
@@ -211,6 +229,7 @@ const styles = StyleSheet.create({
         borderColor: 'white',
         margin: 5,
         padding: 10,
+        // marginVertical:10
     },
     info: {
         flex: 1,
@@ -220,7 +239,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginHorizontal: 20,
-        marginVertical: 15,
+        // marginVertical: 5,
     },
     date: {
         height: 70,
@@ -259,6 +278,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginHorizontal: 20,
     },
+    reviews:{
+        width: 100,
+        height: 30,
+        borderRadius: 4,
+        backgroundColor:'skyblue',
+        textAlign:'center'
+      },
     button: {
         flexDirection: 'row',
         justifyContent: 'space-between',

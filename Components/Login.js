@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import { Appearance } from 'react-native';
 import { Button as PaperButton, Text as PaperText, Provider as PaperProvider } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -13,6 +14,7 @@ const Login = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneNumberError, setPhoneNumberError] = useState('');
   const [apiResponse, setApiResponse] = useState([]);
+  const colorScheme = Appearance.getColorScheme();
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -95,10 +97,13 @@ const Login = ({ navigation }) => {
   const handleIconPressSignup = () => {
     navigation.navigate('Signup');
   };
-
+  const commonStyles = {
+    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+    color: colorScheme === 'dark' ? '#fff' : '#000',
+  };
   return (
     <>
-      <View style={styles.container}>
+      <View style={[styles.container,commonStyles]}>
         <Text style={styles.name}>Enter Your Phone Number</Text>
         <TextInput
           style={styles.textBox}
