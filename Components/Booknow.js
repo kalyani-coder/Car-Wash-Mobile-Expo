@@ -12,6 +12,8 @@ import {
     PixelRatio,
 } from 'react-native';
 import { Appearance } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useRoute } from "@react-navigation/native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -202,12 +204,26 @@ const commonStyles = {
                         <View style={styles.sees}></View>
                     </View>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                    {reviews.map((review) => (
+                        {reviews.map((review) => (
                             <View key={review._id} style={styles.reviewCard}>
-                                {/* Review content goes here */}
+                                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5,justifyContent:'space-between'  }}>
+                                    {/* <Text style={{ marginRight: 5 }}>{review.rating}</Text> */}
+                                    <Text style={{fontWeight:'bold'}}>{review.clientName}</Text>
+                                    <View style={{ flexDirection: 'row'}}>
+                                        {Array.from({ length: 5 }).map((_, index) => (
+                                            <FontAwesomeIcon
+                                                key={index}
+                                                icon={faStar}
+                                                size={20}
+                                                color={index < review.rating ? '#DAA520' : 'black'}
+                                            />
+                                        ))}
+                                    </View>
+                                </View>
                                 <Text style={styles.reviewText}>{review.message}</Text>
                             </View>
                         ))}
+
 
                     </ScrollView>
                     <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address
@@ -332,7 +348,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     reviewCard: {
-        width: 300,
+        width: 350,
         height: 150,
         backgroundColor: 'white',
         marginHorizontal: 20,

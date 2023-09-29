@@ -36,7 +36,8 @@ const Confirm = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   header:{
-backgroundColor:'#D8D8D8'
+    flex:1,
+    backgroundColor:'#D8D8D8'
   },
   icon: {
     paddingTop: 250,

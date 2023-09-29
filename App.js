@@ -25,8 +25,6 @@ import Topservice from './Components/Topservice';
 import Topserviceconfirmation from './Components/Topserviceconfirmation';
 import Review from './Components/Review';
 import Editprofile from './Components/Editprofile';
-// 
-
 
 const Stack = createStackNavigator();
 
@@ -75,9 +73,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 30,
-  
+    height:'100%'
   },
 });
-
 export default App;
 

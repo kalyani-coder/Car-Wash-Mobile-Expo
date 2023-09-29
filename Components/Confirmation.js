@@ -212,6 +212,8 @@ const Confirmation = ({ route, navigation }) => {
                 backgroundColor: "white",
                 marginVertical: 10,
                 borderRadius: 8,
+                borderWidth:1,
+                borderColor:'black'
               }}
             >
               <View
@@ -239,6 +241,8 @@ const Confirmation = ({ route, navigation }) => {
                 backgroundColor: "white",
                 marginVertical: 10,
                 borderRadius: 8,
+                borderWidth:1,
+                borderColor:'black'
               }}
             >
               <View style={{ flexDirection: 'row', justifyContent: 'space-around', margin: 15 }}>
@@ -261,6 +265,8 @@ const Confirmation = ({ route, navigation }) => {
                 backgroundColor: "white",
                 marginVertical: 10,
                 borderRadius: 8,
+                borderWidth:1,
+                borderColor:'black'
               }}
             >
               <View style={{ flexDirection: 'row', padding: 10 }}>
@@ -333,6 +339,7 @@ const Confirmation = ({ route, navigation }) => {
             <Text style={styles.buttonText}>Confirm Booking</Text>
           </TouchableOpacity>
         </View>
+
         <View style={styles.footer}>
           <View style={styles.iconsContainer1}>
             <View style={styles.text9}>
@@ -421,7 +428,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: 'black',
     borderRadius: 8,
     padding: 5,
     marginBottom: 5,

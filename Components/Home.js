@@ -543,14 +543,14 @@ const styles = StyleSheet.create({
     width: 360
   },
   cardBooking: {
-    height: 100,
+    height: 140,
     width: 340,
     backgroundColor: 'white',
     borderRadius:8,
     borderWidth: 2,
     borderColor: 'white',
     // margin: 5,
-    padding: 8,
+    padding: 10,
     marginHorizontal: 20,
   },
   info: {
@@ -561,6 +561,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 20,
+    marginBottom:15
     // marginVertical: 15,
   },
   dateBooking: {

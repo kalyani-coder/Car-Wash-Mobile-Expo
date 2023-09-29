@@ -213,6 +213,8 @@ const taxAmount = price1 * 0.10;
                 backgroundColor: "white",
                 marginVertical: 10,
                 borderRadius: 8,
+                borderWidth:1,
+                borderColor:'black'
               }}
             >
               <View
@@ -240,6 +242,8 @@ const taxAmount = price1 * 0.10;
                 backgroundColor: "white",
                 marginVertical: 10,
                 borderRadius: 8,
+                borderWidth:1,
+                borderColor:'black'
               }}
             >
               <View style={{ flexDirection: 'row', justifyContent: 'space-around', margin: 15 }}>
@@ -262,6 +266,8 @@ const taxAmount = price1 * 0.10;
                 backgroundColor: "white",
                 marginVertical: 10,
                 borderRadius: 8,
+                borderWidth:1,
+                borderColor:'black'
               }}
             >
               <View style={{ flexDirection: 'row', padding: 10 }}>
@@ -422,7 +428,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: 'black',
     borderRadius: 8,
     padding: 5,
     marginBottom: 5,
