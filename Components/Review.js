@@ -42,7 +42,7 @@ const commonStyles = {
 
   return (
     <View style={[styles.container,commonStyles]}>
-        <Text style={styles.label}>Enter Full Name</Text>
+        {/* <Text style={styles.label}>Enter Name</Text>
         <TextInput
         placeholder="Enter Name"
         placeholderTextColor="#000"
@@ -50,11 +50,10 @@ const commonStyles = {
         onChangeText={(text) => setName(text)}
         
         style={styles.input}
-      />
-      
+      />  */}
       <Text style={styles.label}>Message</Text>
       <TextInput
-        placeholder="message"
+        placeholder="Write Your Review"
         placeholderTextColor="#000"
         value={message}
         multiline={true} 
@@ -64,9 +63,6 @@ const commonStyles = {
         style={styles.input1}
       />
  
-  
-      
-
       <Button title="Submit" onPress={handleSubmit} />
     </View>
   );
@@ -77,6 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     justifyContent: 'center',
+    backgroundColor:'#D8D8D8'
     
   },
   label: {

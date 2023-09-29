@@ -21,7 +21,7 @@ const Confirm = ({ navigation }) => {
   };
   return (
     <>
-    <View style={{commonStyles}}>
+    <View style={[styles.header,commonStyles]}>
       <View style={styles.icon}>
         <Ionicons name="checkmark-done-circle-outline" size={80} color="black"/>
         <Text style={styles.text}>Done</Text>
@@ -35,6 +35,9 @@ const Confirm = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  header:{
+backgroundColor:'#D8D8D8'
+  },
   icon: {
     paddingTop: 250,
     alignItems: 'center',

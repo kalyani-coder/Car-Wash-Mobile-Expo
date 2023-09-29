@@ -378,7 +378,7 @@ const taxAmount = price1 * 0.10;
 const styles = StyleSheet.create({
   header: {
     flex: 1,
-    backgroundColor: '#a7a7a7',
+    backgroundColor: '#D8D8D8',
     width: '100%',
     height: '100%',
     padding: 15,

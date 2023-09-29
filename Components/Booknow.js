@@ -273,7 +273,7 @@ const commonStyles = {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.footer}>
-                    <View style={styles.maincontainer}>
+                    <View style={styles.iconsContainer1}>
                         <View style={styles.text9}>
                             <TouchableOpacity onPress={handleIconPressHome}>
                                 <Entypo name="home" size={30} style={styles.icon4} />
@@ -307,7 +307,7 @@ const commonStyles = {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#a7a7a7',
+        backgroundColor: '#D8D8D8',
         height: '100%',
     },
     text1: {

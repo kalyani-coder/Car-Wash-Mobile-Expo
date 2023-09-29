@@ -214,7 +214,7 @@ const Completed = ({ navigation }) => {
 const styles = StyleSheet.create({
     header: {
         flex: 1,
-        backgroundColor: '#a7a7a7',
+        backgroundColor: '#D8D8D8',
     },
     container: {
         justifyContent: 'space-between',

@@ -283,7 +283,7 @@ const Topservice = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex:1,
-        backgroundColor: '#a7a7a7'
+        backgroundColor: '#D8D8D8'
     },
     text1: {
         textAlign: 'center',

@@ -209,6 +209,7 @@ const Notification = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:'#D8D8D8'
   },
   header: {
     height: 50,

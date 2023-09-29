@@ -24,6 +24,7 @@ import PromotionConfirmation from './Components/PromotionConfirmation';
 import Topservice from './Components/Topservice';
 import Topserviceconfirmation from './Components/Topserviceconfirmation';
 import Review from './Components/Review';
+import Editprofile from './Components/Editprofile';
 // 
 
 
@@ -45,6 +46,7 @@ function App() {
           <Stack.Screen name="Confirmation" component={Confirmation} options={{ headerShown: false }} />
           <Stack.Screen name="Promotion" component={Promotion} options={{ headerShown: false }} />
           <Stack.Screen name="Review" component={Review} options={{ headerShown: false }} />
+          <Stack.Screen name="Editprofile" component={Editprofile} options={{ headerShown: false }} />
           <Stack.Screen
             name="PromotionConfirmation"
             component={PromotionConfirmation}
@@ -64,7 +66,7 @@ function App() {
           <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
-      <StatusBar style="auto" />
+      <StatusBar style="auto"/>
     </View>
   );
 }
