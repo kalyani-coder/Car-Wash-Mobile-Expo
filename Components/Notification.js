@@ -134,6 +134,7 @@ import { Appearance } from 'react-native';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons/faDownload";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const Notification = ({ navigation }) => {
   const [notifications, setNotifications] = useState([]);
@@ -171,9 +172,9 @@ const Notification = ({ navigation }) => {
       <View style={styles.header}>
         <View style={styles.headerBackground}>
           <View style={styles.headerContent}>
-            <Text style={styles.headerText}>Notification Inbox</Text>
+            <Text style={styles.headerText}>Notification Inbox </Text>
             <TouchableOpacity onPress={handleIconPressNotification}>
-              <FontAwesomeIcon icon={faDownload} size={25} color="black" />
+              <FontAwesome name="envelope" size={20} color="black" style={styles.icon} />
             </TouchableOpacity>
           </View>
         </View>
@@ -188,12 +189,19 @@ const Notification = ({ navigation }) => {
             key={index}
             style={styles.notificationItem}
           >
-            <MaterialCommunityIcons
+            {/* <MaterialCommunityIcons
               name="code-braces-box"
               size={40}
               color="black"
               style={styles.icon}
-            />
+            /> */}
+
+              <FontAwesome name="bell" 
+              size={30} 
+              color="#FFA700" 
+              style={styles.icon} />
+
+
             <View style={styles.notificationText}>
               <Text style={styles.title}>{notification.title}</Text>
               <Text>{notification.message}</Text>
@@ -218,24 +226,37 @@ const styles = StyleSheet.create({
     backgroundColor: "#F2F3F4",
     marginVertical: 10,
     marginHorizontal: 15,
-    flexDirection: "row",
+    // flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     padding: 10,
+    borderRadius:10,
+    marginTop:10
+    
   },
   headerContent: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    height:20,
+    marginBottom:20,
+    verticalAlign:"center",
+    gap:10,
+   
   },
   headerText: {
-    fontSize: 18,
+    // fontSize: 18,
     fontWeight: "bold",
+    // lineHeight:30
+    textAlign:"center",
+    display:"flex",
+    
   },
   notificationList: {
     flex: 1,
     paddingHorizontal: 15,
     paddingVertical: 10,
+    marginTop:40
   },
   notificationItem: {
     height: 70,

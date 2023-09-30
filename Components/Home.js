@@ -321,7 +321,7 @@ function Home(props) {
                   style={styles.card}
                 >
                   <Text style={styles.serviceName}>{service.serviceName}</Text>
-                  <Text style={styles.servicePrice}>{service.servicePrice}</Text>
+                  <Text style={styles.servicePrice}>Rs.{service.servicePrice}</Text>
                 </TouchableOpacity>
               ))}
             </View>
@@ -434,7 +434,8 @@ const styles = StyleSheet.create({
   text: {
     marginHorizontal: 20,
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 0,
+    
   },
   container1: {
     flexDirection: "row",
