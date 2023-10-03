@@ -66,7 +66,7 @@ const Review = () => {
               },
             },
           ]);
-          console.warn(name);
+         
         } else {
           // Handle errors, e.g., show an error message to the user
           console.error('Failed to submit review');

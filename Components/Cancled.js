@@ -128,7 +128,7 @@ const Canceled = ({ navigation }) => {
                             <View key={item._id} style={styles.card}>
                                 {/* console.log('Item ID:', item.id);  */}
                                 <View style={styles.wash}>
-                                    <Text style={styles.date}>{moment(item.date).format('D MMM')}</Text>
+                                    <Text style={styles.date}> {moment(item.date, 'DD-MM-YYYY').format('D MMM')}</Text>
                                     <View>
                                         <Text>{item.servicesName}</Text>
                                         <Text>{item.totalPrice}</Text>
@@ -140,11 +140,11 @@ const Canceled = ({ navigation }) => {
                                 </View>
                                 <Text style={styles.clock}>Time:{item.time}</Text>
                                 <View style={styles.button}>
-                                    <TouchableOpacity
+                                    {/* <TouchableOpacity
                                         style={styles.btn1}
                                     >
                                         <Text style={styles.buttontext}>Reschedule</Text>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
                                     <TouchableOpacity
                                         style={styles.btn2}
                                         onPress={() => handleCancelAppointment(item._id)} // Pass the appointment ID to the handler
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginHorizontal: 20,
-        marginVertical: 15,
+        marginVertical: 10,
     },
     date: {
         height: 70,
@@ -265,23 +265,21 @@ const styles = StyleSheet.create({
     clock: {
         flexDirection: 'row',
         marginHorizontal: 20,
+        marginBottom:5
     },
     button: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
+marginTop:5
     },
-    btn1: {
-        width: 160,
-        height: 40,
-        borderRadius: 8,
-        backgroundColor: '#f8db03',
-    },
+    
     btn2: {
-        width: 160,
+        width: 300,
         height: 40,
         borderRadius: 8,
         backgroundColor: '#5B7586',
         color: 'white',
+        
     },
     buttontext: {
         color: '#000',

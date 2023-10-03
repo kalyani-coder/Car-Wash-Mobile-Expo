@@ -25,6 +25,7 @@ import Topservice from './Components/Topservice';
 import Topserviceconfirmation from './Components/Topserviceconfirmation';
 import Review from './Components/Review';
 import Editprofile from './Components/Editprofile';
+import UpdateInfo from './Components/UpdateInfo';
 
 const Stack = createStackNavigator();
 
@@ -45,6 +46,7 @@ function App() {
           <Stack.Screen name="Promotion" component={Promotion} options={{ headerShown: false }} />
           <Stack.Screen name="Review" component={Review} options={{ headerShown: false }} />
           <Stack.Screen name="Editprofile" component={Editprofile} options={{ headerShown: false }} />
+          <Stack.Screen name="UpdateInfo" component={UpdateInfo} options={{ headerShown: false }} />
           <Stack.Screen
             name="PromotionConfirmation"
             component={PromotionConfirmation}

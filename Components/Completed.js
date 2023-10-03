@@ -130,9 +130,9 @@ const Completed = ({ navigation }) => {
                     <View style={styles.container}>
                         {data.map((item) => (
                             <View key={item._id} style={styles.card}>
-                                {/* console.log('Item ID:', item.id);  */}
+                               
                                 <View style={styles.wash}>
-                                    <Text style={styles.date}>{moment(item.date).format('D MMM')}</Text>
+                                    <Text style={styles.date}> {moment(item.date, 'DD-MM-YYYY').format('D MMM')}</Text>
                                     <View>
                                         <Text>{item.servicesName}</Text>
                                         <Text>{item.totalPrice}</Text>
@@ -145,17 +145,21 @@ const Completed = ({ navigation }) => {
 
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between',  marginVertical: 10,marginHorizontal:10}}>
                                 <Text style={styles.clock}>Time:{item.time}</Text>
-                                 <TouchableOpacity style={styles.reviews} onPress={handlePress}>
+                                 {/* <TouchableOpacity style={styles.reviews} onPress={handlePress}>
                                     <Text style={{padding:4,textAlign:'center'}}>Add Review</Text>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
                                  </View>
 
                                 <View style={styles.button}>
-                                    <TouchableOpacity
+                                    {/* <TouchableOpacity
                                         style={styles.btn1}
                                     >
                                         <Text style={styles.buttontext}>Reschedule</Text>
+                                    </TouchableOpacity> */}
+                                     <TouchableOpacity style={styles.btn1} onPress={handlePress}>
+                                    <Text style={styles.buttontext}>Add Review</Text>
                                     </TouchableOpacity>
+
                                     <TouchableOpacity
                                         style={styles.btn2}
                                         onPress={() => handleCancelAppointment(item._id)} // Pass the appointment ID to the handler
