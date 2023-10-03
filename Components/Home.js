@@ -12,6 +12,7 @@ import {
 
 } from "react-native";
 import { Appearance } from 'react-native';
+import { RefreshControl } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -42,6 +43,7 @@ function Home(props) {
   const [homeOffers, setHomeOffers] = useState([]);
   const colorScheme = Appearance.getColorScheme();
   const [upcomingdata, setupcomingData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     callApiOffers();
@@ -242,6 +244,18 @@ function Home(props) {
   }
 
 
+  //for refreshing the field 
+
+  const onRefresh = () => {
+
+    setRefreshing(true);
+
+    setTimeout(() => {
+
+      setRefreshing(false);
+    }, 2000);
+  };
+
   return (
     <>
       <View style={[styles.header, commonStyles]}>
@@ -278,7 +292,17 @@ function Home(props) {
             </TouchableOpacity>
           </View>
         </View>
-        <ScrollView Vertical={true} showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+        <ScrollView Vertical={true} showsVerticalScrollIndicator={false} style={{ flex: 1 }}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor="#5B7586"
+              title="Refreshing..."
+              titleColor="#5B7586"
+            />
+          }
+        >
           <ScrollView horizontal={true} style={styles.offer} showsHorizontalScrollIndicator={false}>
             {homeOffers.map((offer) => (
               <View key={offer._id} style={styles.Section}>
@@ -327,17 +351,17 @@ function Home(props) {
             </View>
           </ScrollView>
           <Text style={styles.text4}>Upcoming Booking</Text>
-          
-            <View style={styles.containerBooking}>
+
+          <View style={styles.containerBooking}>
             <ScrollView
-      horizontal={true} // Enable horizontal scrolling
-      showsHorizontalScrollIndicator={false} // Hide horizontal scroll bar
-      style={{flex:1}}
-      
-    >
+              horizontal={true} // Enable horizontal scrolling
+              showsHorizontalScrollIndicator={false} // Hide horizontal scroll bar
+              style={{ flex: 1 }}
+
+            >
               {upcomingdata.map((item) => (
                 <View key={item._id} style={styles.cardBooking}>
-                  {/* console.log('Item ID:', item.id);  */}
+
                   <View style={styles.washBooking}>
                     <Text style={styles.dateBooking}>
                       {moment(item.date).format('D MMM')}
@@ -359,10 +383,10 @@ function Home(props) {
                   <Text style={styles.clockBooking}>Time:{item.time}</Text>
                 </View>
               ))}
-              </ScrollView>
-            </View>
-            
-            
+            </ScrollView>
+          </View>
+
+
           <View style={styles.promotion1}>
             <Text style={styles.text5}>Promotions</Text>
           </View>
@@ -435,7 +459,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     fontWeight: "bold",
     fontSize: 0,
-    
+
   },
   container1: {
     flexDirection: "row",
@@ -547,7 +571,7 @@ const styles = StyleSheet.create({
     height: 140,
     width: 340,
     backgroundColor: 'white',
-    borderRadius:8,
+    borderRadius: 8,
     borderWidth: 2,
     borderColor: 'white',
     // margin: 5,
@@ -562,7 +586,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 20,
-    marginBottom:15
+    marginBottom: 15
     // marginVertical: 15,
   },
   dateBooking: {
@@ -695,6 +719,8 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'center',
     zIndex: 2,
+    borderTopColor: 'gray',
+    borderWidth: 0.5
 
   },
   iconsContainer1: {

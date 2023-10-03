@@ -212,7 +212,7 @@ const Confirmation = ({ route, navigation }) => {
                 backgroundColor: "white",
                 marginVertical: 10,
                 borderRadius: 8,
-                borderWidth:1,
+                borderWidth:0.5,
                 borderColor:'black'
               }}
             >
@@ -241,7 +241,7 @@ const Confirmation = ({ route, navigation }) => {
                 backgroundColor: "white",
                 marginVertical: 10,
                 borderRadius: 8,
-                borderWidth:1,
+                borderWidth:0.5,
                 borderColor:'black'
               }}
             >
@@ -265,7 +265,7 @@ const Confirmation = ({ route, navigation }) => {
                 backgroundColor: "white",
                 marginVertical: 10,
                 borderRadius: 8,
-                borderWidth:1,
+                borderWidth:0.5,
                 borderColor:'black'
               }}
             >
@@ -387,10 +387,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#D8D8D8',
     width: '100%',
     height: '100%',
-    padding: 15,
+    
   },
   container: {
     paddingTop: 15,
+    padding: 15,
   },
   text: {
     fontSize: 15,
@@ -427,7 +428,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   input: {
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: 'black',
     borderRadius: 8,
     padding: 5,
@@ -452,39 +453,56 @@ const styles = StyleSheet.create({
   selectedOptionText: {
     fontWeight: 'bold',
   },
-  button: {
+  maincontainer: {
+    // marginHorizontal: 15,
+    // marginTop:10
+    position: 'relative'
+},
+button: {
+    position: 'relative',
     backgroundColor: "#5B7586",
-    height: 50,
+    height: 45,
+    width: 360,
     paddingTop: 10,
-    borderRadius: 4,
-  },
-  buttonText: {
+    marginHorizontal: 15,
+    marginBottom: 10,
+    borderRadius: 2,
+},
+buttonText: {
     color: "#000",
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
-    margin: 4,
-  },
+},
   footer: {
-    position: 'Sticky',
+    position: 'relative',
+    backgroundColor: "#fff",
     bottom: 0,
     left: 0,
     right: 0,
-    padding: 5,
+    padding: 10,
     alignItems: 'center',
-  },
-  iconsContainer1: {
-    flexDirection: 'row',
-  },
-  icon4: {
+    zIndex: 2,
+    borderTopColor:'gray',
+    borderWidth:0.5
+},
+iconsContainer1: {
+    flexDirection: "row",
+},
+icon4: {
     marginHorizontal: 20,
-  },
-  text9: {
+},
+text9: {
     alignItems: 'center',
-  },
-  text10: {
+},
+text10: {
     fontSize: 10,
-  },
+},
+item: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+},
 });
 
 export default Confirmation;

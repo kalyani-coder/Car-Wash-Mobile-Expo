@@ -7,7 +7,9 @@ import {
     TouchableOpacity,
     Linking,
     TextInput,
-    Image
+    Image,
+    KeyboardAvoidingView,
+    Platform,
 } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
@@ -24,6 +26,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { RefreshControl } from 'react-native';
+
 
 const Washing = ({ navigation }) => {
     // State variables using useState hook
@@ -37,6 +41,7 @@ const Washing = ({ navigation }) => {
     const [time, setTime] = useState(new Date());
     const [reviews, setReviews] = useState([]);
     const colorScheme = Appearance.getColorScheme();
+    const [refreshing, setRefreshing] = useState(false);
 
     const [errors, setErrors] = useState({
         pickupAddress: '',
@@ -78,6 +83,18 @@ const Washing = ({ navigation }) => {
             setShowPicker(false);
         }
     };
+
+    //for refreshing the field 
+
+    const onRefresh = () => {
+        
+        setRefreshing(true);
+  
+        setTimeout(() => {
+          
+          setRefreshing(false);
+        }, 2000); 
+      };
 
     // Function to validate input
     const validateInput = () => {
@@ -174,11 +191,23 @@ const Washing = ({ navigation }) => {
 
     return (
         <>
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        >
             <View style={[styles.container, commonStyles]}>
                 <ScrollView
-                    Vertical={true}
-                    showsVerticalScrollIndicator={false}
-                    style={{ flex: 1 }}
+                     contentContainerStyle={{ flexGrow: 1 ,backgroundColor: '#D8D8D8'}}
+                     showsVerticalScrollIndicator={false}
+                     refreshControl={
+                        <RefreshControl
+                          refreshing={refreshing}
+                          onRefresh={onRefresh}
+                          tintColor="#5B7586" 
+                          title="Refreshing..." 
+                          titleColor="#5B7586"
+                        />
+                      }
                 >
                     <Text style={styles.text1}>{serviceName}</Text>
                     <View style={{ height: 133, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
@@ -195,10 +224,10 @@ const Washing = ({ navigation }) => {
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                         {reviews.map((review) => (
                             <View key={review._id} style={styles.reviewCard}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5,justifyContent:'space-between'  }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, justifyContent: 'space-between' }}>
                                     {/* <Text style={{ marginRight: 5 }}>{review.rating}</Text> */}
-                                    <Text style={{fontWeight:'bold'}}>{review.clientName}</Text>
-                                    <View style={{ flexDirection: 'row'}}>
+                                    <Text style={{ fontWeight: 'bold' }}>{review.clientName}</Text>
+                                    <View style={{ flexDirection: 'row' }}>
                                         {Array.from({ length: 5 }).map((_, index) => (
                                             <FontAwesomeIcon
                                                 key={index}
@@ -209,10 +238,11 @@ const Washing = ({ navigation }) => {
                                         ))}
                                     </View>
                                 </View>
-                                <Text style={styles.reviewText}>{review.message}</Text>
+                                <ScrollView style={{ maxHeight: 100 }} nestedScrollEnabled={true}>
+                                    <Text style={styles.reviewText}>{review.message}</Text>
+                                </ScrollView>
                             </View>
                         ))}
-
 
                     </ScrollView>
                     <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address<Text style={{ color: 'red' }}> *</Text></Text>
@@ -304,6 +334,7 @@ const Washing = ({ navigation }) => {
                     </View>
                 </View>
             </View>
+            </KeyboardAvoidingView>
         </>
     );
 };
@@ -312,6 +343,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#D8D8D8',
+        width: '100%',
+        height: '100%',
     },
     text1: {
         textAlign: 'center',
@@ -408,6 +441,8 @@ const styles = StyleSheet.create({
         padding: 10,
         alignItems: 'center',
         zIndex: 2,
+        borderTopColor:'gray',
+        borderWidth:0.5
     },
     iconsContainer1: {
         flexDirection: "row",

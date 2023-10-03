@@ -1,16 +1,18 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity,ScrollView} from 'react-native';
 import { Appearance } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUser, faEnvelope, faPhone, faMapMarkerAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute,useNavigation } from '@react-navigation/native'; // Import navigation hook
+import { RefreshControl } from 'react-native';
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const colorScheme = Appearance.getColorScheme();
   const navigation = useNavigation(); // Initialize navigation
+  const [refreshing, setRefreshing] = useState(false);
   const route = useRoute();
 
   useEffect(() => {
@@ -45,6 +47,17 @@ const Profile = () => {
     }
   };
 
+  //for refreshing the field 
+
+  const onRefresh = () => {
+        
+    setRefreshing(true);
+
+    setTimeout(() => {
+      
+      setRefreshing(false);
+    }, 2000); 
+  };
   const handleLogout = async () => {
     try {
       await AsyncStorage.clear();
@@ -75,6 +88,20 @@ const Profile = () => {
 
   return (
     <View style={[styles.container, commonStyles]}>
+      <ScrollView
+                    Vertical={true}
+                    showsVerticalScrollIndicator={false}
+                    
+                    refreshControl={
+                        <RefreshControl
+                          refreshing={refreshing}
+                          onRefresh={onRefresh}
+                          tintColor="#5B7586" 
+                          title="Refreshing..." 
+                          titleColor="#5B7586"
+                        />
+                      }
+                >
       <View style={styles.header}>
         <Text style={styles.headingText}>Profile</Text>
         {/* Add an "Edit" button */}
@@ -109,7 +136,7 @@ const Profile = () => {
       {/* <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
         <Text style={styles.editText}>Edit Profile</Text>
       </TouchableOpacity> */}
-
+</ScrollView>
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
@@ -166,6 +193,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     marginTop: 20,
     borderRadius: 4,
+    marginBottom:350
   },
   logoutText: {
     color: '#000',

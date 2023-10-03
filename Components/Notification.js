@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Appearance } from 'react-native';
+import { RefreshControl } from 'react-native';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons/faDownload";
 import { faBell } from '@fortawesome/free-regular-svg-icons/faBell';
@@ -16,10 +17,23 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 const Notification = ({ navigation }) => {
   const [notifications, setNotifications] = useState([]);
   const colorScheme = Appearance.getColorScheme();
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     fetchNotifications();
   }, []);
+
+  //for refreshing the field 
+
+  const onRefresh = () => {
+        
+    setRefreshing(true);
+
+    setTimeout(() => {
+      
+      setRefreshing(false);
+    }, 2000); 
+  };
 
   const fetchNotifications = async () => {
     try {
@@ -60,6 +74,15 @@ const Notification = ({ navigation }) => {
         Vertical={true}
         showsVerticalScrollIndicator={false}
         style={styles.notificationList}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="#5B7586" 
+            title="Refreshing..." 
+            titleColor="#5B7586"
+          />
+        }
       >
         {notifications.map((notification, index) => (
           <TouchableOpacity

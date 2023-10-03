@@ -9,6 +9,7 @@ import {
   Image,
 } from 'react-native';
 import { Appearance } from 'react-native';
+import { RefreshControl } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useRoute } from "@react-navigation/native";
@@ -35,6 +36,7 @@ const Promotion = ({ navigation }) => {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [time, setTime] = useState(new Date());
   const [reviews, setReviews] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const colorScheme = Appearance.getColorScheme();
   const [errors, setErrors] = useState({
     pickupAddress: '',
@@ -55,6 +57,18 @@ const Promotion = ({ navigation }) => {
   const handleDateConfirm = (date) => {
     setTime(date);
     hideDatePicker();
+  };
+
+  //for refreshing the field 
+
+  const onRefresh = () => {
+        
+    setRefreshing(true);
+
+    setTimeout(() => {
+      
+      setRefreshing(false);
+    }, 2000); 
   };
 
   // Function to format time
@@ -167,7 +181,17 @@ const Promotion = ({ navigation }) => {
 
   return (
     <View style={[styles.container,commonStyles]}>
-      <ScrollView Vertical={true} showsVerticalScrollIndicator={false}>
+      <ScrollView Vertical={true} showsVerticalScrollIndicator={false}
+        
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="#5B7586" 
+            title="Refreshing..." 
+            titleColor="#5B7586"
+          />
+        }>
         <Text style={styles.text1}>{route.params.service}</Text>
         <View style={{ height: 130, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
           <Image source={{ uri: 'https://global-uploads.webflow.com/6275222db3d827ed1bb5c030/628d5275e8398c96485950a6_pexels-maria-geller-2127022.jpg' }} style={styles.item} />
@@ -197,7 +221,9 @@ const Promotion = ({ navigation }) => {
                                         ))}
                                     </View>
                                 </View>
-                                <Text style={styles.reviewText}>{review.message}</Text>
+                                <ScrollView style={{ maxHeight: 100 }} nestedScrollEnabled={true}>
+                                    <Text style={styles.reviewText}>{review.message}</Text>
+                                </ScrollView>
                             </View>
                         ))}
 
@@ -429,6 +455,8 @@ reviewText: {
     padding: 10,
     alignItems: 'center',
     zIndex: 2,
+    borderTopColor:'gray',
+    borderWidth:0.5
   },
   iconsContainer1: {
     flexDirection: "row",

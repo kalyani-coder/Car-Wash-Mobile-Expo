@@ -12,13 +12,13 @@ import {
     PixelRatio,
 } from 'react-native';
 import { Appearance } from 'react-native';
+import { RefreshControl } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useRoute } from "@react-navigation/native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
 import moment from 'moment';
 import { AntDesign } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
@@ -37,7 +37,8 @@ function Booknow(props) {
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
     const [time, setTime] = useState(new Date());
     const [reviews, setReviews] = useState([]);
-const colorScheme = Appearance.getColorScheme();
+    const colorScheme = Appearance.getColorScheme();
+    const [refreshing, setRefreshing] = useState(false);
     const [errors, setErrors] = useState({
         pickupAddress: '',
         totalPrice: ''
@@ -163,6 +164,17 @@ const colorScheme = Appearance.getColorScheme();
             console.error('Error opening settings:', error);
         }
     };
+    //for refreshing the field 
+
+    const onRefresh = () => {
+        
+        setRefreshing(true);
+  
+        setTimeout(() => {
+          
+          setRefreshing(false);
+        }, 2000); 
+      };
     useEffect(() => {
         fetch('https://car-wash-backend-api.onrender.com/api/reviews')
             .then((response) => response.json())
@@ -190,6 +202,16 @@ const commonStyles = {
                 <ScrollView
                     Vertical={true}
                     showsVerticalScrollIndicator={false}
+                    style={{flex:1}}
+                    refreshControl={
+                        <RefreshControl
+                          refreshing={refreshing}
+                          onRefresh={onRefresh}
+                          tintColor="#5B7586" 
+                          title="Refreshing..." 
+                          titleColor="#5B7586"
+                        />
+                      }
                 >
                     <Text style={styles.text1}>{homeservicesName}</Text>
                     <View style={{ height: 130, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20, marginTop: 10 }}>
@@ -220,7 +242,9 @@ const commonStyles = {
                                         ))}
                                     </View>
                                 </View>
-                                <Text style={styles.reviewText}>{review.message}</Text>
+                                <ScrollView style={{ maxHeight: 100 }} nestedScrollEnabled={true}>
+                                    <Text style={styles.reviewText}>{review.message}</Text>
+                                </ScrollView>
                             </View>
                         ))}
 
@@ -323,6 +347,7 @@ const commonStyles = {
 
 const styles = StyleSheet.create({
     container: {
+        flex:1,
         backgroundColor: '#D8D8D8',
         height: '100%',
     },
@@ -405,6 +430,8 @@ button: {
     marginHorizontal: 15,
     marginBottom: 10,
     borderRadius: 2,
+    borderTopColor:'gray',
+    borderWidth:0.5
 },
 buttonText: {
     color: "#000",
@@ -421,6 +448,8 @@ footer: {
     padding: 10,
     alignItems: 'center',
     zIndex: 2,
+    borderTopColor:'gray',
+    borderWidth:0.5
 },
 iconsContainer1: {
     flexDirection: "row",

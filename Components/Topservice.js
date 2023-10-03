@@ -10,6 +10,7 @@ import {
     Image
 } from 'react-native';
 import { Appearance } from 'react-native';
+import { RefreshControl } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useRoute } from "@react-navigation/native";
@@ -36,6 +37,7 @@ const Topservice = ({ route, navigation }) => {
     const [time, setTime] = useState(new Date());
     const [reviews, setReviews] = useState([]);
     const colorScheme = Appearance.getColorScheme();
+    const [refreshing, setRefreshing] = useState(false);
     const [errors, setErrors] = useState({
         pickupAddress: '',
         totalPrice: ''
@@ -53,6 +55,17 @@ const Topservice = ({ route, navigation }) => {
         setTime(date);
         hideDatePicker();
     };
+    //for refreshing the field 
+
+    const onRefresh = () => {
+        
+        setRefreshing(true);
+  
+        setTimeout(() => {
+          
+          setRefreshing(false);
+        }, 2000); 
+      };
 
     const formatTime = time => {
         if (!time) return '';
@@ -157,6 +170,16 @@ const Topservice = ({ route, navigation }) => {
                 <ScrollView
                     Vertical={true}
                     showsVerticalScrollIndicator={false}
+                      
+                    refreshControl={
+                        <RefreshControl
+                          refreshing={refreshing}
+                          onRefresh={onRefresh}
+                          tintColor="#5B7586" 
+                          title="Refreshing..." 
+                          titleColor="#5B7586"
+                        />
+                      }
                 >
                     <Text style={styles.text1}>{route.params.title}</Text>
 
@@ -194,10 +217,11 @@ const Topservice = ({ route, navigation }) => {
                                         ))}
                                     </View>
                                 </View>
-                                <Text style={styles.reviewText}>{review.message}</Text>
+                                <ScrollView style={{ maxHeight: 100 }} nestedScrollEnabled={true}>
+                                    <Text style={styles.reviewText}>{review.message}</Text>
+                                </ScrollView>
                             </View>
                         ))}
-
 
                     </ScrollView>
 
@@ -422,6 +446,8 @@ const styles = StyleSheet.create({
         padding: 10,
         alignItems: 'center',
         zIndex: 2,
+        borderTopColor:'gray',
+        borderWidth:0.5
       },
       iconsContainer1: {
         flexDirection: "row",

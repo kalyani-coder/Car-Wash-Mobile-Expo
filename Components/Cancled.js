@@ -9,6 +9,7 @@ import {
     Alert
 } from 'react-native';
 import { Appearance } from 'react-native';
+import { RefreshControl } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from 'moment';
 import { Entypo } from '@expo/vector-icons';
@@ -21,6 +22,7 @@ const Canceled = ({ navigation }) => {
     const [data, setData] = useState([]);
     const colorScheme = Appearance.getColorScheme();
     const currentTime = new Date();
+    const [refreshing, setRefreshing] = useState(false);
 
     const fetchData = async () => {
         try {
@@ -91,6 +93,18 @@ const Canceled = ({ navigation }) => {
         navigation.navigate('Notification');
     };
 
+    //for refreshing the field 
+
+    const onRefresh = () => {
+        
+        setRefreshing(true);
+  
+        setTimeout(() => {
+          
+          setRefreshing(false);
+        }, 2000); 
+      };
+
     const handleIconPressHome = () => {
         navigation.navigate('Home');
     };
@@ -122,6 +136,15 @@ const Canceled = ({ navigation }) => {
                     Vertical={true}
                     showsVerticalScrollIndicator={false}
                     style={{ flex: 1 }}
+                    refreshControl={
+                        <RefreshControl
+                          refreshing={refreshing}
+                          onRefresh={onRefresh}
+                          tintColor="#5B7586" 
+                          title="Refreshing..." 
+                          titleColor="#5B7586"
+                        />
+                      }
                 >
                     <View style={styles.container}>
                         {data.map((item) => (
@@ -158,43 +181,7 @@ const Canceled = ({ navigation }) => {
                     </View>
                 </ScrollView>
 
-                <View style={styles.footer}>
-                    <View style={styles.add}>
-                        <TouchableOpacity onPress={handleIconPressHome} style={{ flexDirection: 'row' }}>
-                            <AntDesign name="plus" size={20} color="black" />
-                            <Text>Add New Booking</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.iconsContainer1}>
-                        <View style={styles.text9}>
-                            <TouchableOpacity onPress={handleIconPressHome}>
-                                <Entypo name="home" size={30} style={styles.icon4} />
-                            </TouchableOpacity>
-                            <Text style={styles.text10}>Home</Text>
-                        </View>
-
-                        <View style={styles.text9}>
-                            <TouchableOpacity onPress={handleIconPressBook}>
-                                <Entypo name="calendar" size={30} style={styles.icon4} />
-                            </TouchableOpacity>
-                            <Text style={styles.text10}>Booking</Text>
-                        </View>
-
-                        <View style={styles.text9}>
-                            <TouchableOpacity onPress={handleIconPressNotification}>
-                                <MaterialIcons name="forward-to-inbox" size={30} style={styles.icon4} />
-                            </TouchableOpacity>
-                            <Text style={styles.text10}>Inbox</Text>
-                        </View>
-
-                        <View style={styles.text9}>
-                            <TouchableOpacity onPress={openSettings}>
-                                <Ionicons name="settings-sharp" size={30} style={styles.icon4} />
-                            </TouchableOpacity>
-                            <Text style={styles.text10}>Setting</Text>
-                        </View>
-                    </View>
-                </View>
+              
             </View>
         </>
     );
@@ -270,11 +257,11 @@ const styles = StyleSheet.create({
     button: {
         flexDirection: 'row',
         justifyContent: 'center',
-marginTop:5
+        marginTop:5
     },
     
     btn2: {
-        width: 300,
+        width: 250,
         height: 40,
         borderRadius: 8,
         backgroundColor: '#5B7586',
@@ -287,31 +274,6 @@ marginTop:5
         textAlign: 'center',
         margin: 8,
     },
-    footer: {
-        position: 'relative',
-        backgroundColor: "#fff",
-        bottom: 0,
-        left: 0,
-        right: 0,
-        padding: 10,
-        alignItems: 'center',
-        zIndex: 2,
-    },
-    add: {
-        flexDirection: 'row',
-        marginBottom: 15,
-    },
-    iconsContainer1: {
-        flexDirection: "row",
-    },
-    icon4: {
-        marginHorizontal: 20,
-    },
-    text9: {
-        alignItems: 'center',
-    },
-    text10: {
-        fontSize: 10,
-    },
+    
 });
 export default Canceled;
