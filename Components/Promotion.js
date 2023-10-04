@@ -248,7 +248,7 @@ const Promotion = ({ navigation }) => {
           width: 360,
           backgroundColor: "white",
           marginVertical: 10,
-          marginHorizontal: 20
+          marginHorizontal: 15
         }}>
           <View style={{ flexDirection: 'row', margin: 15 }}>
             <TouchableOpacity

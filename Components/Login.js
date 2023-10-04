@@ -122,7 +122,7 @@ const Login = ({ navigation }) => {
           <PaperText  style={styles.buttonText}>Continue</PaperText>
         </PaperButton>
 
-        <Text style={styles.sign}>By signing up, you agree to GoGoRide's </Text>
+        <Text style={styles.sign}>By signing up, you agree to GoRide's </Text>
 
         <TouchableOpacity>
           <Text style={styles.service}>Terms of Service and Privacy Policy</Text>
@@ -140,6 +140,7 @@ const Login = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  
   container: {
     flex: 1,
     backgroundColor: '#D8D8D8',
@@ -178,11 +179,13 @@ const styles = StyleSheet.create({
   sign: {
     textAlign: 'center',
     paddingTop: 200,
+    fontWeight:'bold',
   },
   service: {
     color: 'blue',
     textDecorationLine: 'underline',
     textAlign: 'center',
+    fontWeight:'bold',
   },
   errorText: {
     color: 'red',
@@ -196,8 +199,10 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     fontSize: 15,
+    fontWeight:'bold',
   },
   login: {
+    fontWeight:'bold',
     color: 'blue',
     textDecorationLine: 'underline',
     fontSize: 15,

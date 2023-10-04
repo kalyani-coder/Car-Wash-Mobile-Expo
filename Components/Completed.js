@@ -165,30 +165,18 @@ const Completed = ({ navigation }) => {
 
                                 </View>
 
-                                <View style={{flexDirection: 'row', justifyContent: 'space-between',  marginVertical: 10,marginHorizontal:10}}>
+                                <View style={{flexDirection: 'row', justifyContent: 'space-between',marginHorizontal:10,marginVertical:10}}>
                                 <Text style={styles.clock}>Time:{item.time}</Text>
-                                 {/* <TouchableOpacity style={styles.reviews} onPress={handlePress}>
-                                    <Text style={{padding:4,textAlign:'center'}}>Add Review</Text>
-                                    </TouchableOpacity> */}
+                                
                                  </View>
 
                                 <View style={styles.button}>
-                                    {/* <TouchableOpacity
-                                        style={styles.btn1}
-                                    >
-                                        <Text style={styles.buttontext}>Reschedule</Text>
-                                    </TouchableOpacity> */}
+                                    
                                      <TouchableOpacity style={styles.btn1} onPress={handlePress}>
                                     <Text style={styles.buttontext}>Add Review</Text>
                                     </TouchableOpacity>
 
-                                    <TouchableOpacity
-                                        style={styles.btn2}
-                                        onPress={() => handleCancelAppointment(item._id)} // Pass the appointment ID to the handler
-                                    >
-                                        <Text style={styles.buttontext}>Cancel</Text>
-                                    </TouchableOpacity>
-
+                                   
                                 </View>
                             </View>
                         ))}
@@ -210,16 +198,19 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'column',
         width: '100%',
-        // marginVertical:10
+        marginVertical:5
     },
     card: {
+        width:370,
         height: 180,
         backgroundColor: 'white',
-        borderWidth: 2,
+        borderWidth: 0.5,
         borderColor: 'white',
         margin: 5,
         padding: 10,
-        // marginVertical:10
+        marginHorizontal:10,
+        borderRadius:20,
+       
     },
     info: {
         flex: 1,
@@ -229,7 +220,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginHorizontal: 20,
-        // marginVertical: 5,
+       
     },
     date: {
         height: 70,
@@ -277,21 +268,23 @@ const styles = StyleSheet.create({
       },
     button: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        // justifyContent: 'space-between',
+        // marginVertical:5
     },
     btn1: {
-        width: 160,
+        width: 260,
         height: 40,
         borderRadius: 8,
         backgroundColor: '#f8db03',
+        marginHorizontal:35
     },
-    btn2: {
-        width: 160,
-        height: 40,
-        borderRadius: 8,
-        backgroundColor: '#5B7586',
-        color: 'white',
-    },
+    // btn2: {
+    //     width: 160,
+    //     height: 40,
+    //     borderRadius: 8,
+    //     backgroundColor: '#5B7586',
+    //     color: 'white',
+    // },
     buttontext: {
         color: '#000',
         fontSize: 15,

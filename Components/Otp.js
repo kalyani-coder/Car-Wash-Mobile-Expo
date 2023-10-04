@@ -16,8 +16,10 @@ const Otp = ({ route, navigation }) => {
   const [enteredOTP, setEnteredOTP] = useState('');
   const [otpError, setOtpError] = useState('');
   const [generatedOTP1, setGeneratedOTP1] = useState('');
+  const [isRegeneratingOTP, setIsRegeneratingOTP] = useState(false); // Track if OTP is being regenerated
   const colorScheme = Appearance.getColorScheme();
   const { generatedOTP } = route.params;
+
 
   useEffect(() => {
     generateOTP();
@@ -26,8 +28,11 @@ const Otp = ({ route, navigation }) => {
 
   // Function to generate a random 4-digit OTP
   const generateOTP = () => {
-    const newOTP = Math.floor(1000 + Math.random() * 9000).toString();
-    setGeneratedOTP1(newOTP);
+    if (isRegeneratingOTP) { // Only generate OTP if isRegeneratingOTP is true
+      const newOTP = Math.floor(1000 + Math.random() * 9000).toString();
+      setGeneratedOTP1(newOTP);
+      setIsRegeneratingOTP(false); // Reset isRegeneratingOTP to false
+    }
   };
 
   // Function to check if the user is already logged in
@@ -60,10 +65,10 @@ const Otp = ({ route, navigation }) => {
 
   return (
     <>
-      <View style={[styles.container,commonStyles]}>
+      <View style={[styles.container, commonStyles]}>
         <Text style={styles.generatedOTP}>Generated OTP: {generatedOTP}</Text>
         <Text style={styles.generatedOTP}>Regenerated OTP: {generatedOTP1}</Text>
-        
+
         <Text style={styles.log}>Verify OTP</Text>
 
         <Text style={styles.name}>Enter OTP</Text>
@@ -81,12 +86,15 @@ const Otp = ({ route, navigation }) => {
           <Text style={styles.buttonText}>Verify</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={generateOTP}>
+        <TouchableOpacity onPress={() => {
+          setIsRegeneratingOTP(true); 
+          generateOTP(); 
+        }}>
           <Text style={styles.service}>Resend OTP?</Text>
         </TouchableOpacity>
 
-        <Text style={{ textAlign: 'center', paddingTop: 30,marginHorizontal:20 }}>
-          By signing up, you agree to GoGoRide's Terms of Service and Privacy Policy
+        <Text style={{ textAlign: 'center', paddingTop: 30, marginHorizontal: 20, fontWeight: 'bold', }}>
+          By signing up, you agree to GoRide's Terms of Service and Privacy Policy
         </Text>
 
         {/* <View style={styles.account}>
@@ -121,7 +129,7 @@ const styles = StyleSheet.create({
   textBox: {
     borderColor: 'grey',
     backgroundColor: 'white',
-    borderRadius:6,
+    borderRadius: 6,
     borderWidth: 2,
     padding: 10,
     marginHorizontal: 30,
@@ -149,7 +157,8 @@ const styles = StyleSheet.create({
     color: 'blue',
     textDecorationLine: 'underline',
     textAlign: 'center',
-    marginVertical: 5,
+    marginVertical: 15,
+    fontWeight: 'bold',
   },
   account: {
     flexDirection: 'row',

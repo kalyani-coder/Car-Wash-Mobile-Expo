@@ -194,7 +194,7 @@ const Upcoming = ({ navigation }) => {
                   </Text>
                   <View>
                     <Text>{item.servicesName}</Text>
-                    <Text>{item.totalPrice}</Text>
+                    <Text>Rs.{item.totalPrice}</Text>
                   </View>
                   <Text
                     style={
@@ -209,18 +209,22 @@ const Upcoming = ({ navigation }) => {
 
                 {/* <Text style={styles.clock}>Time: {item.time}</Text> */}
 
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10 }}>
-                  <Text style={styles.clock}>Time:{item.time}</Text>
-                  <TouchableOpacity style={styles.reviews} onPress={handleTrack}>
-                    <Text style={{ padding: 4, textAlign: 'center' }}>Track</Text>
-                  </TouchableOpacity>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10,marginVertical:5}}>
+                  <Text style={styles.clock}>Time:- {item.time}</Text>
+                  {item.status === 'Accepted' && ( // Conditionally render the "Track" button
+                    <TouchableOpacity style={styles.reviews} onPress={handleTrack}>
+                      <Text style={{ padding: 4, textAlign: 'center' }}>Track</Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
                 <View style={styles.button}>
                   {item.status === 'Accepted' ? (
                     <>
+                    
                       <TouchableOpacity
                         style={styles.btn1}
                       >
+                        
                         <Text style={styles.buttontext}>No Reschedule</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
@@ -233,6 +237,7 @@ const Upcoming = ({ navigation }) => {
 
                   ) : (
                     <>
+                    
                       <TouchableOpacity
                         style={styles.btn1}
                         onPress={() => {
@@ -257,7 +262,6 @@ const Upcoming = ({ navigation }) => {
           </View>
         </ScrollView>
 
-
       </View>
     </>
   );
@@ -274,12 +278,16 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   card: {
-    height: 180,
+    height: 200,
     backgroundColor: 'white',
-    borderWidth: 2,
+    width:370,
+    borderWidth: 0.5,
     borderColor: 'white',
     margin: 5,
     padding: 10,
+    marginHorizontal:10,
+    borderRadius:20,
+ 
   },
   info: {
     flex: 1,
@@ -348,6 +356,7 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginVertical:5
   },
   btn1: {
     width: 160,

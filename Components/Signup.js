@@ -120,6 +120,10 @@ const Signup = ({ navigation }) => {
     // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
     color: colorScheme === 'dark' ? '#fff' : '#000',
   };
+
+  const handleIconPressLogin = () => {
+    navigation.navigate('Login');
+  };
   return (
     <View style={[styles.container,commonStyles]}>
       <Text style={styles.header}>Sign Up</Text>
@@ -131,7 +135,6 @@ const Signup = ({ navigation }) => {
         placeholderTextColor="#000"
         onChangeText={(text) => setClientName(text)}
         value={clientName}
-        // onBlur={validateclientName}
         style={styles.input}
       />
       <Text style={styles.errorText}>{errors.clientName}</Text>
@@ -184,6 +187,13 @@ const Signup = ({ navigation }) => {
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
+
+      <View style={styles.account}>
+          <Text style={styles.text}>Already have an account? </Text>
+          <TouchableOpacity onPress={handleIconPressLogin}>
+            <Text style={styles.login}>Login</Text>
+          </TouchableOpacity>
+        </View>
     </View>
   );
 };
@@ -231,6 +241,22 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  account: {
+    flexDirection: 'row',
+    marginTop: 50,
+    marginHorizontal: 60,
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 15,
+    fontWeight:'bold',
+  },
+  login: {
+    fontWeight:'bold',
+    color: 'blue',
+    textDecorationLine: 'underline',
+    fontSize: 15,
   },
 });
 

@@ -198,12 +198,15 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     card: {
+        width:370,
         height: 180,
         backgroundColor: 'white',
-        borderWidth: 2,
+        borderWidth: 0.5,
         borderColor: 'white',
         margin: 5,
         padding: 10,
+        marginHorizontal:10,
+        borderRadius:20,
     },
     info: {
         flex: 1,

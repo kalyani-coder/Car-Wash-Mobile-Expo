@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Upcoming from './Upcoming';
 import Cancled from './Cancled';
@@ -86,7 +86,7 @@ const Appointment = ({ navigation }) => {
         <View style={styles.iconsContainer1}>
           <View style={styles.text9}>
             <TouchableOpacity onPress={handleIconPressHome}>
-              <Entypo name="home" size={30} style={styles.icon4} />
+              <Entypo name="home" size={30} style={styles.icon4}/>
             </TouchableOpacity>
             <Text style={styles.text10}>Home</Text>
           </View>

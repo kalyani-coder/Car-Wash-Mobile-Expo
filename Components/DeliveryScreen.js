@@ -109,8 +109,8 @@ export default function DeliveryScreen() {
               </Text>
             </View>
             <Image
-              source={{ uri: "https://links.papareact.com/fls" }}
-              style={{ width: 80, height: 80 }}
+              source={{ uri: "https://cdn.pixabay.com/animation/2022/11/10/13/26/13-26-03-556_512.gif" }}
+              style={{ width: 100, height: 80 }}
             />
           </View>
           <Progress.Bar

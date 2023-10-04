@@ -67,7 +67,7 @@ const UpdateInfo = ({ route, navigation }) => {
   };
 
   const commonStyles = {
-    backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
     color: colorScheme === 'dark' ? '#fff' : '#000',
   };
 
