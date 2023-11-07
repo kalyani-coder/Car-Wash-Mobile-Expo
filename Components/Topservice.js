@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -58,14 +58,14 @@ const Topservice = ({ route, navigation }) => {
     //for refreshing the field 
 
     const onRefresh = () => {
-        
+
         setRefreshing(true);
-  
+
         setTimeout(() => {
-          
-          setRefreshing(false);
-        }, 2000); 
-      };
+
+            setRefreshing(false);
+        }, 2000);
+    };
 
     const formatTime = time => {
         if (!time) return '';
@@ -103,19 +103,17 @@ const Topservice = ({ route, navigation }) => {
     const handlcontinue = () => {
         if (validateInput()) {
             // const { date, time,pickupAddress} = props;
-            const { title, price } = route.params;
+            const { title, price, image } = route.params;
             const servicesName = title;
             const price1 = price;
 
-            navigation.navigate('Topserviceconfirmation', { pickupAddress, date, time, servicesName, price1 });
+            navigation.navigate('Topserviceconfirmation', { pickupAddress, date, time, servicesName, price1, image });
         }
     };
 
     const [selectedStars, setSelectedStars] = useState(0);
 
-    const handleStarPress = (rating) => {
-        setSelectedStars(rating);
-    };
+
 
     const handleIconPressHome = () => {
         navigation.navigate('Home');
@@ -125,17 +123,13 @@ const Topservice = ({ route, navigation }) => {
         navigation.navigate('Notification');
     };
 
-    const handleIconPressService = () => {
-        navigation.navigate('Washing');
-    };
 
-    const handleIconPressBooking = () => {
+
+    const handleIconPressBook = () => {
         navigation.navigate('Appointment');
     };
 
-    const handleIconPressInbox = () => {
-        navigation.navigate('Confirmation');
-    };
+
 
     const openSettings = async () => {
         try {
@@ -159,54 +153,49 @@ const Topservice = ({ route, navigation }) => {
     const currentDate = moment();
     const formattedDate = currentDate.format('D MMM');
 
+    const { title, description, price, image } = route.params;
+
 
     const commonStyles = {
-        // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+
         color: colorScheme === 'dark' ? '#fff' : '#000',
-      };
+    };
     return (
         <>
-            <View style={[styles.container,commonStyles]}>
+            <View style={[styles.container, commonStyles]}>
                 <ScrollView
                     Vertical={true}
                     showsVerticalScrollIndicator={false}
-                      
+
                     refreshControl={
                         <RefreshControl
-                          refreshing={refreshing}
-                          onRefresh={onRefresh}
-                          tintColor="#5B7586" 
-                          title="Refreshing..." 
-                          titleColor="#5B7586"
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            tintColor="#5B7586"
+                            title="Refreshing..."
+                            titleColor="#5B7586"
                         />
-                      }
+                    }
                 >
-                    <Text style={styles.text1}>{route.params.title}</Text>
 
-                    <View style={{ height: 125, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
-                        <Image source={{ uri: 'https://img.freepik.com/premium-photo/man-red-porsche-cayenne-car-wash_900775-46452.jpg' }} style={styles.item} />
+                    <View style={styles.card}>
+                        <Image source={{ uri: image }} style={styles.item} />
+                        <Text style={styles.text1}>{title}</Text>
+
                     </View>
-
                     <View style={styles.about}>
                         <Text style={styles.text2}>About</Text>
-                        <Text>{route.params.description}</Text>
+                        <Text>{description}</Text>
                     </View>
-
-                    <View style={styles.reviewtext}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Reviews</Text>
-                        <View style={styles.sees}>
-                            {/* <Text>See all</Text> */}
-                            {/* <MaterialCommunityIcons name="greater-than" size={17} /> */}
-                        </View>
-                    </View>
+                    <Text style={{ fontWeight: 'bold', fontSize: 15, marginHorizontal: 20, }}>Reviews</Text>
 
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                         {reviews.map((review) => (
                             <View key={review._id} style={styles.reviewCard}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5,justifyContent:'space-between'  }}>
-                                    {/* <Text style={{ marginRight: 5 }}>{review.rating}</Text> */}
-                                    <Text style={{fontWeight:'bold'}}>{review.clientName}</Text>
-                                    <View style={{ flexDirection: 'row'}}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, justifyContent: 'space-between' }}>
+                                    <FontAwesome name="user-circle" size={35} color="#27ae60" />
+                                    <Text style={{ fontWeight: 'bold' }}>{review.clientName}</Text>
+                                    <View style={{ flexDirection: 'row' }}>
                                         {Array.from({ length: 5 }).map((_, index) => (
                                             <FontAwesomeIcon
                                                 key={index}
@@ -225,7 +214,7 @@ const Topservice = ({ route, navigation }) => {
 
                     </ScrollView>
 
-                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address<Text style={{ color: 'red' }}> *</Text></Text>
+                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 5 }}>Add Pickup Address<Text style={{ color: 'red' }}> *</Text></Text>
                     <TextInput
                         placeholder="Enter Address"
                         placeholderTextColor='#000'
@@ -235,8 +224,8 @@ const Topservice = ({ route, navigation }) => {
                     />
                     <Text style={styles.errorText}>{errors.pickupAddress}</Text>
 
-                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Choose Date & Time</Text>
-
+                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 5 }}>Choose Date & Time</Text>
+                    {/* 
                     <View
                         style={{
                             height: 65,
@@ -280,6 +269,42 @@ const Topservice = ({ route, navigation }) => {
                                 </View>
                             </View>
                         </View>
+                    </View> */}
+                    <View style={styles.datetime}>
+                        <View style={styles.row}>
+                            <View style={styles.textContainer}>
+                                <TouchableOpacity onPress={() => setShowPicker(true)}>
+                                    <AntDesign name="calendar" size={35} color="#3498db" />
+                                </TouchableOpacity>
+
+                                {date && (
+                                    <Text style={styles.text}>{moment(date).format('DD-MM-YYYY')}</Text>
+                                )}
+                            </View>
+                            <View style={styles.TextContainer}>
+                                <TouchableOpacity onPress={showDatePicker}>
+                                    <EvilIcons name="clock" size={35} color="#e74c3c" />
+                                </TouchableOpacity>
+
+                                {time && (
+                                    <Text style={styles.text}>{moment(time).format('hh:mm A')}</Text>
+                                )}
+                            </View>
+                        </View>
+                        {showPicker && (
+                            <DateTimePicker
+                                value={date}
+                                mode="date"
+                                display="default"
+                                onChange={handleDateChange}
+                            />
+                        )}
+                        <DateTimePickerModal
+                            isVisible={isDatePickerVisible}
+                            mode="time"
+                            onConfirm={handleDateConfirm}
+                            onCancel={() => setIsDatePickerVisible(false)}
+                        />
                     </View>
                 </ScrollView>
                 <View style={styles.maincontainer}>
@@ -296,7 +321,7 @@ const Topservice = ({ route, navigation }) => {
                             <Text style={styles.text10}>Home</Text>
                         </View>
                         <View style={styles.text9}>
-                            <TouchableOpacity onPress={handleIconPressBooking}>
+                            <TouchableOpacity onPress={handleIconPressBook}>
                                 <Entypo name="calendar" size={30} style={styles.icon4} />
                             </TouchableOpacity>
                             <Text style={styles.text10}>Booking</Text>
@@ -307,12 +332,12 @@ const Topservice = ({ route, navigation }) => {
                             </TouchableOpacity>
                             <Text style={styles.text10}>Inbox</Text>
                         </View>
-                        <View style={styles.text9}>
+                        {/* <View style={styles.text9}>
                             <TouchableOpacity onPress={openSettings}>
                                 <Ionicons name="settings-sharp" size={30} style={styles.icon4} />
                             </TouchableOpacity>
                             <Text style={styles.text10}>Setting</Text>
-                        </View>
+                        </View> */}
                     </View>
                 </View>
             </View>
@@ -322,8 +347,22 @@ const Topservice = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
-        backgroundColor: '#D8D8D8'
+        flex: 1,
+        backgroundColor: '#D8D8D8',
+        marginTop: 10,
+        width: '100%',
+        height: '100%',
+    },
+    card: {
+        width: 350,
+        backgroundColor: '#fff',
+        marginHorizontal: 20,
+        alignItems: 'center',
+    },
+    item: {
+        width: 350,
+        height: 150,
+        resizeMode: 'cover'
     },
     text1: {
         textAlign: 'center',
@@ -337,15 +376,8 @@ const styles = StyleSheet.create({
     about: {
         margin: 20,
     },
-    reviewtext: {
-        flexDirection: 'row',
-        marginHorizontal: 20,
-        justifyContent: 'space-between'
-    },
-    sees: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
+
+
     reviewCard: {
         width: 350,
         height: 150,
@@ -377,7 +409,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'gray',
         borderRadius: 5,
-        padding: 10,
+        padding: 15,
         marginHorizontal: 20,
         backgroundColor: 'white',
     },
@@ -402,27 +434,44 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         margin: 8,
     },
-    date1: {
-        marginHorizontal: 20,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+    datetime: {
+        height: 65,
+        width: 360,
+        backgroundColor: 'white',
+        marginVertical: 10,
+        marginHorizontal: 15,
+        borderRadius: 10,
+        elevation: 3,
+        paddingHorizontal: 10,
     },
-    datetext1: {
-        height: 40,
-        width: 90,
-        backgroundColor: '#F2F3F4',
+    row: {
+        flexDirection: 'row',
+        marginHorizontal: 10,
+        justifyContent: 'space-between',
+        marginVertical: 10,
+    },
+    textContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+
+    },
+    TextContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+
+    },
+    text: {
+        marginLeft: 5,
         fontSize: 18,
-        textAlign: 'center',
-        margin: 5,
-        paddingTop: 8
+        color: '#333',
     },
     maincontainer: {
         // marginHorizontal: 15,
         // marginTop:10
-        position:'relative'
-      },
-      button: {
-        position:'relative',
+        position: 'relative'
+    },
+    button: {
+        position: 'relative',
         backgroundColor: "#5B7586",
         height: 45,
         width: 360,
@@ -430,13 +479,13 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         marginBottom: 10,
         borderRadius: 2,
-      },
-      buttonText: {
+    },
+    buttonText: {
         color: "#000",
         fontSize: 16,
         fontWeight: "bold",
         textAlign: "center",
-      },
+    },
     footer: {
         position: 'relative',
         backgroundColor: "#fff",
@@ -446,26 +495,22 @@ const styles = StyleSheet.create({
         padding: 10,
         alignItems: 'center',
         zIndex: 2,
-        borderTopColor:'gray',
-        borderWidth:0.5
-      },
-      iconsContainer1: {
+        borderTopColor: 'gray',
+        borderWidth: 0.5
+    },
+    iconsContainer1: {
         flexDirection: "row",
-      },
-      icon4: {
-        marginHorizontal: 20,
-      },
-      text9: {
+    },
+    icon4: {
+        marginHorizontal: 40,
+    },
+    text9: {
         alignItems: 'center',
-      },
-      text10: {
+    },
+    text10: {
         fontSize: 10,
-      },
-    item: {
-        width: '100%',
-        height: '100%',
-        resizeMode: 'cover'
-    }
+    },
+
 });
 
 

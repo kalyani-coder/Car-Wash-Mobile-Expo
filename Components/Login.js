@@ -98,7 +98,7 @@ const Login = ({ navigation }) => {
     navigation.navigate('Signup');
   };
   const commonStyles = {
-    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+   
     color: colorScheme === 'dark' ? '#fff' : '#000',
   };
   return (

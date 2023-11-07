@@ -10,15 +10,41 @@ import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { RefreshControl } from 'react-native';
-
+import { useFocusEffect } from '@react-navigation/native';
 
 
 const Tab = createMaterialTopTabNavigator();
 
-const Appointment = ({ navigation }) => {
+const Appointment = ({ navigation}) => {
 
   const colorScheme = Appearance.getColorScheme();
+
+  const [activeIcon, setActiveIcon] = useState('Appointment');
+
+  // useEffect(() => {
+  //   // Reset the active icon when the component is mounted
+  //   setActiveIcon('Appointment');
+  // }, []);
+
+  // Custom navigation function
+  const navigateToScreen = (screenName) => {
+    setActiveIcon(screenName);
+   navigation.navigate(screenName);
+  };
+
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // This code will run when the screen is focused.
+      setActiveIcon('Appointment');
+    }, [])
+  );
+
+  // Function to handle icon click and update the active icon state
+
+  const handleIconClick = (iconName) => {
+    setActiveIcon(iconName);
+  };
 
 
   const handleIconPressNotification = () => {
@@ -29,9 +55,6 @@ const Appointment = ({ navigation }) => {
     navigation.navigate('Home');
   };
 
-  const handleIconPressService = () => {
-    navigation.navigate('Washing');
-  };
 
   const handleIconPressBook = () => {
     navigation.navigate('Appointment');
@@ -45,7 +68,7 @@ const Appointment = ({ navigation }) => {
     }
   };
   const commonStyles = {
-    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+
     color: colorScheme === 'dark' ? '#fff' : '#000',
   };
   return (
@@ -57,17 +80,17 @@ const Appointment = ({ navigation }) => {
           tabBarInactiveTintColor: 'grey',
           tabBarStyle: {
             backgroundColor: '#fff',
-            elevation: 0, 
+            elevation: 0,
             borderBottomColor: 'gray',
           },
           tabBarLabelStyle: {
-            fontSize: 14, 
+            fontSize: 14,
           },
           tabBarIndicatorStyle: {
-            backgroundColor: 'black', 
-            height: 1, 
+            backgroundColor: 'black',
+            height: 1,
           },
-         
+
         }}
       >
         <Tab.Screen name="Upcoming" component={Upcoming} options={{ tabBarLabel: 'Upcoming' }} />
@@ -84,34 +107,31 @@ const Appointment = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View style={styles.iconsContainer1}>
-          <View style={styles.text9}>
-            <TouchableOpacity onPress={handleIconPressHome}>
-              <Entypo name="home" size={30} style={styles.icon4}/>
-            </TouchableOpacity>
-            <Text style={styles.text10}>Home</Text>
+            <View style={styles.text9}>
+              <TouchableOpacity onPress={() =>navigateToScreen('Home')} >
+                <Entypo name="home" size={30} style={[styles.icon4, activeIcon === 'Home' ? { color: '#DAA520' } : { color: 'black' }]}  />
+              </TouchableOpacity>
+              <Text style={styles.text10}>Home</Text>
+            </View>
+            <View style={styles.text9}>
+              <TouchableOpacity onPress={() =>navigateToScreen('Appointment')} >
+                <Entypo name="calendar" size={30} style={[styles.icon4, activeIcon === 'Appointment' ? { color: '#DAA520' } : { color: 'black' }]}  />
+              </TouchableOpacity>
+              <Text style={styles.text10}>Booking</Text>
+            </View>
+            <View style={styles.text9}>
+              <TouchableOpacity onPress={() =>navigateToScreen('Notification')} >
+                <MaterialIcons name="forward-to-inbox" size={30} style={[styles.icon4, activeIcon === 'Notification' ? { color: '#DAA520' } : { color: 'black' }]}  />
+              </TouchableOpacity>
+              <Text style={styles.text10}>Inbox</Text>
+            </View>
+            {/* <View style={styles.text9}>
+              <TouchableOpacity onPress={() =>navigateToScreen(openSettings)}>
+                <Ionicons name="settings-sharp" size={30} style={[styles.icon4, activeIcon === 'Setting' ? { color: '#DAA520' } : { color: 'black' }]}  />
+              </TouchableOpacity>
+              <Text style={styles.text10}>Setting</Text>
+            </View> */}
           </View>
-
-          <View style={styles.text9}>
-            <TouchableOpacity onPress={handleIconPressBook}>
-              <Entypo name="calendar" size={30} style={styles.icon4} />
-            </TouchableOpacity>
-            <Text style={styles.text10}>Booking</Text>
-          </View>
-
-          <View style={styles.text9}>
-            <TouchableOpacity onPress={handleIconPressNotification}>
-              <MaterialIcons name="forward-to-inbox" size={30} style={styles.icon4} />
-            </TouchableOpacity>
-            <Text style={styles.text10}>Inbox</Text>
-          </View>
-
-          <View style={styles.text9}>
-            <TouchableOpacity onPress={openSettings}>
-              <Ionicons name="settings-sharp" size={30} style={styles.icon4} />
-            </TouchableOpacity>
-            <Text style={styles.text10}>Setting</Text>
-          </View>
-        </View>
       </View>
     </View>
   );
@@ -143,7 +163,7 @@ const styles = StyleSheet.create({
 
   },
   icon4: {
-    marginHorizontal: 20,
+    marginHorizontal: 40,
   },
   text9: {
     alignItems: 'center',

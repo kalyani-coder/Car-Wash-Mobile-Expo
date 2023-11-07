@@ -9,6 +9,7 @@ import {
   Linking,
   ScrollView,
   Alert,
+  Image
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
@@ -40,7 +41,7 @@ const Upcoming = ({ navigation }) => {
 
           // Filter the data based on status
           const filteredData = allData.filter(
-            (item) => item.status === 'Accepted' || item.status === ''
+            (item) => item.status === 'Accepted' || item.status === '' || item.status === 'WorkOnIt' || item.status === 'PickUp'
           );
 
           setData(filteredData);
@@ -62,13 +63,13 @@ const Upcoming = ({ navigation }) => {
   //for refreshing the field 
 
   const onRefresh = () => {
-        
+
     setRefreshing(true);
 
     setTimeout(() => {
-      
+
       setRefreshing(false);
-    }, 2000); 
+    }, 2000);
   };
   useEffect(() => {
     // Initial data fetch
@@ -134,125 +135,135 @@ const Upcoming = ({ navigation }) => {
     );
   };
 
-  const handleIconPressNotification = () => {
-    navigation.navigate('Notification');
-  };
 
-  const handleIconPressHome = () => {
-    navigation.navigate('Home');
-  };
-
-  const handleIconPressService = () => {
-    navigation.navigate('Washing');
-  };
-
-  const handleIconPressBook = () => {
-    navigation.navigate('Appointment');
-  };
-  const handleTrack = () => {
-    navigation.navigate('DeliveryScreen');
-  };
-
-
-  const openSettings = async () => {
-    try {
-      await Linking.openSettings();
-    } catch (error) {
-      console.error('Error opening settings:', error);
-    }
+  const handleTrack = (item) => {
+    navigation.navigate('DeliveryScreen', {
+      date: item.date,
+      time: item.time,
+      servicesName: item.servicesName,
+      totalPrice: item.totalPrice,
+      locationId: item.locationId,
+      agentId: item.agentId
+    });
   };
 
   const commonStyles = {
-    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+
     color: colorScheme === 'dark' ? '#fff' : '#000',
   };
 
   return (
     <>
       <View style={[styles.header, commonStyles]}>
+
         <ScrollView
-          Vertical={true}
+          vertical={true}
           showsVerticalScrollIndicator={false}
           style={{ flex: 1 }}
-            
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              tintColor="#5B7586" 
-              title="Refreshing..." 
+              tintColor="#5B7586"
+              title="Refreshing..."
               titleColor="#5B7586"
             />
           }
         >
           <View style={styles.container}>
             {data.map((item) => (
-              <View key={item._id} style={styles.card}>
-                <View style={styles.wash}>
-                  <Text style={styles.date}>
-                    {moment(item.date, 'DD-MM-YYYY').format('D MMM')}
-                  </Text>
-                  <View>
-                    <Text>{item.servicesName}</Text>
-                    <Text>Rs.{item.totalPrice}</Text>
+              <View key={item._id} style={styles. promotioncard}>
+                <View style={styles. promotioncardContent}>
+                  <Image
+                    source={{
+                      uri:
+                        'https://www.autocar.co.uk/sites/autocar.co.uk/files/styles/gallery_slide/public/images/car-reviews/first-drives/legacy/rolls_royce_phantom_top_10.jpg?itok=XjL9f1tx',
+                    }}
+                    style={styles. promotionimage}
+                  />
+                  <View style={styles. promotiondetails}>
+                    <Text style={styles. promotionserviceName}>{item.servicesName}</Text>
+                    <Text style={styles. promotiondate}>
+                      {moment(item.date, 'DD-MM-YYYY').format('DD-MM-YYYY')}
+                    </Text>
+                    <Text style={styles.promotionclock}>{item.time}</Text>
+                    <Text style={styles.promotionprice}>Rs. {item.totalPrice}</Text>
                   </View>
-                  <Text
-                    style={
-                      item.status === 'Accepted'
-                        ? styles.confirmedStatus
-                        : styles.pendingStatus
-                    }
-                  >
-                    {item.status == '' ? 'Pending' : item.status}
-                  </Text>
-                </View>
 
-                {/* <Text style={styles.clock}>Time: {item.time}</Text> */}
-
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10,marginVertical:5}}>
-                  <Text style={styles.clock}>Time:- {item.time}</Text>
-                  {item.status === 'Accepted' && ( // Conditionally render the "Track" button
-                    <TouchableOpacity style={styles.reviews} onPress={handleTrack}>
-                      <Text style={{ padding: 4, textAlign: 'center' }}>Track</Text>
+                  <View>
+                    {item.status === 'Accepted' ? (
+                      <TouchableOpacity style={styles.trackButton} onPress={() => handleTrack(item)}>
+                        {/* Replace text with the track icon */}
+                        <Entypo name="location-pin" size={24} color="white" />
+                      </TouchableOpacity>
+                    ) : null}
+                  </View>
+                  {item.status === 'PickUp' ? (
+                    <TouchableOpacity style={styles.trackButton} onPress={() => handleTrack(item)}>
+                      <Entypo name="location-pin" size={24} color="white" />
                     </TouchableOpacity>
-                  )}
+                  ) : null}
+                  {item.status === 'WorkOnIt' ? (
+                    <TouchableOpacity style={styles.trackButton} onPress={() => handleTrack(item)}>
+                      <Entypo name="location-pin" size={24} color="white" />
+                    </TouchableOpacity>
+                  ) : null}
+
+
                 </View>
-                <View style={styles.button}>
+                <View style={styles.buttonContainer}>
                   {item.status === 'Accepted' ? (
                     <>
-                    
-                      <TouchableOpacity
-                        style={styles.btn1}
+                      <Text
+                        style={
+                          item.status === 'Accepted'
+                            ? styles.confirmedStatus
+                            : styles.pendingStatus
+                        }
                       >
-                        
-                        <Text style={styles.buttontext}>No Reschedule</Text>
-                      </TouchableOpacity>
+                        {item.status === '' ? 'Pending' : item.status}
+                      </Text>
+
+
+                      {item.status == 'WorkOnIt' || item.status == 'PickUp' || (
+                        <View style={styles.rescheduleButton}>
+                          <Text style={styles.buttonText}> No Reschedule</Text>
+                        </View>
+                      )}
                       <TouchableOpacity
-                        style={styles.btn2}
+                        style={styles.cancelButton}
                         onPress={() => handleCancelAppointment(item._id)}
                       >
-                        <Text style={styles.buttontext}>Cancel</Text>
+                        <Text style={styles.buttonText}>Cancel</Text>
                       </TouchableOpacity>
                     </>
-
                   ) : (
                     <>
-                    
+                      <Text
+                        style={
+                          item.status === 'Accepted'
+                            ? styles.confirmedStatus
+                            : styles.pendingStatus
+                        }
+                      >
+                        {item.status === '' ? 'Pending' : item.status}
+                      </Text>
+
                       <TouchableOpacity
-                        style={styles.btn1}
+                        style={styles.rescheduleButton}
                         onPress={() => {
                           navigation.navigate('UpdateInfo', {
                             appointment: item,
                           });
                         }}
                       >
-                        <Text style={styles.buttontext}>Reschedule</Text>
+                        <Text style={styles.buttonText}>Reschedule</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
-                        style={styles.btn2}
+                        style={styles.cancelButton}
                         onPress={() => handleCancelAppointment(item._id)}
                       >
-                        <Text style={styles.buttontext}>Cancel</Text>
+                        <Text style={styles.buttonText}>Cancel</Text>
                       </TouchableOpacity>
                     </>
                   )}
@@ -272,110 +283,107 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#D8D8D8',
   },
+
   container: {
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-    width: '100%',
-  },
-  card: {
-    height: 200,
-    backgroundColor: 'white',
-    width:370,
-    borderWidth: 0.5,
-    borderColor: 'white',
-    margin: 5,
-    padding: 10,
-    marginHorizontal:10,
-    borderRadius:20,
- 
-  },
-  info: {
     flex: 1,
-    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    // paddingVertical: 10,
   },
-  wash: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: 20,
-    marginVertical: 10,
-  },
-  date: {
-    height: 70,
-    width: 55,
+  promotioncard: {
+    flexDirection: 'column',
     backgroundColor: 'white',
-    fontSize: 17,
-    padding: 8,
+    height: 200,
+    width: 370,
+    marginVertical: 10,
+    borderRadius: 10,
+    elevation: 2, // Add shadow for Android
+    shadowColor: 'rgba(0, 0, 0, 0.2)', // Add shadow for iOS
+    shadowOpacity: 0.5,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
   },
-  datetext: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 8,
+  promotioncardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    // paddingVertical: 5,
   },
-  btn3: {
-    backgroundColor: '#D3d3d3',
-    borderRadius: 20,
-    width: 80,
-    height: 30,
-    textAlign: 'center',
-    padding: 4,
+  promotionimage: {
+    width: 120,
+    height: 120,
+    resizeMode: 'cover',
+    borderRadius: 10,
+    margin: 10,
+  },
+  promotiondetails: {
+    flex: 1,
+    marginRight: 10,
+  },
+  promotionserviceName: {
+    fontSize: 15,
+    marginBottom: 5,
+  },
+  promotiondate: {
+    fontSize: 15,
+    marginTop: 5,
+  },
+  promotionclock: {
+    fontSize: 15,
+    marginTop: 5,
+  },
+  promotionprice: {
+    fontSize: 15,
+    marginTop: 5,
+  },
+  trackButton: {
+    backgroundColor: 'skyblue',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginTop: 5,
+    bottom: 30
+
+  },
+buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly', // Change to 'space-evenly' for even spacing
+    marginHorizontal: 5,
+    marginTop: 10
   },
   confirmedStatus: {
-    backgroundColor: 'green',
-    borderRadius: 20,
-    width: 80,
-    height: 30,
-    textAlign: 'center',
-    padding: 4,
-    color: '#000', // Text color for Confirmed
+
+    backgroundColor: '#33B864',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    fontWeight: 'bold'
   },
   pendingStatus: {
-    backgroundColor: 'orange',
-    borderRadius: 20,
-    width: 80,
-    height: 30,
-    textAlign: 'center',
-    padding: 4,
-    color: '#000', // Text color for Pending
+    backgroundColor: '#FCAE1E',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    fontWeight: 'bold'
   },
-  btntext: {
-    textAlign: 'center',
-    margin: 4,
-  },
-  clock: {
-    flexDirection: 'row',
-    marginHorizontal: 20,
-  },
-  reviews:{
-    width: 100,
-    height: 30,
-    borderRadius: 4,
-    backgroundColor:'skyblue',
-    textAlign:'center',
-    marginBottom:5
-  },
-  button: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical:5
-  },
-  btn1: {
-    width: 160,
-    height: 40,
-    borderRadius: 8,
+  rescheduleButton: {
     backgroundColor: '#f8db03',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
   },
-  btn2: {
-    width: 160,
-    height: 40,
-    borderRadius: 8,
-    backgroundColor: '#5B7586',
-    color: 'white',
+  cancelButton: {
+    backgroundColor: '#FF2E2E',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
   },
-  buttontext: {
-    color: '#000',
-    fontSize: 15,
+  buttonText: {
+    color: 'black',
+    fontSize: 14,
+    fontWeight: 'bold',
     textAlign: 'center',
-    margin: 8,
   },
 
 });

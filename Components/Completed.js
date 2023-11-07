@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     Linking,
     ScrollView,
-    Alert
+    Alert,
+    Image
 } from 'react-native';
 import { Appearance } from 'react-native';
 import { RefreshControl } from 'react-native';
@@ -43,14 +44,14 @@ const Completed = ({ navigation }) => {
     //for refreshing the field 
 
     const onRefresh = () => {
-        
+
         setRefreshing(true);
-  
+
         setTimeout(() => {
-          
-          setRefreshing(false);
-        }, 2000); 
-      };
+
+            setRefreshing(false);
+        }, 2000);
+    };
 
     useEffect(() => {
         // Initial data fetch
@@ -116,8 +117,8 @@ const Completed = ({ navigation }) => {
         navigation.navigate('Appointment');
     };
     const handlePress = () => {
-        navigation.navigate('Review'); 
-      };
+        navigation.navigate('Review');
+    };
 
     const openSettings = async () => {
         try {
@@ -128,62 +129,66 @@ const Completed = ({ navigation }) => {
     };
 
     const commonStyles = {
-        // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+       
         color: colorScheme === 'dark' ? '#fff' : '#000',
-      };
+    };
 
     return (
         <>
-            <View style={[styles.header,commonStyles]}>
+            <View style={[styles.header, commonStyles]}>
                 <ScrollView
                     Vertical={true}
                     showsVerticalScrollIndicator={false}
                     style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
-                          refreshing={refreshing}
-                          onRefresh={onRefresh}
-                          tintColor="#5B7586" 
-                          title="Refreshing..." 
-                          titleColor="#5B7586"
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            tintColor="#5B7586"
+                            title="Refreshing..."
+                            titleColor="#5B7586"
                         />
-                      }
+                    }
                 >
                     <View style={styles.container}>
                         {data.map((item) => (
                             <View key={item._id} style={styles.card}>
-                               
-                                <View style={styles.wash}>
-                                    <Text style={styles.date}> {moment(item.date, 'DD-MM-YYYY').format('D MMM')}</Text>
-                                    <View>
-                                        <Text>{item.servicesName}</Text>
-                                        <Text>{item.totalPrice}</Text>
+                                <View style={styles.cardContent}>
+                                    <Image
+                                        source={{
+                                            uri:
+                                                'https://www.autocar.co.uk/sites/autocar.co.uk/files/styles/gallery_slide/public/images/car-reviews/first-drives/legacy/rolls_royce_phantom_top_10.jpg?itok=XjL9f1tx',
+                                        }}
+                                        style={styles.image}
+                                    />
+                                    <View style={styles.details}>
+                                        <Text style={styles.serviceName}>{item.servicesName}</Text>
+                                        <Text style={styles.date}>
+                                            {moment(item.date, 'DD-MM-YYYY').format('DD-MM-YYYY')}
+                                        </Text>
+                                        <Text style={styles.clock}>Time: {item.time}</Text>
+                                        <Text style={styles.price}>Rs. {item.totalPrice}</Text>
                                     </View>
+
+
+
+                                </View>
+                                <View style={styles.buttonContainer}>
                                     <Text style={styles.status}>
                                         {item.status}
                                     </Text>
-
-                                </View>
-
-                                <View style={{flexDirection: 'row', justifyContent: 'space-between',marginHorizontal:10,marginVertical:10}}>
-                                <Text style={styles.clock}>Time:{item.time}</Text>
-                                
-                                 </View>
-
-                                <View style={styles.button}>
-                                    
-                                     <TouchableOpacity style={styles.btn1} onPress={handlePress}>
-                                    <Text style={styles.buttontext}>Add Review</Text>
+                                    <TouchableOpacity style={styles.button} onPress={handlePress}>
+                                        <Text style={styles.buttonText}>Add Review</Text>
                                     </TouchableOpacity>
-
-                                   
                                 </View>
                             </View>
                         ))}
                     </View>
+                  
+
                 </ScrollView>
 
-                
+
             </View>
         </>
     );
@@ -195,103 +200,85 @@ const styles = StyleSheet.create({
         backgroundColor: '#D8D8D8',
     },
     container: {
-        justifyContent: 'space-between',
-        flexDirection: 'column',
-        width: '100%',
-        marginVertical:5
+        flex: 1,
+        paddingHorizontal: 10,
+        // paddingVertical: 10,
     },
     card: {
-        width:370,
-        height: 180,
+        flexDirection: 'column',
         backgroundColor: 'white',
-        borderWidth: 0.5,
-        borderColor: 'white',
-        margin: 5,
-        padding: 10,
-        marginHorizontal:10,
-        borderRadius:20,
-       
+        height: 200,
+        width: 370,
+        marginVertical: 10,
+        borderRadius: 10,
+        elevation: 2, // Add shadow for Android
+        shadowColor: 'rgba(0, 0, 0, 0.2)', // Add shadow for iOS
+        shadowOpacity: 0.5,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
     },
-    info: {
-        flex: 1,
-        justifyContent: 'space-between',
-    },
-    wash: {
+    cardContent: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginHorizontal: 20,
+        alignItems: 'center',
        
+    },
+    image: {
+        width: 120,
+        height: 130,
+        resizeMode: 'cover',
+        borderRadius: 10,
+        margin: 10,
+    },
+    details: {
+        flex: 1,
+        marginRight: 10,
+    },
+    serviceName: {
+        fontSize: 15,
+        marginBottom: 5,
     },
     date: {
-        height: 70,
-        width: 55,
-        backgroundColor: 'white',
-        fontSize: 16,
-        padding: 5,
-    },
-    datetext: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 8,
-    },
-    btn3: {
-        backgroundColor: '#D3d3d3',
-        borderRadius: 20,
-        width: 80,
-        height: 30,
-        textAlign: 'center',
-        padding: 4,
-    },
-    status: {
-        backgroundColor: 'green',
-        borderRadius: 20,
-        width: 80,
-        height: 30,
-        textAlign: 'center',
-        padding: 4,
-        color: '#000',
-    },
-    btntext: {
-        textAlign: 'center',
-        margin: 4,
+        fontSize: 15,
+        marginTop: 5,
     },
     clock: {
-        flexDirection: 'row',
-        marginHorizontal: 20,
-    },
-    reviews:{
-        width: 100,
-        height: 30,
-        borderRadius: 4,
-        backgroundColor:'skyblue',
-        textAlign:'center'
-      },
-    button: {
-        flexDirection: 'row',
-        // justifyContent: 'space-between',
-        // marginVertical:5
-    },
-    btn1: {
-        width: 260,
-        height: 40,
-        borderRadius: 8,
-        backgroundColor: '#f8db03',
-        marginHorizontal:35
-    },
-    // btn2: {
-    //     width: 160,
-    //     height: 40,
-    //     borderRadius: 8,
-    //     backgroundColor: '#5B7586',
-    //     color: 'white',
-    // },
-    buttontext: {
-        color: '#000',
         fontSize: 15,
-        textAlign: 'center',
-        margin: 8,
+        marginTop: 5,
+    },
+    price: {
+        fontSize: 15,
+        marginTop: 5,
     },
   
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly', // Change to 'space-evenly' for even spacing
+        marginLeft: 130
+    },
+    status:{
+        backgroundColor: '#33B864',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+      
+    },
+    button: {
+        backgroundColor: '#f8db03',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+    },
+
+    buttonText: {
+        color: 'black',
+        fontSize: 12,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+   
+
 });
 
 export default Completed;

@@ -27,6 +27,11 @@ import Review from './Components/Review';
 import Editprofile from './Components/Editprofile';
 import UpdateInfo from './Components/UpdateInfo';
 import DeliveryScreen from './Components/DeliveryScreen';
+import SplashScreen from './Components/SplashScreen';
+import ServicePage from './Components/ServicePage';
+import PromotionPage from './Components/PromotionPage';
+import TopservicePage  from './Components/TopservicePage';
+
 
 const Stack = createStackNavigator();
 
@@ -34,7 +39,7 @@ function App() {
   return (
     <View style={styles.container}>
       <NavigationContainer theme={{ colors: { background: 'white' } }} fallback={<Text>Loading...</Text>}>
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName="SplashScreen">
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
           <Stack.Screen name="Otp" component={Otp} options={{ headerShown: false }} />
           <Stack.Screen name="Appointment" component={Appointment} options={{ headerShown: false }} />
@@ -45,10 +50,31 @@ function App() {
           <Stack.Screen name="Washing" component={Washing} options={{ headerShown: false }} />
           <Stack.Screen name="Confirmation" component={Confirmation} options={{ headerShown: false }} />
           <Stack.Screen name="Promotion" component={Promotion} options={{ headerShown: false }} />
-          <Stack.Screen name="Review" component={Review} options={{ headerShown: false }} />
-          <Stack.Screen name="Editprofile" component={Editprofile} options={{ headerShown: false }} />
-          <Stack.Screen name="UpdateInfo" component={UpdateInfo} options={{ headerShown: false }} />
+          <Stack.Screen name="Review" component={Review} />
+          <Stack.Screen name="Editprofile" component={Editprofile} options={{
+            headerShown: true, // Show the header
+            headerTitle: 'Edit Profile',   // Hide the page name
+            headerBackTitle: 'Back', // Customize the back arrow text
+          }} />
+          <Stack.Screen name="UpdateInfo" component={UpdateInfo} />
           <Stack.Screen name="DeliveryScreen" component={DeliveryScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="ServicePage" component={ServicePage} options={{
+            headerShown: true, 
+            headerTitle: 'Services',  
+            headerBackTitle: 'Back', 
+          }} />
+          
+          <Stack.Screen name="PromotionPage" component={PromotionPage} options={{
+            headerShown: true, 
+            headerTitle: 'Promotion',  
+            headerBackTitle: 'Back', 
+          }} />
+          <Stack.Screen name="TopservicePage" component={TopservicePage} options={{
+            headerShown: true, 
+            headerTitle: 'Top Services',  
+            headerBackTitle: 'Back', 
+          }} />
           <Stack.Screen
             name="PromotionConfirmation"
             component={PromotionConfirmation}
@@ -60,15 +86,15 @@ function App() {
             component={Topserviceconfirmation}
             options={{ headerShown: false }}
           />
-          <Stack.Screen name="Booknow" component={Booknow} options={{headerShown:false}}/>
-          <Stack.Screen name="BookConfirmation" component={BookConfirmation} options={{headerShown:false}}/>
+          <Stack.Screen name="Booknow" component={Booknow} options={{ headerShown: false }} />
+          <Stack.Screen name="BookConfirmation" component={BookConfirmation} options={{ headerShown: false }} />
           <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }} />
           <Stack.Screen name="Confirm" component={Confirm} options={{ headerShown: false }} />
-          <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+          <Stack.Screen name="Profile" component={Profile}  />
           <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
-      <StatusBar style="auto"/>
+      <StatusBar style="auto" />
     </View>
   );
 }
@@ -77,7 +103,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 30,
-    height:'100%'
+    height: '100%'
   },
 });
 export default App;

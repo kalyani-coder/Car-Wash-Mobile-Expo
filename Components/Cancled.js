@@ -4,18 +4,15 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    Linking,
+  
     ScrollView,
-    Alert
+    Alert,
+    Image
 } from 'react-native';
 import { Appearance } from 'react-native';
 import { RefreshControl } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from 'moment';
-import { Entypo } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
 
 
 const Canceled = ({ navigation }) => {
@@ -72,8 +69,7 @@ const Canceled = ({ navigation }) => {
                         })
                             .then((response) => {
                                 if (response.ok) {
-                                    // Appointment was successfully canceled
-                                    // Remove the canceled appointment from the local state
+                                    
                                     const updatedData = data.filter((item) => item._id !== appointmentId);
                                     setData(updatedData);
                                 } else {
@@ -89,9 +85,7 @@ const Canceled = ({ navigation }) => {
         );
     };
 
-    const handleIconPressNotification = () => {
-        navigation.navigate('Notification');
-    };
+   
 
     //for refreshing the field 
 
@@ -105,27 +99,9 @@ const Canceled = ({ navigation }) => {
         }, 2000); 
       };
 
-    const handleIconPressHome = () => {
-        navigation.navigate('Home');
-    };
-
-    const handleIconPressService = () => {
-        navigation.navigate('Washing');
-    };
-
-    const handleIconPressBook = () => {
-        navigation.navigate('Appointment');
-    };
-
-    const openSettings = async () => {
-        try {
-            await Linking.openSettings();
-        } catch (error) {
-            console.error('Error opening settings:', error);
-        }
-    };
+   
     const commonStyles = {
-        // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+       
         color: colorScheme === 'dark' ? '#fff' : '#000',
       };
 
@@ -146,39 +122,46 @@ const Canceled = ({ navigation }) => {
                         />
                       }
                 >
-                    <View style={styles.container}>
+                     <View style={styles.container}>
                         {data.map((item) => (
                             <View key={item._id} style={styles.card}>
-                                {/* console.log('Item ID:', item.id);  */}
-                                <View style={styles.wash}>
-                                    <Text style={styles.date}> {moment(item.date, 'DD-MM-YYYY').format('D MMM')}</Text>
-                                    <View>
-                                        <Text>{item.servicesName}</Text>
-                                        <Text>{item.totalPrice}</Text>
+                                <View style={styles.cardContent}>
+                                    <Image
+                                        source={{
+                                            uri:
+                                                'https://www.autocar.co.uk/sites/autocar.co.uk/files/styles/gallery_slide/public/images/car-reviews/first-drives/legacy/rolls_royce_phantom_top_10.jpg?itok=XjL9f1tx',
+                                        }}
+                                        style={styles.image}
+                                    />
+                                    <View style={styles.details}>
+                                        <Text style={styles.serviceName}>{item.servicesName}</Text>
+                                        <Text style={styles.date}>
+                                            {moment(item.date, 'DD-MM-YYYY').format('DD-MM-YYYY')}
+                                        </Text>
+                                        <Text style={styles.clock}>Time: {item.time}</Text>
+                                        <Text style={styles.price}>Rs. {item.totalPrice}</Text>
                                     </View>
+
+
+
+                                </View>
+                                <View style={styles.buttonContainer}>
                                     <Text style={styles.status}>
                                         {item.status}
                                     </Text>
-
-                                </View>
-                                <Text style={styles.clock}>Time:{item.time}</Text>
-                                <View style={styles.button}>
-                                    {/* <TouchableOpacity
-                                        style={styles.btn1}
-                                    >
-                                        <Text style={styles.buttontext}>Reschedule</Text>
-                                    </TouchableOpacity> */}
                                     <TouchableOpacity
-                                        style={styles.btn2}
+                                        style={styles.button}
                                         onPress={() => handleCancelAppointment(item._id)} // Pass the appointment ID to the handler
                                     >
-                                        <Text style={styles.buttontext}>Cancel</Text>
+                                        <Text style={styles.buttonText}>Cancel</Text>
                                     </TouchableOpacity>
-
                                 </View>
                             </View>
                         ))}
                     </View>
+
+                   
+
                 </ScrollView>
 
               
@@ -193,90 +176,83 @@ const styles = StyleSheet.create({
         backgroundColor: '#D8D8D8',
     },
     container: {
-        justifyContent: 'space-between',
-        flexDirection: 'column',
-        width: '100%',
+        flex: 1,
+        paddingHorizontal: 10,
+        // paddingVertical: 10,
     },
     card: {
-        width:370,
-        height: 180,
+        flexDirection: 'column',
         backgroundColor: 'white',
-        borderWidth: 0.5,
-        borderColor: 'white',
-        margin: 5,
-        padding: 10,
-        marginHorizontal:10,
-        borderRadius:20,
+        height: 200,
+        width: 370,
+        marginVertical: 8,
+        borderRadius: 10,
+        elevation: 2, // Add shadow for Android
+        shadowColor: 'rgba(0, 0, 0, 0.2)', // Add shadow for iOS
+        shadowOpacity: 0.5,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
     },
-    info: {
-        flex: 1,
-        justifyContent: 'space-between',
-    },
-    wash: {
+    cardContent: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginHorizontal: 20,
-        marginVertical: 10,
+        alignItems: 'center',
+       
+    },
+    image: {
+        width: 120,
+        height: 130,
+        resizeMode: 'cover',
+        borderRadius: 10,
+        margin: 10,
+    },
+    details: {
+        flex: 1,
+        marginRight: 10,
+    },
+    serviceName: {
+        fontSize: 15,
+        marginBottom: 5,
     },
     date: {
-        height: 70,
-        width: 55,
-        backgroundColor: 'white',
-        fontSize: 16,
-        padding: 5,
-    },
-    datetext: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 8,
-    },
-   
-    btn3: {
-        backgroundColor: '#D3d3d3',
-        borderRadius: 20,
-        width: 80,
-        height: 30,
-        textAlign: 'center',
-        padding: 4,
-    },
-    status: {
-        backgroundColor: 'red',
-        borderRadius: 20,
-        width: 80,
-        height: 30,
-        textAlign: 'center',
-        padding: 4,
-        color: '#000',
-    },
-    btntext: {
-        textAlign: 'center',
-        margin: 4,
+        fontSize: 15,
+        marginTop: 5,
     },
     clock: {
+        fontSize: 15,
+        marginTop: 5,
+    },
+    price: {
+        fontSize: 15,
+        marginTop: 5,
+    },
+  
+    buttonContainer: {
         flexDirection: 'row',
-        marginHorizontal: 20,
-        marginBottom:5
+        justifyContent: 'space-evenly', // Change to 'space-evenly' for even spacing
+        marginLeft: 130
+    },
+    status:{
+        backgroundColor: '#FCAE1E',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+      
     },
     button: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        marginTop:5
+        backgroundColor: '#FF2E2E',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
     },
-    
-    btn2: {
-        width: 250,
-        height: 40,
-        borderRadius: 8,
-        backgroundColor: '#5B7586',
-        color: 'white',
-        
-    },
-    buttontext: {
-        color: '#000',
-        fontSize: 15,
+
+    buttonText: {
+        color: 'black',
+        fontSize: 12,
+        fontWeight: 'bold',
         textAlign: 'center',
-        margin: 8,
     },
-    
+   
 });
 export default Canceled;

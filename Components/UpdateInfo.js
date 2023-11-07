@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import { Appearance } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
-import moment from 'moment'; // Import moment for date and time formatting
+import moment from 'moment';
 
 const UpdateInfo = ({ route, navigation }) => {
   const { appointment } = route.params;
@@ -12,7 +12,6 @@ const UpdateInfo = ({ route, navigation }) => {
   const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [isTimePickerVisible, setTimePickerVisible] = useState(false);
   const colorScheme = Appearance.getColorScheme();
-
 
   const showDatePicker = () => {
     setDatePickerVisible(true);
@@ -24,7 +23,7 @@ const UpdateInfo = ({ route, navigation }) => {
 
   const handleDateConfirm = (selectedDate) => {
     hideDatePicker();
-    const formattedDate = moment(selectedDate).format('DD-MM-YYYY'); // Format as DD-MM-YYYY
+    const formattedDate = moment(selectedDate).format('DD-MM-YYYY');
     setEditedAppointment({ ...editedAppointment, date: formattedDate });
   };
 
@@ -38,7 +37,7 @@ const UpdateInfo = ({ route, navigation }) => {
 
   const handleTimeConfirm = (selectedTime) => {
     hideTimePicker();
-    const formattedTime = moment(selectedTime).format('hh:mm A'); // Format as HH:MM AM/PM
+    const formattedTime = moment(selectedTime).format('hh:mm A');
     setEditedAppointment({ ...editedAppointment, time: formattedTime });
   };
 
@@ -67,18 +66,20 @@ const UpdateInfo = ({ route, navigation }) => {
   };
 
   const commonStyles = {
-    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
     color: colorScheme === 'dark' ? '#fff' : '#000',
   };
 
   return (
-    <ScrollView style={[styles.container,commonStyles]}>
+    <ScrollView style={[styles.container, commonStyles]}>
       <Text style={styles.heading}>Edit Appointment</Text>
       <View style={styles.appointmentDetails}>
-        <Text style={styles.label}>Date:</Text>
+        <View style={styles.iconContainer}>
+          {/* <Entypo name="calendar" size={24} color="#5B7586" /> */}
+          <Text style={styles.label}>Date:</Text>
+        </View>
         <Text style={styles.detail}>{editedAppointment.date}</Text>
-        <TouchableOpacity onPress={showDatePicker}>
-          <Entypo name="calendar" size={24} color="#5B7586" />
+        <TouchableOpacity onPress={showDatePicker} style={styles.datePickerButton}>
+          <Text style={styles.datePickerButtonText}>Change Date</Text>
         </TouchableOpacity>
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
@@ -88,10 +89,13 @@ const UpdateInfo = ({ route, navigation }) => {
         />
       </View>
       <View style={styles.appointmentDetails}>
-        <Text style={styles.label}>Time:</Text>
+        <View style={styles.iconContainer}>
+          {/* <MaterialIcons name="access-time" size={24} color="#5B7586" /> */}
+          <Text style={styles.label}>Time:</Text>
+        </View>
         <Text style={styles.detail}>{editedAppointment.time}</Text>
-        <TouchableOpacity onPress={showTimePicker}>
-          <MaterialIcons name="access-time" size={24} color="#5B7586" />
+        <TouchableOpacity onPress={showTimePicker} style={styles.timePickerButton}>
+          <Text style={styles.timePickerButtonText}>Change Time</Text>
         </TouchableOpacity>
         <DateTimePickerModal
           isVisible={isTimePickerVisible}
@@ -100,7 +104,9 @@ const UpdateInfo = ({ route, navigation }) => {
           onCancel={hideTimePicker}
         />
       </View>
+
       {/* Display additional fields */}
+      {/* Add more fields as needed */}
       <View style={styles.appointmentDetails}>
         <Text style={styles.label}>Client Name:</Text>
         <Text style={styles.detail}>{appointment.clientName}</Text>
@@ -109,8 +115,8 @@ const UpdateInfo = ({ route, navigation }) => {
         <Text style={styles.label}>Contact:</Text>
         <Text style={styles.detail}>{appointment.clientContact}</Text>
       </View>
-      <View style={styles.appointmentDetails}> 
-      
+      <View style={styles.appointmentDetails}>
+
         <Text style={styles.label}>Service Name:</Text>
         <Text style={styles.detail}>{appointment.servicesName}</Text>
       </View>
@@ -126,7 +132,6 @@ const UpdateInfo = ({ route, navigation }) => {
         <Text style={styles.label}>Total Price:</Text>
         <Text style={styles.detail}>{appointment.totalPrice}</Text>
       </View>
-      {/* Add more fields as needed */}
       <TouchableOpacity style={styles.updateButton} onPress={handleUpdate}>
         <Text style={styles.buttonText}>Update</Text>
       </TouchableOpacity>
@@ -149,17 +154,47 @@ const styles = StyleSheet.create({
   },
   appointmentDetails: {
     flexDirection: 'row',
+    
     alignItems: 'center',
     marginBottom: 20,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   label: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginRight: 10,
+    marginLeft: 10,
     color: '#5B7586',
   },
   detail: {
     fontSize: 16,
+    marginLeft:8,
+  },
+  datePickerButton: {
+    backgroundColor: '#5B7586',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    marginLeft: 10,
+  },
+  datePickerButtonText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  timePickerButton: {
+    backgroundColor: '#5B7586',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    marginLeft: 10,
+  },
+  timePickerButtonText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   updateButton: {
     backgroundColor: '#5B7586',

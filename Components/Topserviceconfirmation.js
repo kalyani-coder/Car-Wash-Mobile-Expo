@@ -70,17 +70,13 @@ const TopserviceConfirmation = ({ route, navigation }) => {
     navigation.navigate('Home');
   };
 
-  const handleIconPressService = () => {
-    navigation.navigate('Washing');
-  };
+ 
 
-  const handleIconPressBooking = () => {
+  const handleIconPressBook= () => {
     navigation.navigate('Appointment');
   };
 
-  const handleIconPressInbox = () => {
-    navigation.navigate('Confirmation');
-  };
+ 
 
   const openSettings = async () => {
     try {
@@ -115,7 +111,7 @@ const TopserviceConfirmation = ({ route, navigation }) => {
       const pickuptoagent = selectedOption === "pickup" ? "pickuptoagent" : "No";
       const selfdrive = selectedOption === "selfdrive" ? "selfdrive" : "No";
 
-      const { pickupAddress, date, time, servicesName, status, price1} = route.params;
+      const { pickupAddress, date, time, servicesName, status, price1,image} = route.params;
 
       const taxAmount = price1 * 0.10;
       let optionValue = 0;
@@ -193,7 +189,7 @@ const taxAmount = price1 * 0.10;
   const formattedTime = moment(time).format('hh:mm A');
 
   const commonStyles = {
-    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+  
     color: colorScheme === 'dark' ? '#fff' : '#000',
   };
 
@@ -349,7 +345,7 @@ const taxAmount = price1 * 0.10;
               <Text style={styles.text10}>Home</Text>
             </View>
             <View style={styles.text9}>
-              <TouchableOpacity onPress={handleIconPressBooking}>
+              <TouchableOpacity onPress={handleIconPressBook}>
                 <Entypo name="calendar" size={30} style={styles.icon4} />
               </TouchableOpacity>
               <Text style={styles.text10}>Booking</Text>
@@ -364,7 +360,7 @@ const taxAmount = price1 * 0.10;
               </TouchableOpacity>
               <Text style={styles.text10}>Inbox</Text>
             </View>
-            <View style={styles.text9}>
+            {/* <View style={styles.text9}>
               <TouchableOpacity onPress={openSettings}>
                 <Ionicons
                   name="settings-sharp"
@@ -373,7 +369,7 @@ const taxAmount = price1 * 0.10;
                 />
               </TouchableOpacity>
               <Text style={styles.text10}>Setting</Text>
-            </View>
+            </View> */}
           </View>
         </View>
       </View>
@@ -490,7 +486,7 @@ iconsContainer1: {
     flexDirection: "row",
 },
 icon4: {
-    marginHorizontal: 20,
+    marginHorizontal: 40,
 },
 text9: {
     alignItems: 'center',

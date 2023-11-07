@@ -11,6 +11,7 @@ import {
     KeyboardAvoidingView,
     Platform,
 } from 'react-native';
+// import { Avatar, Text } from 'native-base';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { Appearance } from 'react-native';
@@ -29,6 +30,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { RefreshControl } from 'react-native';
 
 
+
+
 const Washing = ({ navigation }) => {
     // State variables using useState hook
     const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
@@ -42,15 +45,17 @@ const Washing = ({ navigation }) => {
     const [reviews, setReviews] = useState([]);
     const colorScheme = Appearance.getColorScheme();
     const [refreshing, setRefreshing] = useState(false);
+    const [processedImage, setProcessedImage] = useState(null);
+    const serviceAPIKey = 'LT2Gz3mtvTmQ3ZxGXVAAphAG'; // Replace with your API key
 
     const [errors, setErrors] = useState({
         pickupAddress: '',
         totalPrice: ''
     });
 
+
     // useEffect hook for side effects
     useEffect(() => {
-        // Your side effect code here (e.g., fetching data)
     }, []);
 
     // Function to show date picker
@@ -121,11 +126,11 @@ const Washing = ({ navigation }) => {
     // Function to handle Continue button press
     const handleContinue = () => {
         if (validateInput()) {
-            const { serviceName, servicePrice } = route.params;
+            const { serviceName, servicePrice, serviceImage } = route.params;
             const servicesName = serviceName;
             const price = servicePrice;
 
-            navigation.navigate('Confirmation', { pickupAddress, date, time, servicesName, price });
+            navigation.navigate('Confirmation', { pickupAddress, date, time, servicesName, price, serviceImage });
         }
     };
 
@@ -151,7 +156,7 @@ const Washing = ({ navigation }) => {
     };
 
     // Function to navigate to Booking screen
-    const handleIconPressBooking = () => {
+    const handleIconPressBook = () => {
         navigation.navigate('Appointment');
     };
 
@@ -183,9 +188,10 @@ const Washing = ({ navigation }) => {
 
     // Route parameters
     const route = useRoute();
-    const { serviceName, serviceDescription, servicePrice } = route.params;
+    const { serviceName, serviceDescription, servicePrice, serviceImage } = route.params;
+
     const commonStyles = {
-        // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+
         color: colorScheme === 'dark' ? '#fff' : '#000',
     };
 
@@ -209,23 +215,39 @@ const Washing = ({ navigation }) => {
                             />
                         }
                     >
-                        <Text style={styles.text1}>{serviceName}</Text>
+                        {/* <Text style={styles.text1}>{serviceName}</Text>
                         <View style={{ height: 133, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
-                            <Image source={{ uri: 'https://imageio.forbes.com/specials-images/imageserve/5d35eacaf1176b0008974b54/2020-Chevrolet-Corvette-Stingray/0x0.jpg?format=jpg&crop=4560,2565,x790,y784,safe&width=960' }} style={styles.item} />
+                          
+                            <Image
+                                source={{ uri: 'https://www.hdwallpapers.in/download/chevrolet_camaro_coupe_muscle_car_red_car_hd_cars-HD.jpg' }}
+                                style={styles.item}
+                            />
+                        </View> */}
+                        <View style={styles.card}>
+                            {/* <Image source={require('../Components/Assets/Carwash.png')} style={styles.image} resizeMode='contain'/> */}
+
+                            <Image
+                                source={{ uri: serviceImage }}
+                                style={styles.image}
+                                resizeMode='cover'
+                            />
+
+                            <Text style={styles.serviceName}>{serviceName}</Text>
                         </View>
                         <View style={styles.about}>
                             <Text style={styles.text2}>About</Text>
-                            <Text>{serviceDescription}</Text>
+                            <Text style={{ fontSize: 15 }}>{serviceDescription}</Text>
                         </View>
-                        <View style={styles.reviewtext}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Reviews</Text>
-                            <View style={styles.sees}></View>
-                        </View>
+
+
+                        <Text style={{ fontWeight: 'bold', fontSize: 17, marginHorizontal: 20, }}>Reviews</Text>
+
+
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                             {reviews.map((review) => (
                                 <View key={review._id} style={styles.reviewCard}>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, justifyContent: 'space-between' }}>
-                                        {/* <Text style={{ marginRight: 5 }}>{review.rating}</Text> */}
+                                        <FontAwesome name="user-circle" size={35} color="#27ae60" />
                                         <Text style={{ fontWeight: 'bold' }}>{review.clientName}</Text>
                                         <View style={{ flexDirection: 'row' }}>
                                             {Array.from({ length: 5 }).map((_, index) => (
@@ -254,8 +276,9 @@ const Washing = ({ navigation }) => {
                             style={styles.input}
                         />
                         <Text style={styles.errorText}>{errors.pickupAddress}</Text>
-                        <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Choose Date & Time</Text>
-                        <View
+
+                        <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 5 }}>Choose Date & Time</Text>
+                        {/* <View
                             style={{
                                 height: 65,
                                 width: 360,
@@ -298,6 +321,42 @@ const Washing = ({ navigation }) => {
                                     </View>
                                 </View>
                             </View>
+                        </View> */}
+                        <View style={styles.datetime}>
+                            <View style={styles.row}>
+                                <View style={styles.textContainer}>
+                                    <TouchableOpacity onPress={() => setShowPicker(true)}>
+                                        <AntDesign name="calendar" size={35} color="#3498db" />
+                                    </TouchableOpacity>
+
+                                    {date && (
+                                        <Text style={styles.text}>{moment(date).format('DD-MM-YYYY')}</Text>
+                                    )}
+                                </View>
+                                <View style={styles.TextContainer}>
+                                    <TouchableOpacity onPress={showDatePicker}>
+                                        <EvilIcons name="clock" size={35} color="#e74c3c" />
+                                    </TouchableOpacity>
+
+                                    {time && (
+                                        <Text style={styles.text}>{moment(time).format('hh:mm A')}</Text>
+                                    )}
+                                </View>
+                            </View>
+                            {showPicker && (
+                                <DateTimePicker
+                                    value={date}
+                                    mode="date"
+                                    display="default"
+                                    onChange={handleDateChange}
+                                />
+                            )}
+                            <DateTimePickerModal
+                                isVisible={isDatePickerVisible}
+                                mode="time"
+                                onConfirm={handleDateConfirm}
+                                onCancel={() => setIsDatePickerVisible(false)}
+                            />
                         </View>
                     </ScrollView>
                     <View style={styles.maincontainer}>
@@ -314,7 +373,7 @@ const Washing = ({ navigation }) => {
                                 <Text style={styles.text10}>Home</Text>
                             </View>
                             <View style={styles.text9}>
-                                <TouchableOpacity onPress={handleIconPressBooking}>
+                                <TouchableOpacity onPress={handleIconPressBook}>
                                     <Entypo name="calendar" size={30} style={styles.icon4} />
                                 </TouchableOpacity>
                                 <Text style={styles.text10}>Booking</Text>
@@ -325,12 +384,12 @@ const Washing = ({ navigation }) => {
                                 </TouchableOpacity>
                                 <Text style={styles.text10}>Inbox</Text>
                             </View>
-                            <View style={styles.text9}>
+                            {/* <View style={styles.text9}>
                                 <TouchableOpacity onPress={openSettings}>
                                     <Ionicons name="settings-sharp" size={30} style={styles.icon4} />
                                 </TouchableOpacity>
                                 <Text style={styles.text10}>Setting</Text>
-                            </View>
+                            </View> */}
                         </View>
                     </View>
                 </View>
@@ -345,28 +404,39 @@ const styles = StyleSheet.create({
         backgroundColor: '#D8D8D8',
         width: '100%',
         height: '100%',
+        paddingTop: 10
     },
-    text1: {
+    card: {
+        width: 350,
+        backgroundColor: '#fff',
+        marginHorizontal: 20,
+        alignItems: 'center',
+    },
+    image: {
+        marginTop: 20,
+        width: 200,
+        height: 150,
+        borderRadius: 150
+    },
+    serviceName: {
         textAlign: 'center',
-        fontSize: 15,
+        padding: 10,
+        fontSize: 16,
         fontWeight: 'bold',
     },
+    // text1: {
+    //     textAlign: 'center',
+    //     fontSize: 15,
+    //     fontWeight: 'bold',
+    // },
     text2: {
-        fontSize: 15,
+        fontSize: 18,
         fontWeight: 'bold',
     },
     about: {
         margin: 20,
     },
-    reviewtext: {
-        flexDirection: 'row',
-        marginHorizontal: 20,
-        justifyContent: 'space-between',
-    },
-    sees: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
+
     reviewCard: {
         width: 350,
         height: 150,
@@ -391,9 +461,7 @@ const styles = StyleSheet.create({
     icon: {
         flexDirection: 'row',
     },
-    review: {
-        margin: 5,
-    },
+
     input: {
         borderWidth: 1,
         borderColor: 'gray',
@@ -406,14 +474,39 @@ const styles = StyleSheet.create({
         color: 'red',
         marginHorizontal: 20,
     },
-    date1: {
-        marginHorizontal: 20,
+
+    datetime: {
+        height: 65,
+        width: 360,
+        backgroundColor: 'white',
+        marginVertical: 10,
+        marginHorizontal: 15,
+        borderRadius: 10,
+        elevation: 3,
+        paddingHorizontal: 10,
+    },
+    row: {
         flexDirection: 'row',
+        marginHorizontal: 10,
         justifyContent: 'space-between',
+        marginVertical: 10,
+    },
+    textContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+
+    },
+    TextContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+
+    },
+    text: {
+        marginLeft: 5,
+        fontSize: 18,
+        color: '#333',
     },
     maincontainer: {
-        // marginHorizontal: 15,
-        // marginTop:10
         position: 'relative'
     },
     button: {
@@ -448,7 +541,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
     },
     icon4: {
-        marginHorizontal: 20,
+        marginHorizontal: 40,
     },
     text9: {
         alignItems: 'center',

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation,useRoute } from "@react-navigation/native";
 // import { selectRestaurant } from "../features/restaurantSlice";
+
 import * as Progress from "react-native-progress";
 import {
   View,
@@ -10,14 +11,28 @@ import {
   Image,
   Platform,
   ActivityIndicator,
+  Linking,
+  ScrollView
 } from "react-native";
 import { useSelector } from "react-redux";
 import { XMarkIcon } from "react-native-heroicons/solid";
+import { MaterialIcons } from 'react-native-vector-icons';
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import axios from "axios";
+import { Appearance } from "react-native";
+import { RefreshControl } from 'react-native';
+
+
 
 export default function DeliveryScreen() {
   const navigation = useNavigation();
+  const route = useRoute(); // Use useRoute to access route parameters
+  const [refreshing, setRefreshing] = useState(false);
+
+  const locationId = route.params.locationId;
+  const agentId = route.params.agentId;
+
+
 //   const restaurant = useSelector(selectRestaurant);
   const [agent, setAgent] = useState({});
   const [locationData, setLocationData] = useState({
@@ -25,11 +40,14 @@ export default function DeliveryScreen() {
     longitude: 0,
   });
   const [loading, setLoading] = useState(true);
+  const colorScheme = Appearance.getColorScheme();
+
+
 
   useEffect(() => {
     axios
       .get(
-        "https://car-wash-backend-api.onrender.com/api/agents/65144b941ef6a7c0bd6798f0"
+        `https://car-wash-backend-api.onrender.com/api/agents/${agentId}`
       )
       .then((res) => {
         setAgent(res.data);
@@ -42,13 +60,15 @@ export default function DeliveryScreen() {
   useEffect(() => {
     axios
       .get(
-        "https://car-wash-backend-api.onrender.com/api/agentlocation/AgentID/65144b941ef6a7c0bd6798f0"
+        `https://car-wash-backend-api.onrender.com/api/agentlocation/${locationId}`
       )
       .then((response) => {
-        const data = response.data[0].location;
+        const data = response.data;
+        const { latitude, longitude } = data.location;
+  
         setLocationData({
-          latitude: parseFloat(data.latitude),
-          longitude: parseFloat(data.longitude),
+          latitude: parseFloat(latitude),
+          longitude: parseFloat(longitude),
         });
         setLoading(false);
       })
@@ -56,7 +76,7 @@ export default function DeliveryScreen() {
         console.error("Error fetching location data:", error);
       });
   }, []);
-
+  
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -64,9 +84,44 @@ export default function DeliveryScreen() {
       </View>
     );
   }
+  // Function to handle refresh
+  const onRefresh = () => {
+    setRefreshing(true);
+    axios
+      .get(`https://car-wash-backend-api.onrender.com/api/agentlocation/${locationId}`)
+      .then((response) => {
+        const data = response.data;
+        const { latitude, longitude } = data.location;
+
+        setLocationData({
+          latitude: parseFloat(latitude),
+          longitude: parseFloat(longitude),
+        });
+        setLoading(false);
+        setRefreshing(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching location data:", error);
+        setRefreshing(false);
+      });
+  };
+  
+
+  const handleCall = () => {
+  const phoneNumber= agent.contactNumber;
+  Linking.openURL(`tel:+91${phoneNumber}`)
+     
+  };
+  const commonStyles = {
+    color: colorScheme === "dark" ? "#fff" : "#000",
+  };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#00CCBB" }}>
+    <>
+    <View
+      style={{ flex: 1, backgroundColor: "#00CCBB", ...commonStyles }}
+    >
+      
       <SafeAreaView style={{ zIndex: 50 }}>
         <View
           style={{
@@ -76,9 +131,12 @@ export default function DeliveryScreen() {
             padding: 5,
           }}
         >
-          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-            <XMarkIcon color="gray" size={30} />
+          <TouchableOpacity onPress={() => navigation.navigate("Appointment")}>
+            <XMarkIcon color="white" size={30} />
           </TouchableOpacity>
+          <TouchableOpacity onPress={onRefresh}>
+          <MaterialIcons name="refresh" size={30} color="#fff" />
+            </TouchableOpacity>
           <Text style={{ color: "white", fontWeight: "bold", fontSize: 20 }}>
             Order Help
           </Text>
@@ -109,7 +167,10 @@ export default function DeliveryScreen() {
               </Text>
             </View>
             <Image
-              source={{ uri: "https://cdn.pixabay.com/animation/2022/11/10/13/26/13-26-03-556_512.gif" }}
+              source={{
+                uri:
+                  "https://cdn.pixabay.com/animation/2022/11/10/13/26/13-26-03-556_512.gif",
+              }}
               style={{ width: 100, height: 80 }}
             />
           </View>
@@ -142,8 +203,6 @@ export default function DeliveryScreen() {
               latitude: locationData.latitude,
               longitude: locationData.longitude,
             }}
-            // title={restaurant.title}
-            // description={restaurant.short_description}
             identifier="origin"
             pinColor="#00CCBB"
           />
@@ -164,8 +223,6 @@ export default function DeliveryScreen() {
               latitude: locationData.latitude,
               longitude: locationData.longitude,
             }}
-            // title={restaurant.title}
-            // description={restaurant.short_description}
             identifier="origin"
             pinColor="#00CCBB"
           />
@@ -182,7 +239,8 @@ export default function DeliveryScreen() {
       >
         <Image
           source={{
-            uri: "https://media.licdn.com/dms/image/C5603AQH1rpWCbawQiA/profile-displayphoto-shrink_800_800/0/1662914771856?e=1687996800&v=beta&t=Xo6UuBmZQw6eSuwDuJS8IMyc_dYip4-QW4T--5k2AtE",
+            uri:
+              "https://media.licdn.com/dms/image/C5603AQH1rpWCbawQiA/profile-displayphoto-shrink_800_800/0/1662914771856?e=1687996800&v=beta&t=Xo6UuBmZQw6eSuwDuJS8IMyc_dYip4-QW4T--5k2AtE",
           }}
           style={{
             width: 48,
@@ -194,19 +252,23 @@ export default function DeliveryScreen() {
         />
         <View style={{ flex: 1 }}>
           <Text style={{ fontSize: 16, marginLeft: 10 }}>{agent.fullName}</Text>
-          <Text style={{ color: "gray" }}>Your Rider</Text>
+          <Text style={{ color: "gray" }}>   Your Rider</Text>
         </View>
-        <Text
-          style={{
-            color: "#00CCBB",
-            fontSize: 16,
-            marginRight: 10,
-            fontWeight: "bold",
-          }}
-        >
-          Call
-        </Text>
+        <TouchableOpacity onPress={handleCall}>
+          <Text
+            style={{
+              color: "#00CCBB",
+              fontSize: 16,
+              marginRight: 10,
+              fontWeight: "bold",
+            }}
+          >
+            Call
+          </Text>
+        </TouchableOpacity>
       </SafeAreaView>
     </View>
+    </>
   );
 }
+

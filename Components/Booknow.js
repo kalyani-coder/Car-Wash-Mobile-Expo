@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -29,7 +29,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
 function Booknow(props) {
-   
+
     const [pickupAddress, setPickupAddress] = useState('');
     const [totalPrice, setTotalPrice] = useState('');
     const [date, setDate] = useState(new Date());
@@ -121,15 +121,13 @@ function Booknow(props) {
                 time,
                 pickupAddress,
                 servicesName,
-                price1
+                price1,
+                image
             });
         }
     };
 
-    // Function to handle star rating
-    const handleStarPress = (rating) => {
-        setSelectedStars(rating);
-    };
+
 
     // Function to navigate to the home screen
     const handleIconPressHome = () => {
@@ -141,20 +139,13 @@ function Booknow(props) {
         props.navigation.navigate('Notification');
     };
 
-    // Function to navigate to the booking screen
-    const handleIconPressService = () => {
-        props.navigation.navigate('Washing');
-    };
+
 
     // Function to navigate to the appointment screen
-    const handleIconPressBooking = () => {
+    const handleIconPressBook = () => {
         props.navigation.navigate('Appointment');
     };
 
-    // Function to navigate to the inbox screen
-    const handleIconPressInbox = () => {
-        props.navigation.navigate('Confirmation');
-    };
 
     // Function to open device settings
     const openSettings = async () => {
@@ -167,14 +158,14 @@ function Booknow(props) {
     //for refreshing the field 
 
     const onRefresh = () => {
-        
+
         setRefreshing(true);
-  
+
         setTimeout(() => {
-          
-          setRefreshing(false);
-        }, 2000); 
-      };
+
+            setRefreshing(false);
+        }, 2000);
+    };
     useEffect(() => {
         fetch('https://car-wash-backend-api.onrender.com/api/reviews')
             .then((response) => response.json())
@@ -186,10 +177,10 @@ function Booknow(props) {
             });
     }, []);
 
-const commonStyles = {
-    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
-    color: colorScheme === 'dark' ? '#fff' : '#000',
-  };
+    const commonStyles = {
+
+        color: colorScheme === 'dark' ? '#fff' : '#000',
+    };
     // Get current date
     const currentDate = moment();
     const formattedDate = currentDate.format('D MMM');
@@ -198,24 +189,28 @@ const commonStyles = {
 
     return (
         <>
-            <View style={[styles.container,commonStyles]}>
+            <View style={[styles.container, commonStyles]}>
                 <ScrollView
                     Vertical={true}
                     showsVerticalScrollIndicator={false}
-                    style={{flex:1}}
+                    style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
-                          refreshing={refreshing}
-                          onRefresh={onRefresh}
-                          tintColor="#5B7586" 
-                          title="Refreshing..." 
-                          titleColor="#5B7586"
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            tintColor="#5B7586"
+                            title="Refreshing..."
+                            titleColor="#5B7586"
                         />
-                      }
+                    }
                 >
-                    <Text style={styles.text1}>{homeservicesName}</Text>
+                    {/* <Text style={styles.text1}>{homeservicesName}</Text>
                     <View style={{ height: 130, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20, marginTop: 10 }}>
                         <Image source={{ uri: image }} style={{ width: '100%', height: '100%', resizeMode: 'cover' }} />
+                    </View> */}
+                    <View style={styles.card}>
+                        <Image source={{ uri: image }} style={styles.image} />
+                        <Text style={styles.serviceName}>{homeservicesName}</Text>
                     </View>
                     <View style={styles.about}>
                         <Text style={styles.text2}>About</Text>
@@ -228,10 +223,10 @@ const commonStyles = {
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                         {reviews.map((review) => (
                             <View key={review._id} style={styles.reviewCard}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5,justifyContent:'space-between'  }}>
-                                    {/* <Text style={{ marginRight: 5 }}>{review.rating}</Text> */}
-                                    <Text style={{fontWeight:'bold'}}>{review.clientName}</Text>
-                                    <View style={{ flexDirection: 'row'}}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, justifyContent: 'space-between' }}>
+                                    <FontAwesome name="user-circle" size={35} color="#27ae60" />
+                                    <Text style={{ fontWeight: 'bold' }}>{review.clientName}</Text>
+                                    <View style={{ flexDirection: 'row' }}>
                                         {Array.from({ length: 5 }).map((_, index) => (
                                             <FontAwesomeIcon
                                                 key={index}
@@ -262,7 +257,7 @@ const commonStyles = {
                     />
                     <Text style={styles.errorText}>{errors.pickupAddress}</Text>
                     <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Choose Date & Time</Text>
-                    <View
+                    {/* <View
                         style={{
                             height: 65,
                             width: 360,
@@ -305,6 +300,42 @@ const commonStyles = {
                                 </View>
                             </View>
                         </View>
+                    </View> */}
+                    <View style={styles.datetime}>
+                        <View style={styles.row}>
+                            <View style={styles.textContainer}>
+                                <TouchableOpacity onPress={() => setShowPicker(true)}>
+                                    <AntDesign name="calendar" size={35} color="#3498db" />
+                                </TouchableOpacity>
+
+                                {date && (
+                                    <Text style={styles.text}>{moment(date).format('DD-MM-YYYY')}</Text>
+                                )}
+                            </View>
+                            <View style={styles.TextContainer}>
+                                <TouchableOpacity onPress={showDatePicker}>
+                                    <EvilIcons name="clock" size={35} color="#e74c3c" />
+                                </TouchableOpacity>
+
+                                {time && (
+                                    <Text style={styles.text}>{moment(time).format('hh:mm A')}</Text>
+                                )}
+                            </View>
+                        </View>
+                        {showPicker && (
+                            <DateTimePicker
+                                value={date}
+                                mode="date"
+                                display="default"
+                                onChange={handleDateChange}
+                            />
+                        )}
+                        <DateTimePickerModal
+                            isVisible={isDatePickerVisible}
+                            mode="time"
+                            onConfirm={handleDateConfirm}
+                            onCancel={() => setIsDatePickerVisible(false)}
+                        />
                     </View>
                 </ScrollView>
                 <View style={styles.maincontainer}>
@@ -321,7 +352,7 @@ const commonStyles = {
                             <Text style={styles.text10}>Home</Text>
                         </View>
                         <View style={styles.text9}>
-                            <TouchableOpacity onPress={handleIconPressBooking}>
+                            <TouchableOpacity onPress={handleIconPressBook}>
                                 <Entypo name="calendar" size={30} style={styles.icon4} />
                             </TouchableOpacity>
                             <Text style={styles.text10}>Booking</Text>
@@ -332,12 +363,12 @@ const commonStyles = {
                             </TouchableOpacity>
                             <Text style={styles.text10}>Inbox</Text>
                         </View>
-                        <View style={styles.text9}>
+                        {/* <View style={styles.text9}>
                             <TouchableOpacity onPress={openSettings}>
                                 <Ionicons name="settings-sharp" size={30} style={styles.icon4} />
                             </TouchableOpacity>
                             <Text style={styles.text10}>Setting</Text>
-                        </View>
+                        </View> */}
                     </View>
                 </View>
             </View>
@@ -347,9 +378,28 @@ const commonStyles = {
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
+        flex: 1,
         backgroundColor: '#D8D8D8',
+        width: '100%',
         height: '100%',
+        paddingTop: 10
+    },
+    card: {
+        width: 350,
+        backgroundColor: '#fff',
+        marginHorizontal: 20,
+        alignItems: 'center',
+    },
+    image: {
+        width: 350,
+        height: 150,
+       
+    },
+    serviceName: {
+        textAlign: 'center',
+        padding: 10,
+        fontSize: 16,
+        fontWeight: 'bold',
     },
     text1: {
         textAlign: 'center',
@@ -411,58 +461,84 @@ const styles = StyleSheet.create({
         color: 'red',
         marginHorizontal: 20,
     },
-    date1: {
-        marginHorizontal: 20,
+    datetime: {
+        height: 65,
+        width: 360,
+        backgroundColor: 'white',
+        marginVertical: 10,
+        marginHorizontal: 15,
+        borderRadius: 10,
+        elevation: 3,
+        paddingHorizontal: 10,
+    },
+    row: {
         flexDirection: 'row',
+        marginHorizontal: 10,
         justifyContent: 'space-between',
-  },
-  maincontainer: {
-    // marginHorizontal: 15,
-    // marginTop:10
-    position: 'relative'
-},
-button: {
-    position: 'relative',
-    backgroundColor: "#5B7586",
-    height: 45,
-    width: 360,
-    paddingTop: 10,
-    marginHorizontal: 15,
-    marginBottom: 10,
-    borderRadius: 2,
-    borderTopColor:'gray',
-    borderWidth:0.5
-},
-buttonText: {
-    color: "#000",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-},
-footer: {
-    position: 'relative',
-    backgroundColor: "#fff",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: 10,
-    alignItems: 'center',
-    zIndex: 2,
-    borderTopColor:'gray',
-    borderWidth:0.5
-},
-iconsContainer1: {
-    flexDirection: "row",
-},
-icon4: {
-    marginHorizontal: 20,
-},
-text9: {
-    alignItems: 'center',
-},
-text10: {
-    fontSize: 10,
-},
+        marginVertical: 10,
+    },
+    textContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+
+    },
+    TextContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+
+    },
+    text: {
+        marginLeft: 5,
+        fontSize: 18,
+        color: '#333',
+    },
+    maincontainer: {
+        // marginHorizontal: 15,
+        // marginTop:10
+        position: 'relative'
+    },
+    button: {
+        position: 'relative',
+        backgroundColor: "#5B7586",
+        height: 45,
+        width: 360,
+        paddingTop: 10,
+        marginHorizontal: 15,
+        marginBottom: 10,
+        borderRadius: 2,
+        borderTopColor: 'gray',
+        borderWidth: 0.5
+    },
+    buttonText: {
+        color: "#000",
+        fontSize: 16,
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    footer: {
+        position: 'relative',
+        backgroundColor: "#fff",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        padding: 10,
+        alignItems: 'center',
+        zIndex: 2,
+        borderTopColor: 'gray',
+        borderWidth: 0.5
+    },
+    iconsContainer1: {
+        flexDirection: "row",
+    },
+    icon4: {
+        marginHorizontal: 40,
+    },
+    text9: {
+        alignItems: 'center',
+    },
+    text10: {
+        fontSize: 10,
+    },
 });
 
 export default Booknow;

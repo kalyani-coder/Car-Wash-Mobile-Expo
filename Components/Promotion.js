@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -62,13 +62,13 @@ const Promotion = ({ navigation }) => {
   //for refreshing the field 
 
   const onRefresh = () => {
-        
+
     setRefreshing(true);
 
     setTimeout(() => {
-      
+
       setRefreshing(false);
-    }, 2000); 
+    }, 2000);
   };
 
   // Function to format time
@@ -107,15 +107,16 @@ const Promotion = ({ navigation }) => {
   // Function to handle continue button press
   const handleContinue = () => {
     if (validateInput()) {
-      const { service, fixedAmount } = route.params;
+      const { service, promotionPrice, image } = route.params;
       const servicesName = service;
-      const price1 = fixedAmount;
+      const price1 = promotionPrice;
       navigation.navigate('PromotionConfirmation', {
         pickupAddress,
         date,
         time,
         servicesName,
         price1,
+        image
       });
     }
   };
@@ -136,20 +137,14 @@ const Promotion = ({ navigation }) => {
     navigation.navigate('Notification');
   };
 
-  // Function to navigate to Washing screen
-  const handleIconPressService = () => {
-    navigation.navigate('Washing');
-  };
+
 
   // Function to navigate to Appointment screen
-  const handleIconPressBooking = () => {
+  const handleIconPressBook = () => {
     navigation.navigate('Appointment');
   };
 
-  // Function to navigate to Inbox screen
-  const handleIconPressInbox = () => {
-    navigation.navigate('Confirmation');
-  };
+
 
   // Function to open device settings
   const openSettings = async () => {
@@ -162,73 +157,82 @@ const Promotion = ({ navigation }) => {
 
   useEffect(() => {
     fetch('https://car-wash-backend-api.onrender.com/api/reviews')
-        .then((response) => response.json())
-        .then((data) => {
-            setReviews(data);
-        })
-        .catch((error) => {
-            console.error('Error fetching data:', error);
-        });
-}, []);
+      .then((response) => response.json())
+      .then((data) => {
+        setReviews(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
   const route = useRoute();
+  const {service, description, promotionPrice, image}=route.params;
   const currentDate = moment();
   const formattedDate = currentDate.format('D MMM');
 
   const commonStyles = {
-    // backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+
     color: colorScheme === 'dark' ? '#fff' : '#000',
   };
 
   return (
-    <View style={[styles.container,commonStyles]}>
+    <View style={[styles.container, commonStyles]}>
       <ScrollView Vertical={true} showsVerticalScrollIndicator={false}
-        
+
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor="#5B7586" 
-            title="Refreshing..." 
+            tintColor="#5B7586"
+            title="Refreshing..."
             titleColor="#5B7586"
           />
         }>
-        <Text style={styles.text1}>{route.params.service}</Text>
+        {/* <Text style={styles.text1}>{route.params.service}</Text>
         <View style={{ height: 130, width: 350, backgroundColor: '#F2F3F4', marginHorizontal: 20 }}>
-          <Image source={{ uri: 'https://global-uploads.webflow.com/6275222db3d827ed1bb5c030/628d5275e8398c96485950a6_pexels-maria-geller-2127022.jpg' }} style={styles.item} />
+          
+        </View> */}
+        <View style={styles.card}>
+          {/* <Image source={{ uri: 'https://www.autocar.co.uk/sites/autocar.co.uk/files/styles/gallery_slide/public/images/car-reviews/first-drives/legacy/rolls_royce_phantom_top_10.jpg?itok=XjL9f1tx' }} style={styles.image} /> */}
+          <Image
+            source={{ uri: image }}
+            style={styles.image}
+          />
+          <Text style={styles.serviceName}>{service}</Text>
         </View>
         <View style={styles.about}>
           <Text style={styles.text2}>About</Text>
-          <Text>{route.params.description}</Text>
+          <Text>{description}</Text>
         </View>
         <View style={styles.reviewtext}>
           <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Reviews</Text>
           <View style={styles.sees}></View>
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                        {reviews.map((review) => (
-                            <View key={review._id} style={styles.reviewCard}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5,justifyContent:'space-between'  }}>
-                                    {/* <Text style={{ marginRight: 5 }}>{review.rating}</Text> */}
-                                    <Text style={{fontWeight:'bold'}}>{review.clientName}</Text>
-                                    <View style={{ flexDirection: 'row'}}>
-                                        {Array.from({ length: 5 }).map((_, index) => (
-                                            <FontAwesomeIcon
-                                                key={index}
-                                                icon={faStar}
-                                                size={20}
-                                                color={index < review.rating ? '#DAA520' : 'black'}
-                                            />
-                                        ))}
-                                    </View>
-                                </View>
-                                <ScrollView style={{ maxHeight: 100 }} nestedScrollEnabled={true}>
-                                    <Text style={styles.reviewText}>{review.message}</Text>
-                                </ScrollView>
-                            </View>
-                        ))}
+          {reviews.map((review) => (
+            <View key={review._id} style={styles.reviewCard}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, justifyContent: 'space-between' }}>
+                <FontAwesome name="user-circle" size={35} color="#27ae60" />
+                <Text style={{ fontWeight: 'bold' }}>{review.clientName}</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <FontAwesomeIcon
+                      key={index}
+                      icon={faStar}
+                      size={20}
+                      color={index < review.rating ? '#DAA520' : 'black'}
+                    />
+                  ))}
+                </View>
+              </View>
+              <ScrollView style={{ maxHeight: 100 }} nestedScrollEnabled={true}>
+                <Text style={styles.reviewText}>{review.message}</Text>
+              </ScrollView>
+            </View>
+          ))}
 
 
-                    </ScrollView>
+        </ScrollView>
         <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>
           Add Pickup Address<Text style={{ color: 'red' }}> *</Text>
         </Text>
@@ -243,47 +247,42 @@ const Promotion = ({ navigation }) => {
         <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>
           Choose Date & Time
         </Text>
-        <View style={{
-          height: 65,
-          width: 360,
-          backgroundColor: "white",
-          marginVertical: 10,
-          marginHorizontal: 15
-        }}>
-          <View style={{ flexDirection: 'row', margin: 15 }}>
-            <TouchableOpacity
-              onPress={() => setShowPicker(true)}
-            >
-              <AntDesign name="calendar" size={35} color="black" />
-            </TouchableOpacity>
-            <View style={{ marginLeft: 15, flexDirection: 'row' }}>
+
+        <View style={styles.datetime}>
+          <View style={styles.row}>
+            <View style={styles.textContainer}>
+              <TouchableOpacity onPress={() => setShowPicker(true)}>
+                <AntDesign name="calendar" size={35} color="#3498db" />
+              </TouchableOpacity>
+
               {date && (
-                <Text> {moment(date).format('DD-MM-YYYY')}</Text>
+                <Text style={styles.text}>{moment(date).format('DD-MM-YYYY')}</Text>
               )}
-              <View style={styles.date1}>
-                <TouchableOpacity onPress={showDatePicker}>
-                  <EvilIcons name="clock" size={35} color="black" />
-                </TouchableOpacity>
-                {time && (
-                  <Text> {moment(time).format('hh:mm A')}</Text>
-                )}
-                <DateTimePickerModal
-                  isVisible={isDatePickerVisible}
-                  mode="time"
-                  onConfirm={handleDateConfirm}
-                  onCancel={hideDatePicker}
-                />
-                {showPicker && (
-                  <DateTimePicker
-                    value={date}
-                    mode="date"
-                    display="default"
-                    onChange={handleDateChange}
-                  />
-                )}
-              </View>
+            </View>
+            <View style={styles.TextContainer}>
+              <TouchableOpacity onPress={showDatePicker}>
+                <EvilIcons name="clock" size={35} color="#e74c3c" />
+              </TouchableOpacity>
+
+              {time && (
+                <Text style={styles.text}>{moment(time).format('hh:mm A')}</Text>
+              )}
             </View>
           </View>
+          {showPicker && (
+            <DateTimePicker
+              value={date}
+              mode="date"
+              display="default"
+              onChange={handleDateChange}
+            />
+          )}
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="time"
+            onConfirm={handleDateConfirm}
+            onCancel={() => setIsDatePickerVisible(false)}
+          />
         </View>
       </ScrollView>
       <View style={styles.maincontainer}>
@@ -300,7 +299,7 @@ const Promotion = ({ navigation }) => {
             <Text style={styles.text10}>Home</Text>
           </View>
           <View style={styles.text9}>
-            <TouchableOpacity onPress={handleIconPressBooking}>
+            <TouchableOpacity onPress={handleIconPressBook}>
               <Entypo name="calendar" size={30} style={styles.icon4} />
             </TouchableOpacity>
             <Text style={styles.text10}>Booking</Text>
@@ -311,12 +310,12 @@ const Promotion = ({ navigation }) => {
             </TouchableOpacity>
             <Text style={styles.text10}>Inbox</Text>
           </View>
-          <View style={styles.text9}>
+          {/* <View style={styles.text9}>
             <TouchableOpacity onPress={openSettings}>
               <Ionicons name="settings-sharp" size={30} style={styles.icon4} />
             </TouchableOpacity>
             <Text style={styles.text10}>Setting</Text>
-          </View>
+          </View> */}
         </View>
       </View>
     </View>
@@ -326,12 +325,33 @@ const Promotion = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#D8D8D8'
+    backgroundColor: '#D8D8D8',
+    width: '100%',
+    height: '100%',
+    paddingTop: 10
   },
-  text1: {
+
+  card: {
+    width: 350,
+    backgroundColor: '#fff',
+    marginHorizontal: 20,
+    alignItems: 'center',
+  },
+  image: {
+    width: 350,
+    height: 150,
+
+  },
+  serviceName: {
     textAlign: 'center',
-    fontSize: 15,
-    fontWeight: 'bold'
+    padding: 10,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  item: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover'
   },
   text2: {
     fontSize: 15,
@@ -359,10 +379,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: '#ccc',
     borderWidth: 1,
-},
-reviewText: {
+  },
+  reviewText: {
     fontSize: 16,
-},
+  },
   icons: {
     flexDirection: 'row',
     justifyContent: 'space-between'
@@ -405,32 +425,46 @@ reviewText: {
     textAlign: 'center',
     margin: 8,
   },
-  date1: {
-    marginHorizontal: 20,
+  datetime: {
+    height: 65,
+    width: 360,
+    backgroundColor: 'white',
+    marginVertical: 10,
+    marginHorizontal: 15,
+    borderRadius: 10,
+    elevation: 3,
+    paddingHorizontal: 10,
+  },
+  row: {
     flexDirection: 'row',
+    marginHorizontal: 10,
     justifyContent: 'space-between',
+    marginVertical: 10,
   },
-  datetext1: {
-    height: 40,
-    width: 90,
-    backgroundColor: '#F2F3F4',
+  textContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+
+  },
+  TextContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+
+  },
+  text: {
+    marginLeft: 5,
     fontSize: 18,
-    textAlign: 'center',
-    margin: 5,
-    paddingTop: 8
+    color: '#333',
   },
-  item: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover'
-  },
+
+
   maincontainer: {
     // marginHorizontal: 15,
     // marginTop:10
-    position:'relative'
+    position: 'relative'
   },
   button: {
-    position:'relative',
+    position: 'relative',
     backgroundColor: "#5B7586",
     height: 45,
     width: 360,
@@ -445,7 +479,7 @@ reviewText: {
     fontWeight: "bold",
     textAlign: "center",
   },
-  
+
   footer: {
     position: 'relative',
     backgroundColor: "#fff",
@@ -455,14 +489,14 @@ reviewText: {
     padding: 10,
     alignItems: 'center',
     zIndex: 2,
-    borderTopColor:'gray',
-    borderWidth:0.5
+    borderTopColor: 'gray',
+    borderWidth: 0.5
   },
   iconsContainer1: {
     flexDirection: "row",
   },
   icon4: {
-    marginHorizontal: 20,
+    marginHorizontal: 40,
   },
   text9: {
     alignItems: 'center',
@@ -470,7 +504,7 @@ reviewText: {
   text10: {
     fontSize: 10,
   },
- 
+
 });
 
 export default Promotion;
