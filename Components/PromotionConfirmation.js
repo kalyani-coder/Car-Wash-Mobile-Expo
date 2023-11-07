@@ -34,8 +34,8 @@ const formatTime = (time) => {
 };
 
 const PromotionConfirmation = ({ route, navigation }) => {
-  const { servicesName, price1, pickupAddress, date, time } = route.params;
-  
+  const { servicesName, price1, pickupAddress, date, time, image } = route.params;
+
   const [selectedOptionValue, setSelectedOptionValue] = useState(selectedOption === 'pickup' ? 300 : 0);
   const [clientvehicleno, setClientVehicleNo] = useState('');
   const [clientcarmodelno, setClientCarModelNo] = useState('');
@@ -111,8 +111,8 @@ const PromotionConfirmation = ({ route, navigation }) => {
       const pickuptoagent = selectedOption === "pickup" ? "pickuptoagent" : "No";
       const selfdrive = selectedOption === "selfdrive" ? "selfdrive" : "No";
 
-      const { pickupAddress, date, time, servicesName, status, price1, image } = route.params;
-
+      const { pickupAddress, date, time, servicesName, status, price1, image1 } = route.params;
+      const image = image1;
       const taxAmount = price1 * 0.10;
       let optionValue = 0;
 
@@ -139,6 +139,7 @@ const PromotionConfirmation = ({ route, navigation }) => {
               time: formattedTime,
               pickupAddress: pickupAddress,
               servicesName,
+              image,
               totalPrice: totalPrice,
               status: "",
               agentId: "",

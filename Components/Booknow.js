@@ -116,13 +116,14 @@ function Booknow(props) {
             const { homeservicesName, totalPrice, image } = props.route.params;
             const servicesName = homeservicesName;
             const price1 = totalPrice;
+            const image1=image;
             props.navigation.navigate('BookConfirmation', {
                 date,  // Pass the value, not the function
                 time,
                 pickupAddress,
                 servicesName,
                 price1,
-                image
+                image1
             });
         }
     };

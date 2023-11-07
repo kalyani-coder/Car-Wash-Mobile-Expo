@@ -110,13 +110,14 @@ const Promotion = ({ navigation }) => {
       const { service, promotionPrice, image } = route.params;
       const servicesName = service;
       const price1 = promotionPrice;
+      const image1=image;
       navigation.navigate('PromotionConfirmation', {
         pickupAddress,
         date,
         time,
         servicesName,
         price1,
-        image
+        image1
       });
     }
   };

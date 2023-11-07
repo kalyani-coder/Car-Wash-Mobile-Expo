@@ -129,6 +129,7 @@ const Washing = ({ navigation }) => {
             const { serviceName, servicePrice, serviceImage } = route.params;
             const servicesName = serviceName;
             const price = servicePrice;
+            const image = serviceImage
 
             navigation.navigate('Confirmation', { pickupAddress, date, time, servicesName, price, serviceImage });
         }

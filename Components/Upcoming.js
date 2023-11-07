@@ -172,24 +172,23 @@ const Upcoming = ({ navigation }) => {
         >
           <View style={styles.container}>
             {data.map((item) => (
-              <View key={item._id} style={styles. promotioncard}>
-                <View style={styles. promotioncardContent}>
+              <View key={item._id} style={styles.promotioncard}>
+                <View style={styles.promotioncardContent}>
                   <Image
                     source={{
                       uri:
                         'https://www.autocar.co.uk/sites/autocar.co.uk/files/styles/gallery_slide/public/images/car-reviews/first-drives/legacy/rolls_royce_phantom_top_10.jpg?itok=XjL9f1tx',
                     }}
-                    style={styles. promotionimage}
+                    style={styles.promotionimage}
                   />
-                  <View style={styles. promotiondetails}>
-                    <Text style={styles. promotionserviceName}>{item.servicesName}</Text>
-                    <Text style={styles. promotiondate}>
+                  <View style={styles.promotiondetails}>
+                    <Text style={styles.promotionserviceName}>{item.servicesName}</Text>
+                    <Text style={styles.promotiondate}>
                       {moment(item.date, 'DD-MM-YYYY').format('DD-MM-YYYY')}
                     </Text>
                     <Text style={styles.promotionclock}>{item.time}</Text>
                     <Text style={styles.promotionprice}>Rs. {item.totalPrice}</Text>
                   </View>
-
                   <View>
                     {item.status === 'Accepted' ? (
                       <TouchableOpacity style={styles.trackButton} onPress={() => handleTrack(item)}>
@@ -346,7 +345,7 @@ const styles = StyleSheet.create({
     bottom: 30
 
   },
-buttonContainer: {
+  buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly', // Change to 'space-evenly' for even spacing
     marginHorizontal: 5,

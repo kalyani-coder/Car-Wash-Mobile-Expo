@@ -114,7 +114,8 @@ const BookConfirmation = ({ route, navigation }) => {
       const pickuptoagent = selectedOption === "pickup" ? "pickuptoagent" : "No";
       const selfdrive = selectedOption === "selfdrive" ? "selfdrive" : "No";
 
-      const { pickupAddress, date, time, servicesName, status, price1, image } = route.params;
+      const { pickupAddress, date, time, servicesName, status, price1, image1 } = route.params;
+      const image=image1;
 
       const taxAmount = price1 * 0.10;
       let optionValue = 0;
@@ -142,7 +143,7 @@ const BookConfirmation = ({ route, navigation }) => {
               time: formattedTime,
               pickupAddress: pickupAddress,
               servicesName,
-
+              image,
               totalPrice: totalPrice,
               status: "",
               agentId: "",
