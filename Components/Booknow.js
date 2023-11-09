@@ -116,7 +116,7 @@ function Booknow(props) {
             const { homeservicesName, totalPrice, image } = props.route.params;
             const servicesName = homeservicesName;
             const price1 = totalPrice;
-            const image1=image;
+            const image1 = image;
             props.navigation.navigate('BookConfirmation', {
                 date,  // Pass the value, not the function
                 time,
@@ -394,7 +394,6 @@ const styles = StyleSheet.create({
     image: {
         width: 350,
         height: 150,
-       
     },
     serviceName: {
         textAlign: 'center',

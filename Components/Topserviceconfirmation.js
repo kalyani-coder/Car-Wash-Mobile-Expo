@@ -34,17 +34,17 @@ const formatTime = (time) => {
 };
 
 const TopserviceConfirmation = ({ route, navigation }) => {
-  const { servicesName, price1 , pickupAddress, date, time } = route.params;
+  const { servicesName, price1, pickupAddress, date, time } = route.params;
   const [selectedOptionValue, setSelectedOptionValue] = useState(selectedOption === 'pickup' ? 300 : 0);
   const [clientvehicleno, setClientVehicleNo] = useState('');
   const [clientcarmodelno, setClientCarModelNo] = useState('');
   const [vehicleNumberError, setVehicleNumberError] = useState('');
   const [modelNumberError, setModelNumberError] = useState('');
   const colorScheme = Appearance.getColorScheme();
- 
+
   const [selectedOption, setSelectedOption] = useState('pickup');
   const [clientData, setClientData] = useState([]);
- 
+
   useEffect(() => {
     fetchClientData();
   }, []);
@@ -70,13 +70,13 @@ const TopserviceConfirmation = ({ route, navigation }) => {
     navigation.navigate('Home');
   };
 
- 
 
-  const handleIconPressBook= () => {
+
+  const handleIconPressBook = () => {
     navigation.navigate('Appointment');
   };
 
- 
+
 
   const openSettings = async () => {
     try {
@@ -111,8 +111,8 @@ const TopserviceConfirmation = ({ route, navigation }) => {
       const pickuptoagent = selectedOption === "pickup" ? "pickuptoagent" : "No";
       const selfdrive = selectedOption === "selfdrive" ? "selfdrive" : "No";
 
-      const { pickupAddress, date, time, servicesName, status, price1,image} = route.params;
-
+      const { pickupAddress, date, time, servicesName, status, price1, image1 } = route.params;
+      const image = image1;
       const taxAmount = price1 * 0.10;
       let optionValue = 0;
 
@@ -139,6 +139,7 @@ const TopserviceConfirmation = ({ route, navigation }) => {
               time: formattedTime,
               pickupAddress: pickupAddress,
               servicesName,
+              image,
               totalPrice: totalPrice,
               status: "",
               agentId: "",
@@ -173,29 +174,29 @@ const TopserviceConfirmation = ({ route, navigation }) => {
     }
   };
 
-  
-//   const taxAmount = price1 * 0.10;
-//   const totalPrice = price1 + taxAmount + selectedOptionValue;
-const taxAmount = price1 * 0.10;
-      let optionValue = 0;
 
-      if (selectedOption === 'pickup') {
-        optionValue = 300;
-      }
+  //   const taxAmount = price1 * 0.10;
+  //   const totalPrice = price1 + taxAmount + selectedOptionValue;
+  const taxAmount = price1 * 0.10;
+  let optionValue = 0;
 
-      const totalPrice = price1 + taxAmount + optionValue;
+  if (selectedOption === 'pickup') {
+    optionValue = 300;
+  }
+
+  const totalPrice = price1 + taxAmount + optionValue;
 
   const formattedDate = moment(date).format('DD-MM-YYYY');
   const formattedTime = moment(time).format('hh:mm A');
 
   const commonStyles = {
-  
+
     color: colorScheme === 'dark' ? '#fff' : '#000',
   };
 
   return (
     <>
-      <View style={[styles.header,commonStyles]}>
+      <View style={[styles.header, commonStyles]}>
         <ScrollView
           Vertical={true}
           showsVerticalScrollIndicator={false}
@@ -209,8 +210,8 @@ const taxAmount = price1 * 0.10;
                 backgroundColor: "white",
                 marginVertical: 10,
                 borderRadius: 8,
-                borderWidth:0.5,
-                borderColor:'black'
+                borderWidth: 0.5,
+                borderColor: 'black'
               }}
             >
               <View
@@ -238,8 +239,8 @@ const taxAmount = price1 * 0.10;
                 backgroundColor: "white",
                 marginVertical: 10,
                 borderRadius: 8,
-                borderWidth:0.5,
-                borderColor:'black'
+                borderWidth: 0.5,
+                borderColor: 'black'
               }}
             >
               <View style={{ flexDirection: 'row', justifyContent: 'space-around', margin: 15 }}>
@@ -262,8 +263,8 @@ const taxAmount = price1 * 0.10;
                 backgroundColor: "white",
                 marginVertical: 10,
                 borderRadius: 8,
-                borderWidth:0.5,
-                borderColor:'black'
+                borderWidth: 0.5,
+                borderColor: 'black'
               }}
             >
               <View style={{ flexDirection: 'row', padding: 10 }}>
@@ -383,7 +384,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#D8D8D8',
     width: '100%',
     height: '100%',
-   
+
   },
   container: {
     paddingTop: 15,
@@ -453,8 +454,8 @@ const styles = StyleSheet.create({
     // marginHorizontal: 15,
     // marginTop:10
     position: 'relative'
-},
-button: {
+  },
+  button: {
     position: 'relative',
     backgroundColor: "#5B7586",
     height: 45,
@@ -463,14 +464,14 @@ button: {
     marginHorizontal: 15,
     marginBottom: 10,
     borderRadius: 2,
-},
-buttonText: {
+  },
+  buttonText: {
     color: "#000",
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
-},
-footer: {
+  },
+  footer: {
     position: 'relative',
     backgroundColor: "#fff",
     bottom: 0,
@@ -479,26 +480,26 @@ footer: {
     padding: 10,
     alignItems: 'center',
     zIndex: 2,
-    borderTopColor:'gray',
-    borderWidth:0.5
-},
-iconsContainer1: {
+    borderTopColor: 'gray',
+    borderWidth: 0.5
+  },
+  iconsContainer1: {
     flexDirection: "row",
-},
-icon4: {
+  },
+  icon4: {
     marginHorizontal: 40,
-},
-text9: {
+  },
+  text9: {
     alignItems: 'center',
-},
-text10: {
+  },
+  text10: {
     fontSize: 10,
-},
-item: {
+  },
+  item: {
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
-},
+  },
 });
 
 export default TopserviceConfirmation;

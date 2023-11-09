@@ -129,9 +129,9 @@ const Washing = ({ navigation }) => {
             const { serviceName, servicePrice, serviceImage } = route.params;
             const servicesName = serviceName;
             const price = servicePrice;
-            const image = serviceImage
+            const image1 = serviceImage
 
-            navigation.navigate('Confirmation', { pickupAddress, date, time, servicesName, price, serviceImage });
+            navigation.navigate('Confirmation', { pickupAddress, date, time, servicesName, price, image1 });
         }
     };
 
@@ -230,7 +230,8 @@ const Washing = ({ navigation }) => {
                             <Image
                                 source={{ uri: serviceImage }}
                                 style={styles.image}
-                                resizeMode='cover'
+                                // resizeMode='cover'
+                                resizeMode='contain'
                             />
 
                             <Text style={styles.serviceName}>{serviceName}</Text>
@@ -409,15 +410,15 @@ const styles = StyleSheet.create({
     },
     card: {
         width: 350,
+        height:150,
         backgroundColor: '#fff',
         marginHorizontal: 20,
         alignItems: 'center',
     },
     image: {
-        marginTop: 20,
-        width: 200,
-        height: 150,
-        borderRadius: 150
+        marginTop: 10,
+        width: '100%',
+        height: '70%',
     },
     serviceName: {
         textAlign: 'center',
@@ -425,11 +426,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
-    // text1: {
-    //     textAlign: 'center',
-    //     fontSize: 15,
-    //     fontWeight: 'bold',
-    // },
+   
     text2: {
         fontSize: 18,
         fontWeight: 'bold',

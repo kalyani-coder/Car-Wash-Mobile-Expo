@@ -194,10 +194,10 @@ const Promotion = ({ navigation }) => {
           
         </View> */}
         <View style={styles.card}>
-          {/* <Image source={{ uri: 'https://www.autocar.co.uk/sites/autocar.co.uk/files/styles/gallery_slide/public/images/car-reviews/first-drives/legacy/rolls_royce_phantom_top_10.jpg?itok=XjL9f1tx' }} style={styles.image} /> */}
           <Image
             source={{ uri: image }}
             style={styles.image}
+            resizeMode='contain'
           />
           <Text style={styles.serviceName}>{service}</Text>
         </View>
@@ -333,16 +333,17 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    width: 350,
-    backgroundColor: '#fff',
+    height:180,
     marginHorizontal: 20,
     alignItems: 'center',
+    
   },
   image: {
-    width: 350,
-    height: 150,
+    width: '100%',
+    height: '100%',
 
   },
+  
   serviceName: {
     textAlign: 'center',
     padding: 10,

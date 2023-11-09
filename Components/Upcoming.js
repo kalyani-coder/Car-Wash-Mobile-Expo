@@ -177,7 +177,7 @@ const Upcoming = ({ navigation }) => {
                   <Image
                     source={{
                       uri:
-                        'https://www.autocar.co.uk/sites/autocar.co.uk/files/styles/gallery_slide/public/images/car-reviews/first-drives/legacy/rolls_royce_phantom_top_10.jpg?itok=XjL9f1tx',
+                        item.image,
                     }}
                     style={styles.promotionimage}
                   />

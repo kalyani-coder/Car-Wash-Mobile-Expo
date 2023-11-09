@@ -29,31 +29,31 @@ const TopservicePage = ({ navigation }) => {
 
     setTimeout(() => {
 
-        setRefreshing(false);
+      setRefreshing(false);
     }, 2000);
-};
-// Custom navigation function
-const navigateToScreen = (screenName) => {
+  };
+  // Custom navigation function
+  const navigateToScreen = (screenName) => {
     setActiveIcon(screenName);
     navigation.navigate(screenName);
-};
+  };
 
-function handleTopservicesClick(title, description, price, image) {
-  // Navigate to a new page or display details
-  navigation.navigate('Topservice', { title, description, price, image });
-}
+  function handleTopservicesClick(title, description, price, image) {
+    // Navigate to a new page or display details
+    navigation.navigate('Topservice', { title, description, price, image });
+  }
   return (
     <View style={[styles.container, commonStyles]}>
       <FlatList
-       refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          tintColor="#5B7586"
-          title="Refreshing..."
-          titleColor="#5B7586"
-        />
-      }
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="#5B7586"
+            title="Refreshing..."
+            titleColor="#5B7586"
+          />
+        }
         data={myFetchedData}
         keyExtractor={(item) => item._id}
         numColumns={2}
@@ -70,11 +70,11 @@ function handleTopservicesClick(title, description, price, image) {
                 style={styles.itemImage}
                 resizeMode="cover"
               /> */}
-               <Image
-                  source={{ uri: item.image }}
-                  style={styles.itemImage}
-                  resizeMode="cover"
-                />
+              <Image
+                source={{ uri: item.image }}
+                style={styles.itemImage}
+                resizeMode="cover"
+              />
               <Text style={{ marginTop: 5 }} numberOfLines={1} ellipsizeMode="tail">{item.title}</Text>
             </TouchableOpacity>
           </View>
