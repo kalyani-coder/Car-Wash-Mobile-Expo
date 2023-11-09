@@ -73,7 +73,7 @@ const TopservicePage = ({ navigation }) => {
               <Image
                 source={{ uri: item.image }}
                 style={styles.itemImage}
-                resizeMode="cover"
+                resizeMode="contain"
               />
               <Text style={{ marginTop: 5 }} numberOfLines={1} ellipsizeMode="tail">{item.title}</Text>
             </TouchableOpacity>

@@ -180,6 +180,7 @@ const Upcoming = ({ navigation }) => {
                         item.image,
                     }}
                     style={styles.promotionimage}
+                    resizeMode='contain'
                   />
                   <View style={styles.promotiondetails}>
                     <Text style={styles.promotionserviceName}>{item.servicesName}</Text>

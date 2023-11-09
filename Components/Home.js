@@ -80,7 +80,7 @@ function Home(props) {
           const allData = await response.json();
 
           // Filter the data based on status
-          const filteredData = allData.filter(item => item.status === 'Accepted' || item.status === '');
+          const filteredData = allData.filter(item => item.status === 'Accepted' || item.status === '' || item.status === 'PickUp' || item.status === 'WokOnIt');
 
           setupcomingData(filteredData);
         } else {
@@ -436,9 +436,10 @@ function Home(props) {
                     <Image
                       source={{
                         uri:
-                          'https://www.autocar.co.uk/sites/autocar.co.uk/files/styles/gallery_slide/public/images/car-reviews/first-drives/legacy/rolls_royce_phantom_top_10.jpg?itok=XjL9f1tx',
+                          item.image,
                       }}
                       style={styles.promotionimage}
+                      resizeMode='contain'
                     />
 
                     <View style={styles.promotiondetails}>
@@ -511,7 +512,7 @@ function Home(props) {
                   <Image
                     source={{ uri: topservice.image }}
                     style={styles.item}
-                    resizeMode="cover"
+                    resizeMode="contain"
                   />
                   <Text style={{ marginTop: 5 }} numberOfLines={1} ellipsizeMode="tail">{topservice.title}</Text>
                 </TouchableOpacity>

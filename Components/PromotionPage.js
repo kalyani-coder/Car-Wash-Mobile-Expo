@@ -78,6 +78,7 @@ const PromotionPage = ({ navigation }) => {
                             <Image
                                 source={{ uri: item.image }}
                                 style={styles.promotionitem}
+                                resizeMode='contain'
                             />
                             <View style={styles.titleContainer} >
                                 <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">{item.title}</Text>
