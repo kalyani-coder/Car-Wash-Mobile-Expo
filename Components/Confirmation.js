@@ -116,13 +116,14 @@ const Confirmation = ({ route, navigation }) => {
       const image = image1;
 
       const taxAmount = price * 0.10;
+      const formattedTaxAmount = taxAmount.toFixed(2);
       let optionValue = 0;
 
       if (selectedOption === "pickup") {
         optionValue = 300;
       }
 
-      const totalPrice = price + taxAmount + optionValue;
+      const totalPrice = (price + parseFloat(formattedTaxAmount) + optionValue).toFixed(2);
       const formattedDate = moment(date).format("DD-MM-YYYY");
       const formattedTime = moment(time).format("hh:mm A");
 
@@ -177,13 +178,14 @@ const Confirmation = ({ route, navigation }) => {
   };
 
   const taxAmount = price * 0.10;
+  const formattedTaxAmount = taxAmount.toFixed(2);
   let optionValue = 0;
 
   if (selectedOption === "pickup") {
     optionValue = 300;
   }
 
-  const totalPrice = price + taxAmount + optionValue;
+  const totalPrice = (price + parseFloat(formattedTaxAmount) + optionValue).toFixed(2);
 
   const formattedDate = moment(date).format("DD-MM-YYYY");
   const formattedTime = moment(time).format("hh:mm A");
@@ -324,13 +326,14 @@ const Confirmation = ({ route, navigation }) => {
             </Text>
           </View>
         </View>
-        <View style={styles.amount}>
-          <Text style={styles.text2}>TAXES</Text>
-          <Text style={styles.text2}>{taxAmount}</Text>
-        </View>
+
         <View style={styles.amount}>
           <Text style={styles.text2}>SERVICE PRICE</Text>
           <Text style={styles.text2}>{price}</Text>
+        </View>
+        <View style={styles.amount}>
+          <Text style={styles.text2}>TAXES</Text>
+          <Text style={styles.text2}>{formattedTaxAmount}</Text>
         </View>
         <View style={styles.amount}>
           <Text style={styles.text2}>TOTAL PAYABLE </Text>

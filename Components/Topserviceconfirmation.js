@@ -114,13 +114,15 @@ const TopserviceConfirmation = ({ route, navigation }) => {
       const { pickupAddress, date, time, servicesName, status, price1, image1 } = route.params;
       const image = image1;
       const taxAmount = price1 * 0.10;
+  const formattedTaxAmount = taxAmount.toFixed(2);
+
       let optionValue = 0;
 
       if (selectedOption === 'pickup') {
         optionValue = 300;
       }
 
-      const totalPrice = price1 + taxAmount + optionValue;
+      const totalPrice = (price1 + parseFloat(formattedTaxAmount) + optionValue).toFixed(2);
       const formattedDate = moment(date).format('DD-MM-YYYY');
       const formattedTime = moment(time).format('hh:mm A');
 
@@ -178,13 +180,15 @@ const TopserviceConfirmation = ({ route, navigation }) => {
   //   const taxAmount = price1 * 0.10;
   //   const totalPrice = price1 + taxAmount + selectedOptionValue;
   const taxAmount = price1 * 0.10;
+  const formattedTaxAmount = taxAmount.toFixed(2);
+
   let optionValue = 0;
 
   if (selectedOption === 'pickup') {
     optionValue = 300;
   }
 
-  const totalPrice = price1 + taxAmount + optionValue;
+  const totalPrice = (price1 + parseFloat(formattedTaxAmount) + optionValue).toFixed(2);
 
   const formattedDate = moment(date).format('DD-MM-YYYY');
   const formattedTime = moment(time).format('hh:mm A');
@@ -318,13 +322,14 @@ const TopserviceConfirmation = ({ route, navigation }) => {
                 </Text>
               </View>
             </View>
-            <View style={styles.amount}>
-              <Text style={styles.text2}>TAXES</Text>
-              <Text style={styles.text2}>{taxAmount}</Text>
-            </View>
+            
             <View style={styles.amount}>
               <Text style={styles.text2}>SERVICE PRICE</Text>
               <Text style={styles.text2}>{price1}</Text>
+            </View>
+            <View style={styles.amount}>
+              <Text style={styles.text2}>TAXES</Text>
+              <Text style={styles.text2}>{formattedTaxAmount}</Text>
             </View>
             <View style={styles.amount}>
               <Text style={styles.text2}>TOTAL PAYABLE </Text>
