@@ -190,24 +190,23 @@ const Upcoming = ({ navigation }) => {
                     <Text style={styles.promotionclock}>{item.time}</Text>
                     <Text style={styles.promotionprice}>Rs. {item.totalPrice}</Text>
                   </View>
-                  <View>
+                  {/* <View>
                     {item.status === 'Accepted' ? (
                       <TouchableOpacity style={styles.trackButton} onPress={() => handleTrack(item)}>
-                        {/* Replace text with the track icon */}
                         <Entypo name="location-pin" size={24} color="white" />
                       </TouchableOpacity>
                     ) : null}
-                  </View>
+                  </View> */}
                   {item.status === 'PickUp' ? (
                     <TouchableOpacity style={styles.trackButton} onPress={() => handleTrack(item)}>
                       <Entypo name="location-pin" size={24} color="white" />
                     </TouchableOpacity>
                   ) : null}
-                  {item.status === 'WorkOnIt' ? (
+                  {/* {item.status === 'WorkOnIt' ? (
                     <TouchableOpacity style={styles.trackButton} onPress={() => handleTrack(item)}>
                       <Entypo name="location-pin" size={24} color="white" />
                     </TouchableOpacity>
-                  ) : null}
+                  ) : null} */}
 
 
                 </View>
