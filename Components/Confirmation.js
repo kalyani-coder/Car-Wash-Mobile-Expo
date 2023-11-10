@@ -208,7 +208,7 @@ const Confirmation = ({ route, navigation }) => {
         <View
           style={{
             height: 65,
-            width: 360,
+            
             backgroundColor: "white",
             marginVertical: 10,
             borderRadius: 8,
@@ -237,7 +237,7 @@ const Confirmation = ({ route, navigation }) => {
         <View
           style={{
             height: 65,
-            width: 360,
+            
             backgroundColor: "white",
             marginVertical: 10,
             borderRadius: 8,
@@ -263,7 +263,7 @@ const Confirmation = ({ route, navigation }) => {
         <View
           style={{
             height: 60,
-            width: 360,
+          
             backgroundColor: "white",
             marginVertical: 10,
             borderRadius: 8,
