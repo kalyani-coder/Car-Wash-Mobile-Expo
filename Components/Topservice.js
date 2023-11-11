@@ -104,7 +104,7 @@ const Topservice = ({ route, navigation }) => {
         if (validateInput()) {
             // const { date, time,pickupAddress} = props;
             const { title, price, image } = route.params;
-            const image1=image;
+            const image1 = image;
             const servicesName = title;
             const price1 = price;
 
@@ -180,7 +180,7 @@ const Topservice = ({ route, navigation }) => {
                 >
 
                     <View style={styles.card}>
-                        <Image source={{ uri: image }} style={styles.item} resizeMode='contain' />
+                        <Image source={{ uri: image }} style={styles.item} />
                         <Text style={styles.text1}>{title}</Text>
 
                     </View>
@@ -352,29 +352,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#D8D8D8',
         width: '100%',
         height: '100%',
-        paddingTop:10
+        paddingTop: 10
     },
-    // card: {
-    //     width: 350,
-    //     backgroundColor: '#fff',
-    //     marginHorizontal: 20,
-    //     alignItems: 'center',
-    // },
+
     card: {
-        // height:180,
-        // width:350,
+        height:180,
         marginHorizontal: 20,
         alignItems: 'center',
-        
-      },
-      image: {
+    },
+
+    item: {
         width: '100%',
         height: '100%',
-      },
-    item: {
-        width: 350,
-        height: 150,
-        resizeMode: 'cover'
+        resizeMode: 'contain'
     },
     text1: {
         textAlign: 'center',

@@ -197,7 +197,7 @@ const Promotion = ({ navigation }) => {
           <Image
             source={{ uri: image }}
             style={styles.image}
-            resizeMode='contain'
+            resizeMode='cover'
           />
           <Text style={styles.serviceName}>{service}</Text>
         </View>

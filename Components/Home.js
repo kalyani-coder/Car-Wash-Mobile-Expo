@@ -431,24 +431,24 @@ function Home(props) {
 
             >
               {upcomingdata.map((item) => (
-                <View key={item._id} style={styles.promotioncard}>
-                  <View style={styles.promotioncardContent}>
+                <View key={item._id} style={styles.upcomingcard}>
+                  <View style={styles.upcomingcardContent}>
                     <Image
                       source={{
                         uri:
                           item.image,
                       }}
-                      style={styles.promotionimage}
+                      style={styles.upcomingimage}
                       resizeMode='contain'
                     />
 
-                    <View style={styles.promotiondetails}>
-                      <Text style={styles.promotionserviceName}>{item.servicesName}</Text>
-                      <Text style={styles.promotiondate}>
+                    <View style={styles.upcomingdetails}>
+                      <Text style={styles.upcomingserviceName}>{item.servicesName}</Text>
+                      <Text style={styles.upcomingdate}>
                         {moment(item.date, 'DD-MM-YYYY').format('DD-MM-YYYY')}
                       </Text>
-                      <Text style={styles.promotionclock}>{item.time}</Text>
-                      <Text style={styles.promotionprice}>Rs. {item.totalPrice}</Text>
+                      <Text style={styles.upcomingclock}>{item.time}</Text>
+                      <Text style={styles.upcomingprice}>Rs. {item.totalPrice}</Text>
                     </View>
 
 
@@ -512,7 +512,7 @@ function Home(props) {
                   <Image
                     source={{ uri: topservice.image }}
                     style={styles.item}
-                    resizeMode="contain"
+                    resizeMode="cover"
                   />
                   <Text style={{ marginTop: 5 }} numberOfLines={1} ellipsizeMode="tail">{topservice.title}</Text>
                 </TouchableOpacity>
@@ -749,7 +749,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 17,
   },
-  promotioncard: {
+  upcomingcard: {
     flexDirection: 'column',
     backgroundColor: 'white',
     height: 170,
@@ -765,36 +765,36 @@ const styles = StyleSheet.create({
       height: 2,
     },
   },
-  promotioncardContent: {
+  upcomingcardContent: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
 
   },
-  promotionimage: {
+  upcomingimage: {
     width: 120,
     height: 95,
     resizeMode: 'cover',
     borderRadius: 10,
     margin: 10,
   },
-  promotiondetails: {
+  upcomingdetails: {
     flex: 1,
     marginRight: 10,
   },
-  promotionserviceName: {
+  upcomingserviceName: {
     fontSize: 15,
     marginBottom: 5,
   },
-  promotiondate: {
+  upcomingdate: {
     fontSize: 15,
     marginTop: 5,
   },
-  promotionclock: {
+  upcomingclock: {
     fontSize: 15,
     marginTop: 5,
   },
-  promotionprice: {
+  upcomingprice: {
     fontSize: 15,
     marginTop: 5,
   },
@@ -825,6 +825,7 @@ const styles = StyleSheet.create({
 
   Promotion: {
     width: 200,
+    // height:150,
     marginHorizontal: 5,
     borderRadius: 10,
     overflow: 'hidden',
@@ -834,7 +835,8 @@ const styles = StyleSheet.create({
   },
   promotionitem: {
     width: '100%',
-    height: 130,
+    height: 100,
+    resizeMode:'cover'
   },
   titleContainer: {
     backgroundColor: 'rgba(0, 0, 0, 0.7)',

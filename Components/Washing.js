@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
         height: 150,
         backgroundColor: 'white',
         marginHorizontal: 20,
-        marginVertical: 10, // Add vertical margin to separate cards
+        marginVertical: 10, 
         padding: 10,
         borderRadius: 10,
         borderColor: '#ccc',
