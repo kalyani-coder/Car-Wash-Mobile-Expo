@@ -78,7 +78,6 @@ const PromotionPage = ({ navigation }) => {
                             <Image
                                 source={{ uri: item.image }}
                                 style={styles.promotionitem}
-                                resizeMode='contain'
                             />
                             <View style={styles.titleContainer} >
                                 <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">{item.title}</Text>
@@ -122,17 +121,15 @@ const styles = StyleSheet.create({
 
     },
     Promotion: {
-        width: '47%',
-        height: '95%',
-        marginHorizontal: 5,
-        borderRadius: 10,
-        overflow: 'hidden',
-        backgroundColor: 'white',
-
+    width: 180,
+    marginHorizontal: 5,
+    borderRadius: 10,
+    overflow: 'hidden',
     },
     promotionitem: {
         width: '100%',
-        height: 130,
+        height: 100,
+        resizeMode:'cover'
     },
     titleContainer: {
         backgroundColor: 'rgba(0, 0, 0, 0.7)',
