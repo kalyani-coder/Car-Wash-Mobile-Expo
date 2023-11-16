@@ -35,7 +35,7 @@ import { useFocusEffect } from '@react-navigation/native';
 function Home(props) {
 
   const [isSearchBarOpen, setSearchBarOpen] = useState(false);
-  const [searchText, setSearchText] = useState("");
+  // const [searchText, setSearchText] = useState("");
 
   const [servicesData, setServicesData] = useState([]);
   const [promotions, setPromotions] = useState([]);
@@ -47,6 +47,32 @@ function Home(props) {
   const [activeCardIndex, setActiveCardIndex] = useState(0);
   const screenWidth = Dimensions.get('window').width;
   const [activeIcon, setActiveIcon] = useState('Home');
+
+  const [searchText, setSearchText] = useState("");
+  const [filteredServicesData, setFilteredServicesData] = useState([]);
+  const [filteredPromotions, setFilteredPromotions] = useState([]);
+  const [filteredHomeOffers, setFilteredHomeOffers] = useState([]);
+
+  useEffect(() => {
+    // Filter servicesData based on search text
+    const filteredServices = servicesData.filter((service) =>
+      service.serviceName && service.serviceName.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredServicesData(filteredServices);
+  
+    // Filter promotions based on search text
+    const filteredPromos = promotions.filter((promo) =>
+      promo.title && promo.title.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredPromotions(filteredPromos);
+  
+    // Filter home offers based on search text
+    const filteredOffers = homeOffers.filter((offer) =>
+      offer.homeservicesName && offer.homeservicesName.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredHomeOffers(filteredOffers);
+  }, [searchText, servicesData, promotions, homeOffers]);
+  
 
   useEffect(() => {
     callApiOffers();
@@ -277,9 +303,11 @@ function Home(props) {
 
         <View style={styles.navbar}>
 
+          <Text style={styles.gloss}>Glossgenic</Text>
+
           <View style={styles.iconsContainer}>
             <TouchableOpacity onPress={toggleSearchBar}>
-              <FontAwesomeIcon icon={faMagnifyingGlass} size={25} color="black" style={styles.icon} />
+              {/* <FontAwesomeIcon icon={faMagnifyingGlass} size={25} color="black" style={styles.icon} /> */}
             </TouchableOpacity>
             <Modal
               transparent={true}
@@ -308,6 +336,15 @@ function Home(props) {
             </TouchableOpacity>
           </View>
         </View>
+        {/* <View style={styles.search}>
+          <Ionicons name="search" size={24} color="black" style={styles.searchicon} />
+          <TextInput
+            style={styles.searchinput}
+            placeholder="Search..."
+            value={searchText}
+            onChangeText={(text) => setSearchText(text)}
+          />
+        </View> */}
         <ScrollView Vertical={true} showsVerticalScrollIndicator={false} style={{ flex: 1 }}
           refreshControl={
             <RefreshControl
@@ -403,10 +440,10 @@ function Home(props) {
                   >
                     {/* <Image source={require('../Components/Assets/Carwash.png')} style={styles.serviceimage} /> */}
                     <Image
-                  source={{ uri: service.serviceImage }}
-                  style={styles.serviceimage}
-                  resizeMode="contain"
-                />
+                      source={{ uri: service.serviceImage }}
+                      style={styles.serviceimage}
+                      resizeMode="contain"
+                    />
 
                     <View style={styles.servicetitleContainer}>
                       <Text style={styles.servicetitle} numberOfLines={1} ellipsizeMode="tail">
@@ -469,7 +506,7 @@ function Home(props) {
             <Text style={styles.text3}>Promotions</Text>
             <TouchableOpacity
               style={styles.viewAllButton}
-              onPress={() =>handlePromotionPageClick()}>
+              onPress={() => handlePromotionPageClick()}>
 
               <Ionicons name="chevron-forward" size={24} color="black" />
 
@@ -485,7 +522,7 @@ function Home(props) {
                   <Image
                     source={{ uri: promotion.image }}
                     style={styles.promotionitem}
-                    
+
                   />
                   <View style={styles.titleContainer}>
                     <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">{promotion.title}</Text>
@@ -512,7 +549,7 @@ function Home(props) {
                   <Image
                     source={{ uri: topservice.image }}
                     style={styles.item}
-                    resizeMode="cover"
+                    resizeMode="contain"
                   />
                   <Text style={{ marginTop: 5 }} numberOfLines={1} ellipsizeMode="tail">{topservice.title}</Text>
                 </TouchableOpacity>
@@ -558,10 +595,15 @@ const styles = StyleSheet.create({
 
   navbar: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: 'space-between',
     alignItems: "center",
-    marginHorizontal: 10,
+    marginHorizontal: 20,
     paddingTop: 15,
+  },
+  gloss: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    fontFamily: 'System'
   },
   iconsContainer: {
     flexDirection: "row",
@@ -569,6 +611,22 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginHorizontal: 15,
+  },
+  search: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f0f0f0',
+    padding: 5,
+    borderRadius: 8,
+    marginHorizontal: 20,
+    marginVertical:10,
+  },
+  searchicon: {
+    marginRight: 8,
+  },
+  searchinput: {
+    flex: 1,
+    height: 30,
   },
   modalContainer: {
     flex: 1,
@@ -592,10 +650,9 @@ const styles = StyleSheet.create({
     right: 10,
     margin: 8,
   },
-
-
   Section: {
-    marginVertical: 10,
+    // marginVertical: 10,
+    marginBottom:10,
     flexDirection: "row",
   },
   text1: {
@@ -836,7 +893,7 @@ const styles = StyleSheet.create({
   promotionitem: {
     width: '100%',
     height: 100,
-    resizeMode:'cover'
+    resizeMode: 'cover'
   },
   titleContainer: {
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
