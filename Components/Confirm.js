@@ -8,12 +8,25 @@ import {
 } from "react-native";
 import { Appearance } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import * as Font from 'expo-font';
+
 
 const Confirm = ({ navigation }) => {
   const colorScheme = Appearance.getColorScheme();
   const handleIconPressContinue = () => {
     navigation.navigate('Home'); // Navigate to the home screen
   };
+
+  useEffect(() => {
+    const loadFonts = async () => {
+        await Font.loadAsync({
+            
+            'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
+        });
+    };
+    loadFonts();
+}, []);
 
   const commonStyles = {
 
@@ -58,7 +71,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#000",
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily:'PTSerif-Bold',
     textAlign: "center",
     margin: 4,
   },

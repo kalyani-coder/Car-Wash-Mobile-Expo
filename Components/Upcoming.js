@@ -21,6 +21,8 @@ import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import * as Font from 'expo-font';
+
 
 const Upcoming = ({ navigation }) => {
   const [data, setData] = useState([]);
@@ -28,6 +30,19 @@ const Upcoming = ({ navigation }) => {
   const currentTime = new Date();
   const route = useRoute();
   const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    const loadFonts = async () => {
+        await Font.loadAsync({
+            'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+            'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+            'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+            'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
+        });
+    };
+    loadFonts();
+}, []);
 
   const fetchData = async () => {
     try {
@@ -357,14 +372,14 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    fontWeight: 'bold'
+    fontFamily:'PTSerif-Bold',
   },
   pendingStatus: {
     backgroundColor: '#FCAE1E',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    fontWeight: 'bold'
+    fontFamily:'PTSerif-Bold',
   },
   rescheduleButton: {
     backgroundColor: '#f8db03',
@@ -381,7 +396,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
     fontSize: 14,
-    fontWeight: 'bold',
+   fontFamily:'PTSerif-Bold',
     textAlign: 'center',
   },
 

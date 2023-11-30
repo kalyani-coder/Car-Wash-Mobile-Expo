@@ -186,9 +186,12 @@ const Topservice = ({ route, navigation }) => {
                     </View>
                     <View style={styles.about}>
                         <Text style={styles.text2}>About</Text>
-                        <Text>{description}</Text>
+                        <Text style={styles.desc}>{description}</Text>
                     </View>
-                    <Text style={{ fontWeight: 'bold', fontSize: 15, marginHorizontal: 20, }}>Reviews</Text>
+                    <View style={styles.reviewtext}>
+                        <Text style={styles.text2}>Reviews</Text>
+
+                    </View>
 
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                         {reviews.map((review) => (
@@ -215,7 +218,7 @@ const Topservice = ({ route, navigation }) => {
 
                     </ScrollView>
 
-                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 5 }}>Add Pickup Address<Text style={{ color: 'red' }}> *</Text></Text>
+                    <Text style={styles.text3}>Add Pickup Address<Text style={{ color: 'red' }}> *</Text></Text>
                     <TextInput
                         placeholder="Enter Address"
                         placeholderTextColor='#000'
@@ -225,7 +228,7 @@ const Topservice = ({ route, navigation }) => {
                     />
                     <Text style={styles.errorText}>{errors.pickupAddress}</Text>
 
-                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 5 }}>Choose Date & Time</Text>
+                    <Text style={styles.text3}>Choose Date & Time</Text>
                     {/* 
                     <View
                         style={{
@@ -356,7 +359,7 @@ const styles = StyleSheet.create({
     },
 
     card: {
-        height:180,
+        height: 180,
         marginHorizontal: 20,
         alignItems: 'center',
     },
@@ -369,15 +372,26 @@ const styles = StyleSheet.create({
     text1: {
         textAlign: 'center',
         fontSize: 15,
-        fontWeight: 'bold'
+        fontFamily: 'Roboto-Bold'
+
     },
     text2: {
         fontSize: 15,
-        fontWeight: 'bold'
-    },
-    about: {
+        fontFamily: 'Poppins-Bold',
+    
+      },
+      desc:{
+       fontSize: 15, 
+       fontFamily: 'Roboto-Regular' 
+      },
+      about: {
         margin: 20,
-    },
+      },
+      reviewtext: {
+        flexDirection: 'row',
+        marginHorizontal: 20,
+        justifyContent: 'space-between'
+      },
 
 
     reviewCard: {
@@ -399,7 +413,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     text3: {
-        fontWeight: 'bold',
+        fontFamily: 'Poppins-Bold',
+        marginHorizontal: 20,
+        fontSize: 15,
     },
     icon: {
         flexDirection: 'row',
@@ -485,7 +501,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "#000",
         fontSize: 16,
-        fontWeight: "bold",
+        fontFamily: 'PTSerif-Bold',
         textAlign: "center",
     },
     footer: {

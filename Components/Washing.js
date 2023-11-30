@@ -28,6 +28,8 @@ import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { RefreshControl } from 'react-native';
+import * as Font from 'expo-font';
+
 
 
 
@@ -53,6 +55,20 @@ const Washing = ({ navigation }) => {
         totalPrice: ''
     });
 
+
+    useEffect(() => {
+        const loadFonts = async () => {
+            await Font.loadAsync({
+                'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+                'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+                'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+
+                'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
+            });
+        };
+        loadFonts();
+    }, []);
 
     // useEffect hook for side effects
     useEffect(() => {
@@ -238,13 +254,11 @@ const Washing = ({ navigation }) => {
                         </View>
                         <View style={styles.about}>
                             <Text style={styles.text2}>About</Text>
-                            <Text style={{ fontSize: 15 }}>{serviceDescription}</Text>
+                            <Text style={styles.desc}>{serviceDescription}</Text>
                         </View>
-
-
-                        <Text style={{ fontWeight: 'bold', fontSize: 17, marginHorizontal: 20, }}>Reviews</Text>
-
-
+                        <View style={styles.reviewtext}>
+                            <Text style={styles.text2}>Reviews</Text>
+                        </View>
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                             {reviews.map((review) => (
                                 <View key={review._id} style={styles.reviewCard}>
@@ -269,7 +283,7 @@ const Washing = ({ navigation }) => {
                             ))}
 
                         </ScrollView>
-                        <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address<Text style={{ color: 'red' }}> *</Text></Text>
+                        <Text style={styles.text3}>Add Pickup Address<Text style={{ color: 'red' }}> *</Text></Text>
                         <TextInput
                             placeholder="Enter Address"
                             placeholderTextColor='#000'
@@ -279,7 +293,7 @@ const Washing = ({ navigation }) => {
                         />
                         <Text style={styles.errorText}>{errors.pickupAddress}</Text>
 
-                        <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 5 }}>Choose Date & Time</Text>
+                        <Text style={styles.text3}>Choose Date & Time</Text>
                         {/* <View
                             style={{
                                 height: 65,
@@ -410,7 +424,7 @@ const styles = StyleSheet.create({
     },
     card: {
         width: 350,
-        height:150,
+        height: 150,
         backgroundColor: '#fff',
         marginHorizontal: 20,
         alignItems: 'center',
@@ -424,12 +438,21 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 10,
         fontSize: 16,
-        fontWeight: 'bold',
+        fontFamily: 'Roboto-Bold'
     },
-   
+
     text2: {
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 15,
+        fontFamily: 'Poppins-Bold',
+    },
+    desc: {
+        fontSize: 15,
+        fontFamily: 'Roboto-Regular'
+    },
+    reviewtext: {
+        flexDirection: 'row',
+        marginHorizontal: 20,
+        justifyContent: 'space-between',
     },
     about: {
         margin: 20,
@@ -440,7 +463,7 @@ const styles = StyleSheet.create({
         height: 150,
         backgroundColor: 'white',
         marginHorizontal: 20,
-        marginVertical: 10, 
+        marginVertical: 10,
         padding: 10,
         borderRadius: 10,
         borderColor: '#ccc',
@@ -454,7 +477,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     text3: {
-        fontWeight: 'bold',
+        fontFamily: 'Poppins-Bold',
+        marginHorizontal: 20,
+        fontSize: 15,
     },
     icon: {
         flexDirection: 'row',
@@ -520,7 +545,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "#000",
         fontSize: 16,
-        fontWeight: "bold",
+        fontFamily: 'PTSerif-Bold',
         textAlign: "center",
     },
     footer: {

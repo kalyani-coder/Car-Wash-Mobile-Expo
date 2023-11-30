@@ -20,6 +20,7 @@ import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as Font from 'expo-font';
 
 
 
@@ -44,6 +45,19 @@ const Confirmation = ({ route, navigation }) => {
   const [selectedOption, setSelectedOption] = useState("pickup");
   const [clientData, setClientData] = useState([]);
   const colorScheme = Appearance.getColorScheme();
+
+  useEffect(() => {
+    const loadFonts = async () => {
+        await Font.loadAsync({
+            'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+            'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+            'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+            'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
+        });
+    };
+    loadFonts();
+}, []);
 
   useEffect(() => {
     fetchClientData();
@@ -225,11 +239,11 @@ const Confirmation = ({ route, navigation }) => {
           >
             <MaterialCommunityIcons name="car-wash" size={35} color="black" />
             <View>
-              <Text style={{ fontWeight: "bold" }}>Service Name</Text>
+              <Text style={{  fontFamily:'Poppins-Bold'}}>Service Name</Text>
               <Text>{servicesName}</Text>
             </View>
             <View>
-              <Text style={{ fontWeight: "bold" }}>Price</Text>
+              <Text style={{  fontFamily:'Poppins-Bold'}}>Price</Text>
               <Text>{price}</Text>
             </View>
           </View>
@@ -249,12 +263,12 @@ const Confirmation = ({ route, navigation }) => {
             style={{ flexDirection: "row", justifyContent: "space-around", margin: 15 }}
           >
             <View>
-              <Text style={{ fontWeight: "bold" }}>Date</Text>
+              <Text style={{  fontFamily:'Poppins-Bold'}}>Date</Text>
               <Text>{formattedDate}</Text>
               {/* <Text>{date}</Text> */}
             </View>
             <View>
-              <Text style={{ fontWeight: "bold" }}>Time</Text>
+              <Text style={{  fontFamily:'Poppins-Bold'}}>Time</Text>
               <Text>{formattedTime}</Text>
               {/* <Text>{time}</Text> */}
             </View>
@@ -272,11 +286,11 @@ const Confirmation = ({ route, navigation }) => {
           }}
         >
           <View style={{ flexDirection: "row", padding: 10 }}>
-            <Text style={{ fontWeight: "bold" }}>Address: </Text>
-            <Text>{pickupAddress}</Text>
+            <Text style={{  fontFamily:'Poppins-Bold'}}>Address: </Text>
+            <Text style={{ fontFamily:'Roboto-Regular',resizeMode:'cover'}}>{pickupAddress}</Text>
           </View>
         </View>
-        <Text style={{ fontWeight: "bold" }}>
+        <Text style={{ fontFamily:'Poppins-Bold' }}>
           Enter Vehicle Number<Text style={{ color: "red" }}> *</Text>
         </Text>
         <TextInput
@@ -287,7 +301,7 @@ const Confirmation = ({ route, navigation }) => {
           style={styles.input}
         />
         <Text style={styles.errorText}>{vehicleNumberError}</Text>
-        <Text style={{ fontWeight: "bold" }}>
+        <Text style={{ fontFamily:'Poppins-Bold' }}>
           Enter Make/Model Number<Text style={{ color: "red" }}> *</Text>
         </Text>
         <TextInput
@@ -299,7 +313,7 @@ const Confirmation = ({ route, navigation }) => {
         />
         <Text style={styles.errorText}>{modelNumberError}</Text>
         <View style={styles.pickerContainer}>
-          <Text style={{ fontWeight: "bold" }}>Select an option:</Text>
+          <Text style={{ fontFamily:'Poppins-Bold' }}>Select an option:</Text>
           <Picker
             style={[styles.picker, { borderRadius: 8 }]}
             selectedValue={selectedOption}
@@ -468,7 +482,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#000",
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily:'PTSerif-Bold',
     textAlign: "center",
   },
   footer: {

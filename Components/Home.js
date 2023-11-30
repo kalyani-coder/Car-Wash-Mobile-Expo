@@ -31,6 +31,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Entypo } from "@expo/vector-icons";
 import { useFocusEffect } from '@react-navigation/native';
+import * as Font from 'expo-font';
+
 
 function Home(props) {
 
@@ -54,25 +56,47 @@ function Home(props) {
   const [filteredHomeOffers, setFilteredHomeOffers] = useState([]);
 
   useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        'Teko-Regular': require('../assets/fonts/Teko-Regular.ttf'),
+     
+        'Roboto-BlackItalic': require('../assets/fonts/Roboto-BlackItalic.ttf'),
+        'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+        
+        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+       
+        'RobotoSlab-Light': require('../assets/fonts/RobotoSlab-Light.ttf'),
+       
+
+
+      });
+    };
+
+    loadFonts();
+  }, []);
+
+
+
+  useEffect(() => {
     // Filter servicesData based on search text
     const filteredServices = servicesData.filter((service) =>
       service.serviceName && service.serviceName.toLowerCase().includes(searchText.toLowerCase())
     );
     setFilteredServicesData(filteredServices);
-  
+
     // Filter promotions based on search text
     const filteredPromos = promotions.filter((promo) =>
       promo.title && promo.title.toLowerCase().includes(searchText.toLowerCase())
     );
     setFilteredPromotions(filteredPromos);
-  
+
     // Filter home offers based on search text
     const filteredOffers = homeOffers.filter((offer) =>
       offer.homeservicesName && offer.homeservicesName.toLowerCase().includes(searchText.toLowerCase())
     );
     setFilteredHomeOffers(filteredOffers);
   }, [searchText, servicesData, promotions, homeOffers]);
-  
+
 
   useEffect(() => {
     callApiOffers();
@@ -138,6 +162,7 @@ function Home(props) {
   }
   function handleofferClick(homeservicesName, description, totalPrice, image) {
     // Navigate to a new page or display details
+    
     props.navigation.navigate('Booknow', {
       homeservicesName,
       description,
@@ -358,11 +383,13 @@ function Home(props) {
         >
           <ScrollView horizontal={true} style={styles.offer} showsHorizontalScrollIndicator={false} onScroll={handleScroll} pagingEnabled={true} >
             {homeOffers.map((offer) => (
+              
               <View key={offer._id} style={[styles.Section, { width: screenWidth }]}>
+                
 
                 <View style={{ height: 130, width: 175, backgroundColor: "#F2F3F4", borderBottomLeftRadius: 10, borderTopLeftRadius: 10, marginTop: 10 }}>
                   <Text style={styles.text1}>{offer.offerName}</Text>
-                  <Text style={{ color: "blue", marginHorizontal: 20 }} numberOfLines={2} ellipsizeMode="tail">{offer.offer}</Text>
+                  <Text style={{ color: "blue", marginHorizontal: 20 }} numberOfLines={2} ellipsizeMode="tail">{[offer.offer,' OFF']}</Text>
                   <TouchableOpacity
                     style={styles.button}
                     onPress={() =>
@@ -457,7 +484,7 @@ function Home(props) {
 
           </ScrollView>
           <View style={styles.Services}>
-            <Text style={styles.text4}>Upcoming Booking</Text>
+            <Text style={styles.text3}>Upcoming Booking</Text>
           </View>
           <View style={styles.containerBooking}>
             <ScrollView
@@ -512,8 +539,6 @@ function Home(props) {
 
             </TouchableOpacity>
           </View>
-
-
           <ScrollView horizontal={true} style={styles.promotion2} showsHorizontalScrollIndicator={false}>
             {promotions.map((promotion) => (
               <View style={styles.Promotion} key={promotion._id}>
@@ -551,7 +576,7 @@ function Home(props) {
                     style={styles.item}
                     resizeMode="contain"
                   />
-                  <Text style={{ marginTop: 5 }} numberOfLines={1} ellipsizeMode="tail">{topservice.title}</Text>
+                  <Text style={{ marginTop: 5,fontFamily:'Roboto-Bold' }} numberOfLines={1} ellipsizeMode="tail">{topservice.title}</Text>
                 </TouchableOpacity>
               </View>
             ))}
@@ -601,9 +626,9 @@ const styles = StyleSheet.create({
     paddingTop: 15,
   },
   gloss: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    fontFamily: 'System'
+    fontSize: 30,
+    fontFamily: 'Teko-Regular'
+
   },
   iconsContainer: {
     flexDirection: "row",
@@ -619,7 +644,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 8,
     marginHorizontal: 20,
-    marginVertical:10,
+    marginVertical: 10,
   },
   searchicon: {
     marginRight: 8,
@@ -652,13 +677,14 @@ const styles = StyleSheet.create({
   },
   Section: {
     // marginVertical: 10,
-    marginBottom:10,
+    marginBottom: 10,
     flexDirection: "row",
   },
   text1: {
     fontSize: 15,
     marginHorizontal: 20,
     marginTop: 10,
+    fontFamily:'RobotoSlab-Light'
   },
   button: {
     width: 100,
@@ -673,6 +699,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: "center",
     marginVertical: 5,
+    fontFamily: 'Roboto-BlackItalic'
   },
   img: {
     height: 130,
@@ -697,7 +724,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     margin: 2,
   },
-
   Services: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -707,11 +733,11 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
     paddingBottom: 8,
     marginBottom: 10,
-    // marginVertical: 10
+
   },
   text3: {
     fontSize: 17,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
   },
   viewAllButton: {
     flexDirection: 'row',
@@ -784,7 +810,7 @@ const styles = StyleSheet.create({
 
   servicetitle: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
     padding: 5
   },
 
@@ -801,11 +827,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
 
-  text4: {
 
-    fontWeight: "bold",
-    fontSize: 17,
-  },
   upcomingcard: {
     flexDirection: 'column',
     backgroundColor: 'white',
@@ -871,8 +893,9 @@ const styles = StyleSheet.create({
 
   buttonText: {
     color: 'black',
+    fontFamily: 'Roboto-BlackItalic',
     fontSize: 14,
-    fontWeight: 'bold',
+    
     textAlign: 'center',
   },
 
@@ -902,19 +925,12 @@ const styles = StyleSheet.create({
   title: {
     color: 'white',
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily:'Roboto-Bold'
   },
-  topservice1: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginHorizontal: 20,
-    marginVertical: 10,
-  },
+  
 
-  text7: {
-    fontWeight: "bold",
-    fontSize: 17,
-  },
+ 
   topservice2: {
     marginHorizontal: 20,
   },

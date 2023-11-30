@@ -3,11 +3,31 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Appearance } from 'react-native';
+import * as Font from 'expo-font';
+
 
 const Editprofile = ({ route, navigation }) => {
   const { user } = route.params;
   const [editedUser, setEditedUser] = useState(user);
   const colorScheme = Appearance.getColorScheme();
+
+  useEffect(() => {
+    const loadFonts = async () => {
+        await Font.loadAsync({
+            'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+            'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+            'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+
+            'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
+        });
+    };
+    loadFonts();
+}, []);
+
+
+
+
 
   useEffect(() => {
     // Load the user ID from AsyncStorage and set it as a default value
@@ -104,7 +124,8 @@ const styles = StyleSheet.create({
     textAlign:'center',
     marginBottom:30,
     fontSize:20,
-    fontWeight:'bold'
+    fontFamily: 'Roboto-Bold',
+
 
   },
   input: {
@@ -126,7 +147,8 @@ const styles = StyleSheet.create({
   saveText: {
     color: '#000',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'PTSerif-Bold',
+
   },
 });
 

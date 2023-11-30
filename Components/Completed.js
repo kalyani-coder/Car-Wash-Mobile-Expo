@@ -17,6 +17,7 @@ import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import * as Font from 'expo-font';
 
 
 const Completed = ({ navigation }) => {
@@ -24,6 +25,19 @@ const Completed = ({ navigation }) => {
     const colorScheme = Appearance.getColorScheme();
     const currentTime = new Date();
     const [refreshing, setRefreshing] = useState(false);
+
+    useEffect(() => {
+        const loadFonts = async () => {
+            await Font.loadAsync({
+                'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+                'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+                'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+                'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
+            });
+        };
+        loadFonts();
+    }, []);
 
     const fetchData = async () => {
         try {
@@ -129,7 +143,7 @@ const Completed = ({ navigation }) => {
     };
 
     const commonStyles = {
-       
+
         color: colorScheme === 'dark' ? '#fff' : '#000',
     };
 
@@ -185,7 +199,7 @@ const Completed = ({ navigation }) => {
                             </View>
                         ))}
                     </View>
-                  
+
 
                 </ScrollView>
 
@@ -223,7 +237,7 @@ const styles = StyleSheet.create({
     cardContent: {
         flexDirection: 'row',
         alignItems: 'center',
-       
+
     },
     image: {
         width: 120,
@@ -252,18 +266,20 @@ const styles = StyleSheet.create({
         fontSize: 15,
         marginTop: 5,
     },
-  
+
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-evenly', // Change to 'space-evenly' for even spacing
         marginLeft: 130
     },
-    status:{
+    status: {
         backgroundColor: '#33B864',
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
-      
+        fontFamily: 'PTSerif-Bold',
+
+
     },
     button: {
         backgroundColor: '#f8db03',
@@ -275,10 +291,10 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'black',
         fontSize: 12,
-        fontWeight: 'bold',
+        fontFamily:'PTSerif-Bold',
         textAlign: 'center',
     },
-   
+
 
 });
 

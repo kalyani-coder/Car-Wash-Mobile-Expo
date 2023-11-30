@@ -1,10 +1,12 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Appearance } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import moment from 'moment';
+import * as Font from 'expo-font';
+
 
 const UpdateInfo = ({ route, navigation }) => {
   const { appointment } = route.params;
@@ -12,6 +14,21 @@ const UpdateInfo = ({ route, navigation }) => {
   const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [isTimePickerVisible, setTimePickerVisible] = useState(false);
   const colorScheme = Appearance.getColorScheme();
+
+
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+        'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+
+        'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
+      });
+    };
+    loadFonts();
+  }, []);
 
   const showDatePicker = () => {
     setDatePickerVisible(true);
@@ -148,13 +165,13 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 24,
-    fontWeight: 'bold',
     marginBottom: 20,
-    color: '#5B7586',
+    fontFamily: 'Poppins-Bold',
+
   },
   appointmentDetails: {
     flexDirection: 'row',
-    
+
     alignItems: 'center',
     marginBottom: 20,
   },
@@ -166,11 +183,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginLeft: 10,
-    color: '#5B7586',
+
   },
   detail: {
     fontSize: 16,
-    marginLeft:8,
+    marginLeft: 8,
   },
   datePickerButton: {
     backgroundColor: '#5B7586',
@@ -182,7 +199,8 @@ const styles = StyleSheet.create({
   datePickerButtonText: {
     color: 'white',
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'PTSerif-Bold',
+
   },
   timePickerButton: {
     backgroundColor: '#5B7586',
@@ -194,7 +212,8 @@ const styles = StyleSheet.create({
   timePickerButtonText: {
     color: 'white',
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'PTSerif-Bold',
+
   },
   updateButton: {
     backgroundColor: '#5B7586',
@@ -207,7 +226,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'PTSerif-Bold',
+
   },
 });
 

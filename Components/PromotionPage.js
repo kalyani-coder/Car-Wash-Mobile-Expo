@@ -5,6 +5,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Appearance } from 'react-native';
 import { RefreshControl } from 'react-native';
 import { MaterialIcons } from "@expo/vector-icons";
+import * as Font from 'expo-font';
+
 
 
 const PromotionPage = ({ navigation }) => {
@@ -12,6 +14,15 @@ const PromotionPage = ({ navigation }) => {
     const [activeIcon, setActiveIcon] = useState('');
     const [refreshing, setRefreshing] = useState(false);
     const colorScheme = Appearance.getColorScheme();
+    useEffect(() => {
+        const loadFonts = async () => {
+            await Font.loadAsync({
+                'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+            });
+        };
+
+        loadFonts();
+    }, []);
 
     useEffect(() => {
         fetch('https://car-wash-backend-api.onrender.com/api/promotions')
@@ -121,15 +132,15 @@ const styles = StyleSheet.create({
 
     },
     Promotion: {
-    width: 180,
-    marginHorizontal: 5,
-    borderRadius: 10,
-    overflow: 'hidden',
+        width: 180,
+        marginHorizontal: 5,
+        borderRadius: 10,
+        overflow: 'hidden',
     },
     promotionitem: {
         width: '100%',
         height: 100,
-        resizeMode:'cover'
+        resizeMode: 'cover'
     },
     titleContainer: {
         backgroundColor: 'rgba(0, 0, 0, 0.7)',
@@ -140,6 +151,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16,
         textAlign: 'center',
+        fontFamily: 'Roboto-Bold'
     },
     footer: {
         position: 'relative',

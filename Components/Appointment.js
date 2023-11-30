@@ -11,6 +11,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
+import * as Font from 'expo-font';
 
 
 const Tab = createMaterialTopTabNavigator();
@@ -32,6 +33,19 @@ const Appointment = ({ navigation}) => {
    navigation.navigate(screenName);
   };
 
+
+  useEffect(() => {
+    const loadFonts = async () => {
+        await Font.loadAsync({
+            'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+            'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+            'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+            'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
+        });
+    };
+    loadFonts();
+}, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -85,6 +99,7 @@ const Appointment = ({ navigation}) => {
           },
           tabBarLabelStyle: {
             fontSize: 14,
+            fontFamily: 'Poppins-Bold',
           },
           tabBarIndicatorStyle: {
             backgroundColor: 'black',
@@ -171,6 +186,9 @@ const styles = StyleSheet.create({
   text10: {
     fontSize: 10,
   },
+  text:{
+    fontFamily:'Poppins-Bold'
+  }
 });
 
 export default Appointment;

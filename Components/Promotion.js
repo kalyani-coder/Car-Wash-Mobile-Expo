@@ -24,6 +24,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import * as Font from 'expo-font';
+
 
 const Promotion = ({ navigation }) => {
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
@@ -43,6 +45,20 @@ const Promotion = ({ navigation }) => {
     totalPrice: '',
   });
 
+
+  useEffect(() => {
+    const loadFonts = async () => {
+        await Font.loadAsync({
+            'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+            'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+            'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+            
+            'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
+        });
+    };
+    loadFonts();
+}, []);
   // Function to show the date picker
   const showDatePicker = () => {
     setIsDatePickerVisible(true);
@@ -203,11 +219,11 @@ const Promotion = ({ navigation }) => {
         </View>
         <View style={styles.about}>
           <Text style={styles.text2}>About</Text>
-          <Text>{description}</Text>
+          <Text style={styles.desc}>{description}</Text>
         </View>
         <View style={styles.reviewtext}>
-          <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Reviews</Text>
-          <View style={styles.sees}></View>
+          <Text style={styles.text2}>Reviews</Text>
+      
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {reviews.map((review) => (
@@ -234,7 +250,7 @@ const Promotion = ({ navigation }) => {
 
 
         </ScrollView>
-        <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>
+        <Text style={styles.text3}>
           Add Pickup Address<Text style={{ color: 'red' }}> *</Text>
         </Text>
         <TextInput
@@ -245,7 +261,7 @@ const Promotion = ({ navigation }) => {
           style={styles.input}
         />
         <Text style={styles.errorText}>{errors.pickupAddress}</Text>
-        <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>
+        <Text style={styles.text3}>
           Choose Date & Time
         </Text>
 
@@ -348,7 +364,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 10,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold'
+
   },
   item: {
     width: '100%',
@@ -357,7 +374,12 @@ const styles = StyleSheet.create({
   },
   text2: {
     fontSize: 15,
-    fontWeight: 'bold'
+    fontFamily: 'Poppins-Bold',
+
+  },
+  desc:{
+   fontSize: 15, 
+   fontFamily: 'Roboto-Regular' 
   },
   about: {
     margin: 20,
@@ -367,10 +389,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     justifyContent: 'space-between'
   },
-  sees: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
+ 
   reviewCard: {
     width: 350,
     height: 150,
@@ -390,7 +409,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   text3: {
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
+    marginHorizontal: 20,
+    fontSize: 15,
   },
   icon: {
     flexDirection: 'row',
@@ -478,7 +499,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#000",
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: 'PTSerif-Bold',
     textAlign: "center",
   },
 

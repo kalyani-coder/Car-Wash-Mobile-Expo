@@ -27,6 +27,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import * as Font from 'expo-font';
+
 
 function Booknow(props) {
 
@@ -44,6 +46,20 @@ function Booknow(props) {
         totalPrice: ''
     });
     const [selectedStars, setSelectedStars] = useState(0);
+
+    useEffect(() => {
+        const loadFonts = async () => {
+            await Font.loadAsync({
+                'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+                'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+                'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+                'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
+            });
+        };
+        loadFonts();
+    }, []);
+
 
     // Function for responsive font size
     const responsiveFontSize = (size) => {
@@ -87,6 +103,7 @@ function Booknow(props) {
             setErrors({ ...errors, pickupAddress: '' });
         }
     };
+
 
     // Function to validate input fields
     const validateInput = () => {
@@ -215,11 +232,11 @@ function Booknow(props) {
                     </View>
                     <View style={styles.about}>
                         <Text style={styles.text2}>About</Text>
-                        <Text>{description}</Text>
+                        <Text style={styles.desc}>{description}</Text>
                     </View>
                     <View style={styles.reviewtext}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Reviews</Text>
-                        <View style={styles.sees}></View>
+                        <Text style={styles.text2}>Reviews</Text>
+                        
                     </View>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                         {reviews.map((review) => (
@@ -246,7 +263,7 @@ function Booknow(props) {
 
 
                     </ScrollView>
-                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Add Pickup Address
+                    <Text style={styles.text3}>Add Pickup Address
                         <Text style={{ color: 'red' }}> *</Text>
                     </Text>
                     <TextInput
@@ -257,7 +274,7 @@ function Booknow(props) {
                         style={styles.input}
                     />
                     <Text style={styles.errorText}>{errors.pickupAddress}</Text>
-                    <Text style={{ fontWeight: 'bold', marginHorizontal: 20, fontSize: 15, marginVertical: 10 }}>Choose Date & Time</Text>
+                    <Text style={styles.text3}>Choose Date & Time</Text>
                     {/* <View
                         style={{
                             height: 65,
@@ -399,7 +416,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 10,
         fontSize: 16,
-        fontWeight: 'bold',
+        fontFamily: 'Roboto-Bold'
     },
     text1: {
         textAlign: 'center',
@@ -408,8 +425,12 @@ const styles = StyleSheet.create({
     },
     text2: {
         fontSize: 15,
-        fontWeight: 'bold',
+        fontFamily: 'Poppins-Bold'
     },
+    desc:{
+        fontSize: 15, 
+        fontFamily: 'Roboto-Regular' 
+       },
     about: {
         margin: 20,
     },
@@ -441,7 +462,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     text3: {
-        fontWeight: 'bold',
+        fontFamily: 'Poppins-Bold',
+        marginHorizontal: 20,
+        fontSize: 15,
+        //  marginVertical: 10 
     },
     icon: {
         flexDirection: 'row',
@@ -512,7 +536,8 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "#000",
         fontSize: 16,
-        fontWeight: "bold",
+        fontFamily:'PTSerif-Bold',
+        
         textAlign: "center",
     },
     footer: {

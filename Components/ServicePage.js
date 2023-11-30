@@ -7,12 +7,27 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Appearance } from 'react-native';
 import { RefreshControl } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
+import * as Font from 'expo-font';
+
+
+
 
 const ServicePage = ({ navigation }) => {
     const [servicesData, setServicesData] = useState([]);
     const [activeIcon, setActiveIcon] = useState('Notification');
     const colorScheme = Appearance.getColorScheme();
     const [refreshing, setRefreshing] = useState(false);
+
+    useEffect(() => {
+        const loadFonts = async () => {
+            await Font.loadAsync({
+              
+                'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+            });
+        };
+
+        loadFonts();
+    }, []);
 
     const onRefresh = () => {
         setRefreshing(true);
@@ -73,10 +88,10 @@ const ServicePage = ({ navigation }) => {
                         >
                             {/* <Image source={require('../Components/Assets/Carwash.png')} style={styles.serviceimage} /> */}
                             <Image
-                  source={{ uri: item.serviceImage }}
-                  style={styles.serviceimage}
-                  resizeMode="contain"
-                />
+                                source={{ uri: item.serviceImage }}
+                                style={styles.serviceimage}
+                                resizeMode="contain"
+                            />
                             <View style={styles.textContainer}>
                                 <Text style={styles.servicetitle} numberOfLines={1} ellipsizeMode="tail">
                                     {item.serviceName}
@@ -127,7 +142,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 18,
         elevation: 5,
-        marginBottom:1
+        marginBottom: 1
     },
     servicecard: {
         flexDirection: 'row',
@@ -148,7 +163,8 @@ const styles = StyleSheet.create({
     servicetitle: {
         flex: 1,
         fontSize: 16,
-        fontWeight: 'bold',
+        color: 'black',
+        fontFamily: 'Roboto-Bold',
         padding: 5,
         marginLeft: 10,
     },

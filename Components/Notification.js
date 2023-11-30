@@ -22,6 +22,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import * as Font from 'expo-font';
+
 
 
 
@@ -31,6 +35,20 @@ const Notification = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [activeIcon, setActiveIcon] = useState('Notification');
 
+
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+        'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+
+        'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
+      });
+    };
+    loadFonts();
+  }, []);
 
   useEffect(() => {
     fetchNotifications();
@@ -49,10 +67,12 @@ const Notification = ({ navigation }) => {
     }, 2000);
   };
 
+  
   const fetchNotifications = async () => {
     try {
+      const userId = await AsyncStorage.getItem('userId');
       const response = await fetch(
-        "https://car-wash-backend-api.onrender.com/api/notification"
+        `https://car-wash-backend-api.onrender.com/api/notification/${userId}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -63,6 +83,8 @@ const Notification = ({ navigation }) => {
       console.error("Error fetching notifications:", error);
     }
   };
+
+
 
   // Custom navigation function
   const navigateToScreen = (screenName) => {
@@ -126,19 +148,19 @@ const Notification = ({ navigation }) => {
           />
         }
       >
-        {notifications.map((notification, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.notificationItem}
-          >
 
-            <FontAwesomeIcon icon={faBell} size={35} color="black" style={styles.icon} />
-            <View style={styles.notificationText}>
-              <Text style={styles.title}>{notification.title}</Text>
-              <Text>{notification.message}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
+        <View
+          style={styles.notificationItem}
+        >
+          <FontAwesomeIcon icon={faBell} size={35} color="black" style={styles.icon} />
+          <View style={styles.notificationText}>
+            <Text style={styles.title}>{notifications.title}</Text>
+            <Text>{notifications.message}</Text>
+          </View>
+        </View>
+
+
+
       </ScrollView>
       <View style={styles.footer}>
         <View style={styles.iconsContainer1}>
@@ -168,7 +190,7 @@ const Notification = ({ navigation }) => {
             </View> */}
         </View>
       </View>
-     
+
     </View>
   );
 };
@@ -195,7 +217,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: 'Poppins-Bold',
+
   },
   notificationList: {
     flex: 1,

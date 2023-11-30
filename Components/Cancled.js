@@ -13,6 +13,7 @@ import { Appearance } from 'react-native';
 import { RefreshControl } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from 'moment';
+import * as Font from 'expo-font';
 
 
 const Canceled = ({ navigation }) => {
@@ -20,6 +21,19 @@ const Canceled = ({ navigation }) => {
     const colorScheme = Appearance.getColorScheme();
     const currentTime = new Date();
     const [refreshing, setRefreshing] = useState(false);
+
+    useEffect(() => {
+        const loadFonts = async () => {
+            await Font.loadAsync({
+                'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+                'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+                'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+                'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
+            });
+        };
+        loadFonts();
+    }, []);
 
     const fetchData = async () => {
         try {
@@ -239,7 +253,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
-      
+        fontFamily:'PTSerif-Bold',
     },
     button: {
         backgroundColor: '#FF2E2E',
@@ -251,7 +265,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'black',
         fontSize: 12,
-        fontWeight: 'bold',
+        fontFamily:'PTSerif-Bold',
         textAlign: 'center',
     },
    

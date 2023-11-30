@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Appearance } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Font from 'expo-font';
+
 
 const Signup = ({ navigation }) => {
   const [clientName, setClientName] = useState('');
@@ -16,7 +18,20 @@ const Signup = ({ navigation }) => {
     clientPhone: '',
     clientAddress: '',
   });
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        
+        'Poppins-Bold':require('../assets/fonts/Poppins-Bold.ttf'),
+       
+        'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
 
+      });
+    };
+
+    loadFonts();
+  }, []);
+  
   const handleSubmit = async () => {
     if (validateFields()) {
       const requestBody = {
@@ -129,9 +144,9 @@ const Signup = ({ navigation }) => {
       <Text style={styles.header}>Sign Up</Text>
   
       {/* Full Name */}
-      <Text style={styles.label}>Enter Full Name<Text style={styles.required}> *</Text></Text>
+      <Text style={styles.label}> Full Name<Text style={styles.required}> *</Text></Text>
       <TextInput
-        placeholder="Full Name"
+        placeholder="Enter Full Name"
         placeholderTextColor="#000"
         onChangeText={(text) => setClientName(text)}
         value={clientName}
@@ -140,9 +155,9 @@ const Signup = ({ navigation }) => {
       <Text style={styles.errorText}>{errors.clientName}</Text>
   
       {/* Email */}
-      <Text style={styles.label}>Enter Email<Text style={styles.required}> *</Text></Text>
+      <Text style={styles.label}> Email<Text style={styles.required}> *</Text></Text>
       <TextInput
-        placeholder="Email"
+        placeholder="Enter Email"
         placeholderTextColor="#000"
         onChangeText={(text) => {
           setClientEmail(text);
@@ -155,9 +170,9 @@ const Signup = ({ navigation }) => {
       <Text style={styles.errorText}>{errors.clientEmail}</Text>
   
       {/* Phone Number */}
-      <Text style={styles.label}>Enter Phone Number<Text style={styles.required}> *</Text></Text>
+      <Text style={styles.label}>Phone Number<Text style={styles.required}> *</Text></Text>
       <TextInput
-        placeholder="Phone Number"
+        placeholder="Enter Phone Number"
         placeholderTextColor="#000"
         onChangeText={(text) => {
           setClientPhone(text);
@@ -172,9 +187,9 @@ const Signup = ({ navigation }) => {
       <Text style={styles.errorText}>{errors.clientPhone}</Text>
   
       {/* Address */}
-      <Text style={styles.label}>Enter Address<Text style={styles.required}> *</Text></Text>
+      <Text style={styles.label}>Address<Text style={styles.required}> *</Text></Text>
       <TextInput
-        placeholder="Address"
+        placeholder="Enter Address"
         placeholderTextColor="#000"
         onChangeText={(text) => setClientAddress(text)}
         value={clientAddress}
@@ -206,7 +221,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#D8D8D8',
   },
   header: {
-    fontWeight: 'bold',
+    fontFamily:'Poppins-Bold',
     fontSize: 16,
     marginBottom: 8,
     textAlign: 'center',
@@ -239,7 +254,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#000',
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily:'PTSerif-Bold',
     textAlign: 'center',
   },
   account: {

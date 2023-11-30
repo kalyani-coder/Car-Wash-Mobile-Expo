@@ -16,6 +16,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { RefreshControl } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'; // Import ImagePicker
+import * as Font from 'expo-font';
+
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -24,6 +26,21 @@ const Profile = () => {
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
   const route = useRoute();
+
+  useEffect(() => {
+    const loadFonts = async () => {
+        await Font.loadAsync({
+            'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+            'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+            'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+
+            'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
+        });
+    };
+    loadFonts();
+}, []);
+
 
   useEffect(() => {
     loadUserData();
@@ -117,61 +134,61 @@ const Profile = () => {
   return (
     <View style={[styles.container, commonStyles]}>
       <View style={styles.header}>
-      <ScrollView
-        Vertical={true}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor="#5B7586"
-            title="Refreshing..."
-            titleColor="#5B7586"
-          />
-        }
-      >
-        <View style={styles.navbar}>
-          <Text style={styles.headingText}>Profile</Text>
-          <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
-            <FontAwesomeIcon icon={faEdit} size={30} color="black" />
+        <ScrollView
+          Vertical={true}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor="#5B7586"
+              title="Refreshing..."
+              titleColor="#5B7586"
+            />
+          }
+        >
+          <View style={styles.navbar}>
+            <Text style={styles.headingText}>Profile</Text>
+            <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
+              <FontAwesomeIcon icon={faEdit} size={30} color="black" />
+            </TouchableOpacity>
+          </View>
+          {/* Display profile picture */}
+          {profilePic ? (
+            <Image source={{ uri: profilePic }} style={styles.profileImage} />
+          ) : (
+            <FontAwesome name="user-circle" size={140} style={styles.profileImage} />
+          )}
+          {/* Add button to change profile picture */}
+          <TouchableOpacity style={styles.changeProfilePicButton} onPress={pickProfilePicture}>
+            <Text style={styles.changeProfilePicText}>Change Profile Picture</Text>
           </TouchableOpacity>
-        </View>
-        {/* Display profile picture */}
-        {profilePic ? (
-          <Image source={{ uri: profilePic}} style={styles.profileImage} />
-        ) : (
-          <FontAwesome name="user-circle" size={140}  style={styles.profileImage}/>
-        )}
-        {/* Add button to change profile picture */}
-        <TouchableOpacity style={styles.changeProfilePicButton} onPress={pickProfilePicture}>
-          <Text style={styles.changeProfilePicText}>Change Profile Picture</Text>
+          <View style={styles.infoCard}>
+            <View style={styles.iconContainer}>
+              <FontAwesomeIcon icon={faUser} size={30} color="black" />
+              <Text style={styles.infoText}>{user.clientName}</Text>
+            </View>
+
+            <View style={styles.iconContainer}>
+              <FontAwesomeIcon icon={faPhone} size={30} color="black" />
+              <Text style={styles.infoText}>{user.clientPhone}</Text>
+            </View>
+
+            <View style={styles.iconContainer}>
+              <FontAwesomeIcon icon={faEnvelope} size={30} color="black" />
+              <Text style={styles.infoText}>{user.clientEmail}</Text>
+            </View>
+
+            <View style={styles.iconContainer}>
+              <FontAwesomeIcon icon={faMapMarkerAlt} size={30} color="black" />
+              <Text style={styles.infoText}>{user.clientAddress}</Text>
+            </View>
+          </View>
+        </ScrollView>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
-        <View style={styles.infoCard}>
-          <View style={styles.iconContainer}>
-            <FontAwesomeIcon icon={faUser} size={30} color="black" />
-            <Text style={styles.infoText}>{user.clientName}</Text>
-          </View>
-
-          <View style={styles.iconContainer}>
-            <FontAwesomeIcon icon={faPhone} size={30} color="black" />
-            <Text style={styles.infoText}>{user.clientPhone}</Text>
-          </View>
-
-          <View style={styles.iconContainer}>
-            <FontAwesomeIcon icon={faEnvelope} size={30} color="black" />
-            <Text style={styles.infoText}>{user.clientEmail}</Text>
-          </View>
-
-          <View style={styles.iconContainer}>
-            <FontAwesomeIcon icon={faMapMarkerAlt} size={30} color="black" />
-            <Text style={styles.infoText}>{user.clientAddress}</Text>
-          </View>
-        </View>
-      </ScrollView>
-      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <Text style={styles.logoutText}>Logout</Text>
-      </TouchableOpacity>
-    </View>
+      </View>
     </View>
   );
 };
@@ -182,18 +199,19 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     backgroundColor: '#D8D8D8',
   },
- 
+
   navbar: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-   
+
   },
   headingText: {
     fontSize: 30,
     color: 'black',
-    fontWeight: 'bold',
+    fontFamily: 'Roboto-Bold',
+
   },
   editButton: {
     padding: 10,
@@ -214,11 +232,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-   
+
   },
   infoText: {
     fontSize: 18,
     marginLeft: 10,
+    fontFamily:'Roboto-Regular'
   },
   logoutButton: {
     backgroundColor: '#5B7586',
@@ -231,7 +250,8 @@ const styles = StyleSheet.create({
   logoutText: {
     color: '#000',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'PTSerif-Bold',
+
   },
   loadingText: {
     fontSize: 20,

@@ -5,6 +5,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Appearance } from 'react-native';
 import { RefreshControl } from 'react-native';
 import { MaterialIcons } from "@expo/vector-icons";
+import * as Font from 'expo-font';
+
 
 const TopservicePage = ({ navigation }) => {
   const [myFetchedData, setMyFetchedData] = useState([]);
@@ -12,6 +14,15 @@ const TopservicePage = ({ navigation }) => {
   const colorScheme = Appearance.getColorScheme();
   const [refreshing, setRefreshing] = useState(false);
 
+  useEffect(() => {
+    const loadFonts = async () => {
+        await Font.loadAsync({
+            'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+        });
+    };
+
+    loadFonts();
+}, []);
 
   useEffect(() => {
     fetch('https://car-wash-backend-api.onrender.com/api/topservices')
@@ -75,7 +86,7 @@ const TopservicePage = ({ navigation }) => {
                 style={styles.itemImage}
                 resizeMode="contain"
               />
-              <Text style={{ marginTop: 5 }} numberOfLines={1} ellipsizeMode="tail">{item.title}</Text>
+              <Text style={{ marginTop: 5,fontFamily:'Roboto-Bold' }} numberOfLines={1} ellipsizeMode="tail">{item.title}</Text>
             </TouchableOpacity>
           </View>
         )}

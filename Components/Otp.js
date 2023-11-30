@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import { Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
+import * as Font from 'expo-font';
+
 
 const Otp = ({ route, navigation }) => {
   // Define state variables using the useState hook
@@ -19,6 +21,20 @@ const Otp = ({ route, navigation }) => {
   const [isRegeneratingOTP, setIsRegeneratingOTP] = useState(false); // Track if OTP is being regenerated
   const colorScheme = Appearance.getColorScheme();
   const { generatedOTP } = route.params;
+
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        
+        'Poppins-Bold':require('../assets/fonts/Poppins-Bold.ttf'),
+       
+        'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
+      });
+    };
+
+    loadFonts();
+  }, []);
 
 
   useEffect(() => {
@@ -146,7 +162,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#000',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily:'PTSerif-Bold',
+
     textAlign: 'center',
   },
   errorText: {

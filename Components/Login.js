@@ -9,12 +9,30 @@ import {
 import { Appearance } from 'react-native';
 import { Button as PaperButton, Text as PaperText, Provider as PaperProvider } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Font from 'expo-font';
 
 const Login = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneNumberError, setPhoneNumberError] = useState('');
   const [apiResponse, setApiResponse] = useState([]);
   const colorScheme = Appearance.getColorScheme();
+
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        'Teko-Regular': require('../assets/fonts/Teko-Regular.ttf'),
+        'Raleway-SemiBoldItalic': require('../assets/fonts/Raleway-SemiBoldItalic.ttf'),
+        'Roboto-BlackItalic': require('../assets/fonts/Roboto-BlackItalic.ttf'),
+        'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+
+        'RobotoSlab-Regular': require('../assets/fonts/RobotoSlab-Regular.ttf'),
+        'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
+      });
+    };
+
+    loadFonts();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -92,22 +110,23 @@ const Login = ({ navigation }) => {
     }
   };
 
- 
+
 
   const handleIconPressSignup = () => {
     navigation.navigate('Signup');
   };
   const commonStyles = {
-   
+
     color: colorScheme === 'dark' ? '#fff' : '#000',
   };
   return (
     <>
-      <View style={[styles.container,commonStyles]}>
-        <Text style={styles.name}>Enter Your Phone Number</Text>
+      <View style={[styles.container, commonStyles]}>
+        <Text style={styles.log}>Log In</Text>
+        <Text style={styles.name}>Phone Number</Text>
         <TextInput
           style={styles.textBox}
-          placeholder="Phone Number"
+          placeholder="Enter Your Phone Number"
           placeholderTextColor='#000'
           onChangeText={handlePhoneNumberChange}
           value={phoneNumber}
@@ -119,7 +138,7 @@ const Login = ({ navigation }) => {
         )}
 
         <PaperButton style={styles.button} onPress={handleLogin}>
-          <PaperText  style={styles.buttonText}>Continue</PaperText>
+          <PaperText style={styles.buttonText}>Continue</PaperText>
         </PaperButton>
 
         <Text style={styles.sign}>By signing up, you agree to GoRide's </Text>
@@ -140,10 +159,18 @@ const Login = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  
+
   container: {
     flex: 1,
     backgroundColor: '#D8D8D8',
+  },
+  log: {
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+    marginTop: 30,
+    color: 'black',
+    textAlign: 'center'
+
   },
 
   name: {
@@ -152,11 +179,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: 'black',
     marginHorizontal: 30,
+    fontFamily: 'Roboto-Bold'
   },
   textBox: {
     borderColor: 'grey',
     backgroundColor: 'white',
-    borderRadius:6,
+    borderRadius: 6,
     borderWidth: 2,
     padding: 10,
     marginHorizontal: 30,
@@ -173,19 +201,19 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#000',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'PTSerif-Bold',
     textAlign: 'center',
   },
   sign: {
     textAlign: 'center',
     paddingTop: 200,
-    fontWeight:'bold',
+    fontWeight: 'bold',
   },
   service: {
     color: 'blue',
     textDecorationLine: 'underline',
     textAlign: 'center',
-    fontWeight:'bold',
+    fontWeight: 'bold',
   },
   errorText: {
     color: 'red',
@@ -193,16 +221,16 @@ const styles = StyleSheet.create({
   },
   account: {
     flexDirection: 'row',
-    marginTop: 150,
+    marginTop: 100,
     marginHorizontal: 90,
   },
   text: {
     textAlign: 'center',
     fontSize: 15,
-    fontWeight:'bold',
+    fontWeight: 'bold',
   },
   login: {
-    fontWeight:'bold',
+    fontWeight: 'bold',
     color: 'blue',
     textDecorationLine: 'underline',
     fontSize: 15,

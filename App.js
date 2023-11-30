@@ -56,7 +56,11 @@ function App() {
             headerTitle: 'Edit Profile',   // Hide the page name
             headerBackTitle: 'Back', // Customize the back arrow text
           }} />
-          <Stack.Screen name="UpdateInfo" component={UpdateInfo} />
+          <Stack.Screen name="UpdateInfo" component={UpdateInfo} options={{
+            headerShown: true, // Show the header
+            headerTitle: 'Update Information',   // Hide the page name
+            headerBackTitle: 'Back', // Customize the back arrow text
+          }} />
           <Stack.Screen name="DeliveryScreen" component={DeliveryScreen} options={{ headerShown: false }} />
           <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
           <Stack.Screen name="ServicePage" component={ServicePage} options={{
