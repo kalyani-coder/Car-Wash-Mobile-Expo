@@ -115,12 +115,12 @@ const Appointment = ({ navigation}) => {
 
       {/* Footer */}
       <View style={styles.footer}>
-        <View style={styles.add}>
+        {/* <View style={styles.add}>
           <TouchableOpacity onPress={handleIconPressHome} style={{ flexDirection: 'row' }}>
             <AntDesign name="plus" size={20} color="black" />
             <Text>Add New Booking</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
         <View style={styles.iconsContainer1}>
             <View style={styles.text9}>
               <TouchableOpacity onPress={() =>navigateToScreen('Home')} >

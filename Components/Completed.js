@@ -29,10 +29,10 @@ const Completed = ({ navigation }) => {
     useEffect(() => {
         const loadFonts = async () => {
             await Font.loadAsync({
-                'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+               
                 'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-                'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
-                'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+                
+               
 
             });
         };
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
-        fontFamily: 'PTSerif-Bold',
+        fontFamily: 'Roboto-Bold',
 
 
     },
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'black',
         fontSize: 12,
-        fontFamily:'PTSerif-Bold',
+        fontFamily:'Roboto-Bold',
         textAlign: 'center',
     },
 

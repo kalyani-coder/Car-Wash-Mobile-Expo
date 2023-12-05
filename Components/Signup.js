@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontFamily:'Poppins-Bold',
-    fontSize: 16,
+    fontSize: 18,
     marginBottom: 8,
     textAlign: 'center',
   },
@@ -254,7 +254,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#000',
     fontSize: 20,
-    fontFamily:'PTSerif-Bold',
+    fontFamily: 'Roboto-Bold',
+
     textAlign: 'center',
   },
   account: {

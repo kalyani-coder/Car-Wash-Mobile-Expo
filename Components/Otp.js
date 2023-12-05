@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
     color: 'blue',
     textDecorationLine: 'underline',
     fontSize: 15,
+    fontFamily:'Poppins-Bold'
   },
 });
 

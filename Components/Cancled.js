@@ -4,7 +4,7 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-  
+
     ScrollView,
     Alert,
     Image
@@ -25,10 +25,9 @@ const Canceled = ({ navigation }) => {
     useEffect(() => {
         const loadFonts = async () => {
             await Font.loadAsync({
-                'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+
                 'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-                'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
-                'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
 
             });
         };
@@ -83,7 +82,7 @@ const Canceled = ({ navigation }) => {
                         })
                             .then((response) => {
                                 if (response.ok) {
-                                    
+
                                     const updatedData = data.filter((item) => item._id !== appointmentId);
                                     setData(updatedData);
                                 } else {
@@ -99,44 +98,44 @@ const Canceled = ({ navigation }) => {
         );
     };
 
-   
+
 
     //for refreshing the field 
 
     const onRefresh = () => {
-        
-        setRefreshing(true);
-  
-        setTimeout(() => {
-          
-          setRefreshing(false);
-        }, 2000); 
-      };
 
-   
+        setRefreshing(true);
+
+        setTimeout(() => {
+
+            setRefreshing(false);
+        }, 2000);
+    };
+
+
     const commonStyles = {
-       
+
         color: colorScheme === 'dark' ? '#fff' : '#000',
-      };
+    };
 
     return (
         <>
-            <View style={[styles.header,commonStyles]}>
+            <View style={[styles.header, commonStyles]}>
                 <ScrollView
                     Vertical={true}
                     showsVerticalScrollIndicator={false}
                     style={{ flex: 1 }}
                     refreshControl={
                         <RefreshControl
-                          refreshing={refreshing}
-                          onRefresh={onRefresh}
-                          tintColor="#5B7586" 
-                          title="Refreshing..." 
-                          titleColor="#5B7586"
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            tintColor="#5B7586"
+                            title="Refreshing..."
+                            titleColor="#5B7586"
                         />
-                      }
+                    }
                 >
-                     <View style={styles.container}>
+                    <View style={styles.container}>
                         {data.map((item) => (
                             <View key={item._id} style={styles.card}>
                                 <View style={styles.cardContent}>
@@ -175,11 +174,11 @@ const Canceled = ({ navigation }) => {
                         ))}
                     </View>
 
-                   
+
 
                 </ScrollView>
 
-              
+
             </View>
         </>
     );
@@ -213,7 +212,7 @@ const styles = StyleSheet.create({
     cardContent: {
         flexDirection: 'row',
         alignItems: 'center',
-       
+
     },
     image: {
         width: 120,
@@ -242,18 +241,18 @@ const styles = StyleSheet.create({
         fontSize: 15,
         marginTop: 5,
     },
-  
+
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-evenly', // Change to 'space-evenly' for even spacing
         marginLeft: 130
     },
-    status:{
+    status: {
         backgroundColor: '#FCAE1E',
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
-        fontFamily:'PTSerif-Bold',
+        fontFamily: 'Roboto-Bold',
     },
     button: {
         backgroundColor: '#FF2E2E',
@@ -265,9 +264,9 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'black',
         fontSize: 12,
-        fontFamily:'PTSerif-Bold',
+        fontFamily: 'Roboto-Bold',
         textAlign: 'center',
     },
-   
+
 });
 export default Canceled;

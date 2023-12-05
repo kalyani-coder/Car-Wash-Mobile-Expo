@@ -7,13 +7,26 @@ import { Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import * as Font from 'expo-font';
+
 
 const Review = () => {
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [selectedStars, setSelectedStars] = useState(0);
   const colorScheme = Appearance.getColorScheme();
+  useEffect(() => {
+    const loadFonts = async () => {
+        await Font.loadAsync({
+            'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+            'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+            'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+            'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
 
+        });
+    };
+    loadFonts();
+}, []);
   useEffect(() => {
     // Fetch the user's ID from AsyncStorage
     async function fetchUserId() {
@@ -132,7 +145,7 @@ const Review = () => {
       <Text style={styles.label}>Rating</Text>
       <View style={{ flexDirection: 'row' }}>{renderStars()}</View>
       <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-        <Text style={{ color: '#000', fontSize: 20 }}>Submit</Text>
+        <Text style={{ color: '#000', fontSize: 20 ,fontFamily:'Roboto-Bold'}}>Submit</Text>
       </TouchableOpacity>
     </View>
   );

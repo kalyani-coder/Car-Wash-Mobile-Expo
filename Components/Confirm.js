@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#000",
     fontSize: 16,
-    fontFamily:'PTSerif-Bold',
+    fontFamily: 'Roboto-Bold',
+
     textAlign: "center",
     margin: 4,
   },

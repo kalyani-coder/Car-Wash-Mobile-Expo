@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
   datePickerButtonText: {
     color: 'white',
     fontSize: 14,
-    fontFamily: 'PTSerif-Bold',
+    fontFamily:'Roboto-Bold'
 
   },
   timePickerButton: {
@@ -212,7 +212,8 @@ const styles = StyleSheet.create({
   timePickerButtonText: {
     color: 'white',
     fontSize: 14,
-    fontFamily: 'PTSerif-Bold',
+    fontFamily:'Roboto-Bold'
+
 
   },
   updateButton: {
@@ -226,7 +227,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 16,
-    fontFamily: 'PTSerif-Bold',
+    fontFamily:'Roboto-Bold'
+
 
   },
 });

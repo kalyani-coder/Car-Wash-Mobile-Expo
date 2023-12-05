@@ -372,14 +372,17 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    fontFamily:'PTSerif-Bold',
+    fontFamily: 'Roboto-Bold',
+
+
   },
   pendingStatus: {
     backgroundColor: '#FCAE1E',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    fontFamily:'PTSerif-Bold',
+    fontFamily: 'Roboto-Bold',
+
   },
   rescheduleButton: {
     backgroundColor: '#f8db03',
@@ -396,7 +399,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
     fontSize: 14,
-   fontFamily:'PTSerif-Bold',
+    fontFamily: 'Roboto-Bold',
     textAlign: 'center',
   },
 

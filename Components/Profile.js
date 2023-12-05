@@ -250,7 +250,8 @@ const styles = StyleSheet.create({
   logoutText: {
     color: '#000',
     fontSize: 18,
-    fontFamily: 'PTSerif-Bold',
+    fontFamily: 'Roboto-Bold',
+
 
   },
   loadingText: {

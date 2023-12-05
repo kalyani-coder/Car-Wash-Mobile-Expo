@@ -20,13 +20,9 @@ const Login = ({ navigation }) => {
   useEffect(() => {
     const loadFonts = async () => {
       await Font.loadAsync({
-        'Teko-Regular': require('../assets/fonts/Teko-Regular.ttf'),
-        'Raleway-SemiBoldItalic': require('../assets/fonts/Raleway-SemiBoldItalic.ttf'),
-        'Roboto-BlackItalic': require('../assets/fonts/Roboto-BlackItalic.ttf'),
+        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+       
         'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
-
-        'RobotoSlab-Regular': require('../assets/fonts/RobotoSlab-Regular.ttf'),
-        'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
 
       });
     };
@@ -174,7 +170,7 @@ const styles = StyleSheet.create({
   },
 
   name: {
-    fontSize: 20,
+    fontSize: 18,
     paddingTop: 100,
     marginTop: 10,
     color: 'black',
@@ -201,7 +197,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#000',
     fontSize: 18,
-    fontFamily: 'PTSerif-Bold',
+    fontFamily: 'Roboto-Bold',
+
     textAlign: 'center',
   },
   sign: {

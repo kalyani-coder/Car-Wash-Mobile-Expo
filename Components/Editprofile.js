@@ -147,8 +147,7 @@ const styles = StyleSheet.create({
   saveText: {
     color: '#000',
     fontSize: 18,
-    fontFamily: 'PTSerif-Bold',
-
+    fontFamily: 'Roboto-Bold',
   },
 });
 

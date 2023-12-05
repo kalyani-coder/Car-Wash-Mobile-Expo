@@ -59,16 +59,14 @@ function Home(props) {
     const loadFonts = async () => {
       await Font.loadAsync({
         'Teko-Regular': require('../assets/fonts/Teko-Regular.ttf'),
-     
+
         'Roboto-BlackItalic': require('../assets/fonts/Roboto-BlackItalic.ttf'),
         'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
-        
+
         'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-       
+        'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+
         'RobotoSlab-Light': require('../assets/fonts/RobotoSlab-Light.ttf'),
-       
-
-
       });
     };
 
@@ -162,7 +160,7 @@ function Home(props) {
   }
   function handleofferClick(homeservicesName, description, totalPrice, image) {
     // Navigate to a new page or display details
-    
+
     props.navigation.navigate('Booknow', {
       homeservicesName,
       description,
@@ -381,15 +379,15 @@ function Home(props) {
             />
           }
         >
-          <ScrollView horizontal={true} style={styles.offer} showsHorizontalScrollIndicator={false} onScroll={handleScroll} pagingEnabled={true} >
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} onScroll={handleScroll} pagingEnabled={true} >
             {homeOffers.map((offer) => (
-              
-              <View key={offer._id} style={[styles.Section, { width: screenWidth }]}>
-                
 
-                <View style={{ height: 130, width: 175, backgroundColor: "#F2F3F4", borderBottomLeftRadius: 10, borderTopLeftRadius: 10, marginTop: 10 }}>
+              <View key={offer._id} style={[styles.Section, { width: screenWidth }]}>
+
+
+                <View style={{ height: 130, width: 175, backgroundColor: "#F2F3F4", borderBottomLeftRadius: 10, borderTopLeftRadius: 10, marginTop: 10, marginLeft: 15, }}>
                   <Text style={styles.text1}>{offer.offerName}</Text>
-                  <Text style={{ color: "blue", marginHorizontal: 20 }} numberOfLines={2} ellipsizeMode="tail">{[offer.offer,' OFF']}</Text>
+                  <Text style={{marginHorizontal: 20 }} numberOfLines={2} ellipsizeMode="tail">{[offer.offer, ' OFF']}</Text>
                   <TouchableOpacity
                     style={styles.button}
                     onPress={() =>
@@ -411,11 +409,17 @@ function Home(props) {
 
                 </View>
 
-                <Image
-                  source={{ uri: offer.image }}
-                  style={styles.img}
-                  resizeMode="cover"
-                />
+                <View style={{
+                  height: 130, width: 175, backgroundColor: "#F2F3F4", marginVertical: 10, borderBottomRightRadius: 10,
+                  borderTopRightRadius: 10,
+                }}>
+
+                  <Image
+                    source={{ uri: offer.image }}
+                    style={styles.img}
+                    resizeMode="cover"
+                  />
+                </View>
 
               </View>
             ))}
@@ -576,7 +580,7 @@ function Home(props) {
                     style={styles.item}
                     resizeMode="contain"
                   />
-                  <Text style={{ marginTop: 5,fontFamily:'Roboto-Bold' }} numberOfLines={1} ellipsizeMode="tail">{topservice.title}</Text>
+                  <Text style={{ marginTop: 5, fontFamily: 'Roboto-Bold' }} numberOfLines={1} ellipsizeMode="tail">{topservice.title}</Text>
                 </TouchableOpacity>
               </View>
             ))}
@@ -676,7 +680,7 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   Section: {
-    // marginVertical: 10,
+
     marginBottom: 10,
     flexDirection: "row",
   },
@@ -684,7 +688,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginHorizontal: 20,
     marginTop: 10,
-    fontFamily:'RobotoSlab-Light'
+    fontFamily: 'Roboto-Bold',
+
   },
   button: {
     width: 100,
@@ -699,18 +704,17 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: "center",
     marginVertical: 5,
-    fontFamily: 'Roboto-BlackItalic'
+    fontFamily: 'Roboto-Bold'
   },
   img: {
     height: 130,
     width: 175,
     borderBottomRightRadius: 10,
     borderTopRightRadius: 10,
-    marginTop: 10
+
+
   },
-  offer: {
-    marginHorizontal: 15,
-  },
+
   paginationContainer: {
     alignItems: 'center',
   },
@@ -893,9 +897,8 @@ const styles = StyleSheet.create({
 
   buttonText: {
     color: 'black',
-    fontFamily: 'Roboto-BlackItalic',
+    fontFamily: 'Roboto-Bold',
     fontSize: 14,
-    
     textAlign: 'center',
   },
 
@@ -926,11 +929,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     textAlign: 'center',
-    fontFamily:'Roboto-Bold'
+    fontFamily: 'Roboto-Bold'
   },
-  
 
- 
+
+
   topservice2: {
     marginHorizontal: 20,
   },
