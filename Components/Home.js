@@ -320,6 +320,16 @@ function Home(props) {
   };
 
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const month = monthNames[date.getMonth()];
+
+    return { day, month };
+  };
+
+
   return (
     <>
       <View style={[styles.header, commonStyles]}>
@@ -387,7 +397,7 @@ function Home(props) {
 
                 <View style={{ height: 130, width: 175, backgroundColor: "#F2F3F4", borderBottomLeftRadius: 10, borderTopLeftRadius: 10, marginTop: 10, marginLeft: 15, }}>
                   <Text style={styles.text1}>{offer.offerName}</Text>
-                  <Text style={{marginHorizontal: 20 }} numberOfLines={2} ellipsizeMode="tail">{[offer.offer, ' OFF']}</Text>
+                  <Text style={{color:'#f2003c',marginHorizontal: 20 }} numberOfLines={2} ellipsizeMode="tail">{['-', offer.offer, ' OFF']}</Text>
                   <TouchableOpacity
                     style={styles.button}
                     onPress={() =>
@@ -402,9 +412,8 @@ function Home(props) {
                     <Text style={styles.Booknow}>Book Now</Text>
                   </TouchableOpacity>
 
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                    <Text>{offer.startDate}</Text>
-                    <Text>{offer.endDate}</Text>
+                  <View style={{ flexDirection: 'row', justifyContent: 'start',marginHorizontal:20 }}>
+                    <Text>{`${formatDate(offer.startDate).day} ${formatDate(offer.startDate).month} - ${formatDate(offer.endDate).day} ${formatDate(offer.endDate).month}`}</Text>
                   </View>
 
                 </View>
