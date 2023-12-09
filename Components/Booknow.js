@@ -236,7 +236,7 @@ function Booknow(props) {
                     </View>
                     <View style={styles.reviewtext}>
                         <Text style={styles.text2}>Reviews</Text>
-                        
+
                     </View>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                         {reviews.map((review) => (
@@ -275,50 +275,7 @@ function Booknow(props) {
                     />
                     <Text style={styles.errorText}>{errors.pickupAddress}</Text>
                     <Text style={styles.text3}>Choose Date & Time</Text>
-                    {/* <View
-                        style={{
-                            height: 65,
-                            width: 360,
-                            backgroundColor: "white",
-                            marginVertical: 10,
-                            marginHorizontal: 15
-                        }}
-                    >
-                        <View style={{ flexDirection: 'row', margin: 15, }}>
-                            <TouchableOpacity
-                                onPress={() => setShowPicker(true)}
-                            >
-                                <AntDesign name="calendar" size={35} color="black" />
-                            </TouchableOpacity>
-                            <View style={{ marginLeft: 15, flexDirection: 'row' }}>
-                                {date && (
-                                    <Text> {moment(date).format('DD-MM-YYYY')}</Text>
-                                )}
-                                <View style={styles.date1}>
-                                    <TouchableOpacity onPress={showDatePicker}>
-                                        <EvilIcons name="clock" size={35} color="black" />
-                                    </TouchableOpacity>
-                                    {time && (
-                                        <Text> {moment(time).format('hh:mm A')}</Text>
-                                    )}
-                                    <DateTimePickerModal
-                                        isVisible={isDatePickerVisible}
-                                        mode="time"
-                                        onConfirm={handleDateConfirm}
-                                        onCancel={hideDatePicker}
-                                    />
-                                    {showPicker && (
-                                        <DateTimePicker
-                                            value={date}
-                                            mode="date"
-                                            display="default"
-                                            onChange={handleDateChange}
-                                        />
-                                    )}
-                                </View>
-                            </View>
-                        </View>
-                    </View> */}
+                   
                     <View style={styles.datetime}>
                         <View style={styles.row}>
                             <View style={styles.textContainer}>
@@ -402,15 +359,17 @@ const styles = StyleSheet.create({
         height: '100%',
         paddingTop: 10
     },
+
     card: {
-        width: 350,
-        backgroundColor: '#fff',
-        marginHorizontal: 20,
+        height: 180,
+        marginHorizontal: 15,
         alignItems: 'center',
     },
     image: {
-        width: 350,
-        height: 150,
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover',
+        borderRadius: 6,
     },
     serviceName: {
         textAlign: 'center',
@@ -427,10 +386,10 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontFamily: 'Poppins-Bold'
     },
-    desc:{
-        fontSize: 15, 
-        fontFamily: 'Roboto-Regular' 
-       },
+    desc: {
+        fontSize: 15,
+        fontFamily: 'Roboto-Regular'
+    },
     about: {
         margin: 20,
     },
@@ -444,7 +403,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     reviewCard: {
-        width: 350,
+        // width: 350,
         height: 150,
         backgroundColor: 'white',
         marginHorizontal: 20,
@@ -478,7 +437,7 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderRadius: 5,
         padding: 10,
-        marginHorizontal: 20,
+        marginHorizontal: 15,
         backgroundColor: 'white',
     },
     errorText: {
@@ -487,7 +446,7 @@ const styles = StyleSheet.create({
     },
     datetime: {
         height: 65,
-        width: 360,
+        // width: 360,
         backgroundColor: 'white',
         marginVertical: 10,
         marginHorizontal: 15,
@@ -497,7 +456,7 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        marginHorizontal: 10,
+        marginHorizontal: 15,
         justifyContent: 'space-between',
         marginVertical: 10,
     },
@@ -517,15 +476,12 @@ const styles = StyleSheet.create({
         color: '#333',
     },
     maincontainer: {
-        // marginHorizontal: 15,
-        // marginTop:10
         position: 'relative'
     },
     button: {
         position: 'relative',
         backgroundColor: "#5B7586",
-        height: 45,
-        width: 360,
+        height: 45, 
         paddingTop: 10,
         marginHorizontal: 15,
         marginBottom: 10,
@@ -537,7 +493,6 @@ const styles = StyleSheet.create({
         color: "#000",
         fontSize: 16,
         fontFamily: 'Roboto-Bold',
-
         textAlign: "center",
     },
     footer: {

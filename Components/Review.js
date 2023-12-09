@@ -163,7 +163,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   input1: {
-    width: 360,
     textAlignVertical: 'top',
     borderWidth: 1,
     borderColor: 'gray',

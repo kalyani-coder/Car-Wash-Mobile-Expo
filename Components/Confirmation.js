@@ -473,7 +473,7 @@ const styles = StyleSheet.create({
     position: "relative",
     backgroundColor: "#5B7586",
     height: 45,
-    width: 360,
+   
     paddingTop: 10,
     marginHorizontal: 15,
     marginBottom: 10,

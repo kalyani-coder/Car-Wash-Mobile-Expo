@@ -367,7 +367,8 @@ const styles = StyleSheet.create({
     item: {
         width: '100%',
         height: '100%',
-        resizeMode: 'contain'
+        resizeMode: 'cover',
+        borderRadius: 6,
     },
     text1: {
         textAlign: 'center',
@@ -378,24 +379,24 @@ const styles = StyleSheet.create({
     text2: {
         fontSize: 15,
         fontFamily: 'Poppins-Bold',
-    
-      },
-      desc:{
-       fontSize: 15, 
-       fontFamily: 'Roboto-Regular' 
-      },
-      about: {
+
+    },
+    desc: {
+        fontSize: 15,
+        fontFamily: 'Roboto-Regular'
+    },
+    about: {
         margin: 20,
-      },
-      reviewtext: {
+    },
+    reviewtext: {
         flexDirection: 'row',
         marginHorizontal: 20,
         justifyContent: 'space-between'
-      },
+    },
 
 
     reviewCard: {
-        width: 350,
+        // width: 350,
         height: 150,
         backgroundColor: 'white',
         marginHorizontal: 20,
@@ -428,33 +429,18 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderRadius: 5,
         padding: 15,
-        marginHorizontal: 20,
+        marginHorizontal: 15,
         backgroundColor: 'white',
     },
     errorText: {
         color: 'red',
         marginHorizontal: 20
     },
-    datepicker: {
-        marginHorizontal: 20,
-        borderWidth: 1,
-        padding: 7,
-        width: 150
-    },
-    date: {
-        height: 60,
-        width: 50,
-        backgroundColor: '#F2F3F4',
-        marginHorizontal: 10
-    },
-    datetext: {
-        fontSize: 14,
-        textAlign: 'center',
-        margin: 8,
-    },
+   
+   
     datetime: {
         height: 65,
-        width: 360,
+     
         backgroundColor: 'white',
         marginVertical: 10,
         marginHorizontal: 15,
@@ -464,7 +450,7 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        marginHorizontal: 10,
+        marginHorizontal: 15,
         justifyContent: 'space-between',
         marginVertical: 10,
     },
@@ -492,7 +478,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         backgroundColor: "#5B7586",
         height: 45,
-        width: 360,
+      
         paddingTop: 10,
         marginHorizontal: 15,
         marginBottom: 10,

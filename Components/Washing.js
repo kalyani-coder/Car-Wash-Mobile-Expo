@@ -423,11 +423,13 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
     card: {
-        width: 350,
+        
         height: 150,
         backgroundColor: '#fff',
-        marginHorizontal: 20,
+        marginHorizontal: 15,
         alignItems: 'center',
+        borderRadius:6,
+
     },
     image: {
         marginTop: 10,
@@ -459,7 +461,7 @@ const styles = StyleSheet.create({
     },
 
     reviewCard: {
-        width: 350,
+        // width: 350,
         height: 150,
         backgroundColor: 'white',
         marginHorizontal: 20,
@@ -490,7 +492,7 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderRadius: 5,
         padding: 10,
-        marginHorizontal: 20,
+        marginHorizontal: 15,
         backgroundColor: 'white',
     },
     errorText: {
@@ -500,7 +502,7 @@ const styles = StyleSheet.create({
 
     datetime: {
         height: 65,
-        width: 360,
+
         backgroundColor: 'white',
         marginVertical: 10,
         marginHorizontal: 15,
@@ -510,7 +512,7 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        marginHorizontal: 10,
+        marginHorizontal: 15,
         justifyContent: 'space-between',
         marginVertical: 10,
     },
@@ -536,7 +538,6 @@ const styles = StyleSheet.create({
         position: 'relative',
         backgroundColor: "#5B7586",
         height: 45,
-        width: 360,
         paddingTop: 10,
         marginHorizontal: 15,
         marginBottom: 10,

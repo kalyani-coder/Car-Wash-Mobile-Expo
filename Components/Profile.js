@@ -29,17 +29,17 @@ const Profile = () => {
 
   useEffect(() => {
     const loadFonts = async () => {
-        await Font.loadAsync({
-            'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
-            'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-            'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+      await Font.loadAsync({
+        'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+        'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
 
-            'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+        'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
 
-        });
+      });
     };
     loadFonts();
-}, []);
+  }, []);
 
 
   useEffect(() => {
@@ -166,37 +166,37 @@ const Profile = () => {
           <View style={styles.infoCard}>
             <View style={styles.iconContainer}>
               <FontAwesomeIcon icon={faUser} size={30} color="black" />
-              <Text style={styles.infoText}>{user.clientName}</Text>
+              <Text style={styles.infoText} numberOfLines={1} ellipsizeMode="tail">{user.clientName}</Text>
             </View>
 
             <View style={styles.iconContainer}>
               <FontAwesomeIcon icon={faPhone} size={30} color="black" />
-              <Text style={styles.infoText}>{user.clientPhone}</Text>
+              <Text style={styles.infoText} numberOfLines={1} ellipsizeMode="tail">{user.clientPhone}</Text>
             </View>
 
             <View style={styles.iconContainer}>
               <FontAwesomeIcon icon={faEnvelope} size={30} color="black" />
-              <Text style={styles.infoText}>{user.clientEmail}</Text>
+              <Text style={styles.infoText} numberOfLines={1} ellipsizeMode="tail">{user.clientEmail}</Text>
             </View>
 
             <View style={styles.iconContainer}>
               <FontAwesomeIcon icon={faMapMarkerAlt} size={30} color="black" />
-              <Text style={styles.infoText}>{user.clientAddress}</Text>
+              <Text style={styles.infoText} numberOfLines={1} ellipsizeMode="tail">{user.clientAddress}</Text>
             </View>
           </View>
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+            <Text style={styles.logoutText}>Logout</Text>
+          </TouchableOpacity>
         </ScrollView>
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
       </View>
-    </View>
+    </View >
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 40,
+    paddingTop: 20,
     backgroundColor: '#D8D8D8',
   },
 
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
   infoText: {
     fontSize: 18,
     marginLeft: 10,
-    fontFamily:'Roboto-Regular'
+    fontFamily: 'Roboto-Regular'
   },
   logoutButton: {
     backgroundColor: '#5B7586',

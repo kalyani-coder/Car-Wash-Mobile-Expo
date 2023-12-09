@@ -449,7 +449,7 @@ const styles = StyleSheet.create({
     padding: 5,
     marginBottom: 5,
     backgroundColor: 'white',
-    width: 360,
+   
     height: 60,
   },
   errorText: {
@@ -474,8 +474,7 @@ const styles = StyleSheet.create({
   button: {
     position: 'relative',
     backgroundColor: "#5B7586",
-    height: 45,
-    width: 360,
+    height: 45, 
     paddingTop: 10,
     marginHorizontal: 15,
     marginBottom: 10,
@@ -485,7 +484,6 @@ const styles = StyleSheet.create({
     color: "#000",
     fontSize: 16,
     fontFamily: 'Roboto-Bold',
-
     textAlign: "center",
   },
   footer: {

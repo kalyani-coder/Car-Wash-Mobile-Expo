@@ -397,7 +397,7 @@ function Home(props) {
 
                 <View style={{ height: 130, width: 175, backgroundColor: "#F2F3F4", borderBottomLeftRadius: 10, borderTopLeftRadius: 10, marginTop: 10, marginLeft: 15, }}>
                   <Text style={styles.text1}>{offer.offerName}</Text>
-                  <Text style={{color:'#f2003c',marginHorizontal: 20 }} numberOfLines={2} ellipsizeMode="tail">{['-', offer.offer, ' OFF']}</Text>
+                  <Text style={{ color: '#f2003c', marginHorizontal: 20 }} numberOfLines={2} ellipsizeMode="tail">{['-', offer.offer, ' OFF']}</Text>
                   <TouchableOpacity
                     style={styles.button}
                     onPress={() =>
@@ -412,7 +412,7 @@ function Home(props) {
                     <Text style={styles.Booknow}>Book Now</Text>
                   </TouchableOpacity>
 
-                  <View style={{ flexDirection: 'row', justifyContent: 'start',marginHorizontal:20 }}>
+                  <View style={{ flexDirection: 'row', justifyContent: 'start', marginHorizontal: 20 }}>
                     <Text>{`${formatDate(offer.startDate).day} ${formatDate(offer.startDate).month} - ${formatDate(offer.endDate).day} ${formatDate(offer.endDate).month}`}</Text>
                   </View>
 
@@ -472,8 +472,17 @@ function Home(props) {
               ))}
             </View> */}
             <View style={{ flex: 1, flexDirection: 'row', marginHorizontal: 20 }}>
-              {servicesData.map((service) => (
-                <View key={service._id} style={styles.servicecard}>
+              {servicesData.map((service, index) => (
+                <View key={service._id} style={[
+                  styles.servicecard,
+                  {
+                    borderBottomLeftRadius: index === 0 ? 10 : 0,
+                    borderTopLeftRadius: index === 0 ? 10 : 0,
+                    borderBottomRightRadius: index === servicesData.length - 1 ? 10 : 0,
+                    borderTopRightRadius: index === servicesData.length - 1 ? 10 : 0,
+                  
+                  },
+                ]}>
                   <TouchableOpacity
                     style={styles.bookServiceButton}
                     onPress={() => handleIconPressService(service.serviceName, service.serviceDescription, service.servicePrice, service.serviceImage)}
@@ -811,6 +820,8 @@ const styles = StyleSheet.create({
     elevation: 5,
     marginBottom: 20,
     padding: 10,
+    borderBottomLeftRadius: 10,
+    borderTopLeftRadius: 10,
   },
   serviceimage: {
     height: 50,

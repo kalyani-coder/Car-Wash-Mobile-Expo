@@ -48,17 +48,17 @@ const Promotion = ({ navigation }) => {
 
   useEffect(() => {
     const loadFonts = async () => {
-        await Font.loadAsync({
-            'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
-            'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-            'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
-            
-            'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+      await Font.loadAsync({
+        'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+        'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
 
-        });
+        'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+
+      });
     };
     loadFonts();
-}, []);
+  }, []);
   // Function to show the date picker
   const showDatePicker = () => {
     setIsDatePickerVisible(true);
@@ -126,7 +126,7 @@ const Promotion = ({ navigation }) => {
       const { service, promotionPrice, image } = route.params;
       const servicesName = service;
       const price1 = promotionPrice;
-      const image1=image;
+      const image1 = image;
       navigation.navigate('PromotionConfirmation', {
         pickupAddress,
         date,
@@ -183,7 +183,7 @@ const Promotion = ({ navigation }) => {
       });
   }, []);
   const route = useRoute();
-  const {service, description, promotionPrice, image}=route.params;
+  const { service, description, promotionPrice, image } = route.params;
   const currentDate = moment();
   const formattedDate = currentDate.format('D MMM');
 
@@ -213,7 +213,6 @@ const Promotion = ({ navigation }) => {
           <Image
             source={{ uri: image }}
             style={styles.image}
-            resizeMode='cover'
           />
           <Text style={styles.serviceName}>{service}</Text>
         </View>
@@ -223,7 +222,7 @@ const Promotion = ({ navigation }) => {
         </View>
         <View style={styles.reviewtext}>
           <Text style={styles.text2}>Reviews</Text>
-      
+
         </View>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {reviews.map((review) => (
@@ -347,19 +346,18 @@ const styles = StyleSheet.create({
     height: '100%',
     paddingTop: 10
   },
-
   card: {
-    height:180,
-    marginHorizontal: 20,
+    height: 180,
+    marginHorizontal: 15,
     alignItems: 'center',
-    
   },
   image: {
     width: '100%',
     height: '100%',
-
+    resizeMode:'cover',
+    borderRadius:6,
   },
-  
+
   serviceName: {
     textAlign: 'center',
     padding: 10,
@@ -367,19 +365,15 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Bold'
 
   },
-  item: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover'
-  },
+ 
   text2: {
     fontSize: 15,
     fontFamily: 'Poppins-Bold',
 
   },
-  desc:{
-   fontSize: 15, 
-   fontFamily: 'Roboto-Regular' 
+  desc: {
+    fontSize: 15,
+    fontFamily: 'Roboto-Regular'
   },
   about: {
     margin: 20,
@@ -389,9 +383,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     justifyContent: 'space-between'
   },
- 
+
   reviewCard: {
-    width: 350,
+    // width: 350,
     height: 150,
     backgroundColor: 'white',
     marginHorizontal: 20,
@@ -424,7 +418,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderRadius: 5,
     padding: 10,
-    marginHorizontal: 20,
+    marginHorizontal: 15,
     backgroundColor: 'white',
   },
   errorText: {
@@ -450,7 +444,7 @@ const styles = StyleSheet.create({
   },
   datetime: {
     height: 65,
-    width: 360,
+    // width: 360,
     backgroundColor: 'white',
     marginVertical: 10,
     marginHorizontal: 15,
@@ -460,7 +454,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    marginHorizontal: 10,
+    marginHorizontal: 15,
     justifyContent: 'space-between',
     marginVertical: 10,
   },
@@ -490,7 +484,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     backgroundColor: "#5B7586",
     height: 45,
-    width: 360,
+    // width: 360,
     paddingTop: 10,
     marginHorizontal: 15,
     marginBottom: 10,

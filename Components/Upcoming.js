@@ -33,16 +33,16 @@ const Upcoming = ({ navigation }) => {
 
   useEffect(() => {
     const loadFonts = async () => {
-        await Font.loadAsync({
-            'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
-            'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-            'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
-            'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
+      await Font.loadAsync({
+        'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+        'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+        'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
 
-        });
+      });
     };
     loadFonts();
-}, []);
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -110,7 +110,108 @@ const Upcoming = ({ navigation }) => {
     );
   }
 
-  const handleCancelAppointment = (appointmentId) => {
+  // const handleCancelAppointment = (appointmentId) => {
+  //   Alert.alert(
+  //     'Confirm Cancellation',
+  //     'Are you sure you want to cancel this appointment?',
+  //     [
+  //       {
+  //         text: 'Cancel',
+  //         style: 'cancel',
+  //       },
+  //       {
+  //         text: 'Confirm',
+  //         onPress: () => {
+  //           // Make a DELETE request to the API to cancel the appointment
+  //           fetch(
+  //             `https://car-wash-backend-api.onrender.com/api/bookings/${appointmentId}`,
+  //             {
+  //               method: 'DELETE',
+  //             }
+  //           )
+  //             .then((response) => {
+  //               if (response.ok) {
+  //                 // Appointment was successfully canceled
+  //                 // You may want to update your local state to remove the canceled appointment
+  //                 const updatedData = data.filter(
+  //                   (item) => item._id !== appointmentId
+  //                 );
+  //                 setData(updatedData);
+  //               } else {
+  //                 console.error('Failed to cancel appointment');
+  //               }
+  //             })
+  //             .catch((error) => {
+  //               console.error('Error canceling appointment:', error);
+  //             });
+  //         },
+  //       },
+  //     ]
+  //   );
+  // };
+
+  // const handleCancelAppointment = async (appointmentId) => {
+  //   Alert.alert(
+  //     'Confirm Cancellation',
+  //     'Are you sure you want to cancel this appointment?',
+  //     [
+  //       {
+  //         text: 'Cancel',
+  //         style: 'cancel',
+  //       },
+  //       {
+  //         text: 'Confirm',
+  //         onPress: async () => {
+  //           try {
+  //             // Update the status to 'Declined' before canceling the appointment
+  //             const updateStatusResponse = await fetch(
+  //               `https://car-wash-backend-api.onrender.com/api/bookings/${appointmentId}`,
+  //               {
+  //                 method: 'PATCH',
+  //                 headers: {
+  //                   'Content-Type': 'application/json',
+  //                 },
+  //                 body: JSON.stringify({
+  //                   status: 'Declined',
+  //                 }),
+  //               }
+  //             );
+  
+  //             if (updateStatusResponse.ok) {
+  //               
+  //             } else {
+  //               console.error('Failed to update status to Declined');
+  //               return;
+  //             }
+  
+  //             // Make a DELETE request to the API to cancel the appointment
+  //             const cancelResponse = await fetch(
+  //               `https://car-wash-backend-api.onrender.com/api/bookings/${appointmentId}`,
+  //               {
+  //                 method: 'DELETE',
+  //               }
+  //             );
+  
+  //             if (cancelResponse.ok) {
+  //             
+  
+  //               // Update the local state
+  //               const updatedData = data.filter(
+  //                 (item) => item._id !== appointmentId
+  //               );
+  //               setData(updatedData);
+  //             } else {
+  //               console.error('Failed to cancel appointment');
+  //             }
+  //           } catch (error) {
+  //             console.error('Error canceling appointment:', error);
+  //           }
+  //         },
+  //       },
+  //     ]
+  //   );
+  // };
+  const handleCancelAppointment = async (appointmentId) => {
     Alert.alert(
       'Confirm Cancellation',
       'Are you sure you want to cancel this appointment?',
@@ -121,35 +222,53 @@ const Upcoming = ({ navigation }) => {
         },
         {
           text: 'Confirm',
-          onPress: () => {
-            // Make a DELETE request to the API to cancel the appointment
-            fetch(
-              `https://car-wash-backend-api.onrender.com/api/bookings/${appointmentId}`,
-              {
-                method: 'DELETE',
-              }
-            )
-              .then((response) => {
-                if (response.ok) {
-                  // Appointment was successfully canceled
-                  // You may want to update your local state to remove the canceled appointment
-                  const updatedData = data.filter(
-                    (item) => item._id !== appointmentId
-                  );
-                  setData(updatedData);
-                } else {
-                  console.error('Failed to cancel appointment');
+          onPress: async () => {
+            try {
+              // Update the status to 'Declined' using the PATCH method
+              const updateStatusResponse = await fetch(
+                `https://car-wash-backend-api.onrender.com/api/bookings/${appointmentId}`,
+                {
+                  method: 'PATCH',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    status: 'Declined',
+                  }),
                 }
-              })
-              .catch((error) => {
-                console.error('Error canceling appointment:', error);
-              });
+              );
+  
+              if (updateStatusResponse.ok) {
+                
+              } else {
+                console.error('Failed to update status to Declined');
+                return;
+              }
+            const userId = await AsyncStorage.getItem('userId');
+
+  
+              // Fetch the updated list of bookings
+              const updatedResponse = await fetch(`https://car-wash-backend-api.onrender.com/api/bookings/clientId/${userId}`);
+              
+              if (updatedResponse.ok) {
+                const updatedData = await updatedResponse.json();
+  
+                
+                setData(updatedData);
+                
+              } else {
+                console.error('Failed to fetch updated data');
+              }
+            } catch (error) {
+              console.error('Error canceling appointment:', error);
+            }
           },
         },
       ]
     );
   };
-
+  
+  
 
   const handleTrack = (item) => {
     navigation.navigate('DeliveryScreen', {

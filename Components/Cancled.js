@@ -167,7 +167,7 @@ const Canceled = ({ navigation }) => {
                                         style={styles.button}
                                         onPress={() => handleCancelAppointment(item._id)} // Pass the appointment ID to the handler
                                     >
-                                        <Text style={styles.buttonText}>Cancel</Text>
+                                        <Text style={styles.buttonText}>Delete</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -263,7 +263,6 @@ const styles = StyleSheet.create({
 
     buttonText: {
         color: 'black',
-        fontSize: 12,
         fontFamily: 'Roboto-Bold',
         textAlign: 'center',
     },

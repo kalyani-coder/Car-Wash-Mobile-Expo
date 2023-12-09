@@ -35,6 +35,20 @@ const Otp = ({ route, navigation }) => {
 
     loadFonts();
   }, []);
+  
+  useEffect(() => {
+    // Check if a user ID is stored in AsyncStorage
+    AsyncStorage.getItem('userId')
+      .then((userId) => {
+        if (userId) {
+          // If the user is already registered, navigate to the Home page
+          navigation.navigate('Home');
+        }
+      })
+      .catch((error) => {
+        console.error('Error checking AsyncStorage:', error);
+      });
+  }, [navigation]);
 
 
   useEffect(() => {
@@ -106,7 +120,7 @@ const Otp = ({ route, navigation }) => {
           setIsRegeneratingOTP(true); 
           generateOTP(); 
         }}>
-          <Text style={styles.service}>Resend OTP?</Text>
+          <Text style={styles.service}>Resend OTP</Text>
         </TouchableOpacity>
 
         <Text style={{ textAlign: 'center', paddingTop: 30, marginHorizontal: 20, fontWeight: 'bold', }}>
