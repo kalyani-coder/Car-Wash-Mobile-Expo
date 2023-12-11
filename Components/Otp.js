@@ -36,19 +36,6 @@ const Otp = ({ route, navigation }) => {
     loadFonts();
   }, []);
   
-  useEffect(() => {
-    // Check if a user ID is stored in AsyncStorage
-    AsyncStorage.getItem('userId')
-      .then((userId) => {
-        if (userId) {
-          // If the user is already registered, navigate to the Home page
-          navigation.navigate('Home');
-        }
-      })
-      .catch((error) => {
-        console.error('Error checking AsyncStorage:', error);
-      });
-  }, [navigation]);
 
 
   useEffect(() => {
