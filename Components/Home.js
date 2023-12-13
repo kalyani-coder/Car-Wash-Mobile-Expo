@@ -529,7 +529,7 @@ function Home(props) {
                     />
 
                     <View style={styles.upcomingdetails}>
-                      <Text style={styles.upcomingserviceName}>{item.servicesName}</Text>
+                      <Text style={styles.upcomingserviceName} numberOfLines={1} ellipsizeMode="tail">{item.servicesName}</Text>
                       <Text style={styles.upcomingdate}>
                         {moment(item.date, 'DD-MM-YYYY').format('DD-MM-YYYY')}
                       </Text>

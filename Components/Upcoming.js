@@ -317,7 +317,7 @@ const Upcoming = ({ navigation }) => {
                     resizeMode='contain'
                   />
                   <View style={styles.promotiondetails}>
-                    <Text style={styles.promotionserviceName}>{item.servicesName}</Text>
+                    <Text style={styles.promotionserviceName} numberOfLines={1} ellipsizeMode="tail">{item.servicesName}</Text>
                     <Text style={styles.promotiondate}>
                       {moment(item.date, 'DD-MM-YYYY').format('DD-MM-YYYY')}
                     </Text>

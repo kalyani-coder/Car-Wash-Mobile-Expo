@@ -148,11 +148,11 @@ const Canceled = ({ navigation }) => {
                                         resizeMode='contain'
                                     />
                                     <View style={styles.details}>
-                                        <Text style={styles.serviceName}>{item.servicesName}</Text>
+                                        <Text style={styles.serviceName} numberOfLines={1} ellipsizeMode="tail">{item.servicesName}</Text>
                                         <Text style={styles.date}>
                                             {moment(item.date, 'DD-MM-YYYY').format('DD-MM-YYYY')}
                                         </Text>
-                                        <Text style={styles.clock}>Time: {item.time}</Text>
+                                        <Text style={styles.clock}>{item.time}</Text>
                                         <Text style={styles.price}>Rs. {item.totalPrice}</Text>
                                     </View>
 
