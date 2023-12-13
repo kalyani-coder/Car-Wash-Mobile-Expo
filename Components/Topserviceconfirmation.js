@@ -288,7 +288,7 @@ const TopserviceConfirmation = ({ route, navigation }) => {
             </View>
             <Text style={{ fontFamily:'Poppins-Bold' }}>Enter Vehicle Number<Text style={{ color: 'red' }}> *</Text></Text>
             <TextInput
-              placeholder="Vehicle Number"
+              placeholder="Ex:MH01AE8017"
               placeholderTextColor="#000"
               onChangeText={(text) => setClientVehicleNo(text.toUpperCase())}
               value={clientvehicleno}

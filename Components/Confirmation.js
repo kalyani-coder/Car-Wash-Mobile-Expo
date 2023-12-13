@@ -294,7 +294,7 @@ const Confirmation = ({ route, navigation }) => {
           Enter Vehicle Number<Text style={{ color: "red" }}> *</Text>
         </Text>
         <TextInput
-          placeholder="Vehicle Number"
+          placeholder="Ex:MH01AE8017"
           placeholderTextColor="#000"
           onChangeText={(text) => setClientVehicleNo(text)}
           value={clientvehicleno.toUpperCase()}
