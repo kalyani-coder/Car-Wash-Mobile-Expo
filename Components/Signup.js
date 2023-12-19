@@ -44,7 +44,7 @@ const Signup = ({ navigation }) => {
       const isPhoneRegistered = await checkPhoneUniqueness(clientPhone);
 
       if (isPhoneRegistered) {
-        setErrors({ ...errors, clientPhone: '*Phone number is already registered' });
+        setErrors({ ...errors, clientPhone: '*Number is already registered, Please Login' });
         return;
       }
 

@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Alert
 } from 'react-native';
 import { Appearance } from 'react-native';
 import { Button as PaperButton, Text as PaperText, Provider as PaperProvider } from 'react-native-paper';
@@ -12,8 +13,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Font from 'expo-font';
 
 const Login = ({ navigation }) => {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [phoneNumberError, setPhoneNumberError] = useState('');
+  const [clientPhone, setclientPhone] = useState('');
+  const [clientPhoneError, setclientPhoneError] = useState('');
   const [apiResponse, setApiResponse] = useState([]);
   const colorScheme = Appearance.getColorScheme();
 
@@ -21,7 +22,7 @@ const Login = ({ navigation }) => {
     const loadFonts = async () => {
       await Font.loadAsync({
         'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-       
+
         'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
 
       });
@@ -30,13 +31,13 @@ const Login = ({ navigation }) => {
     loadFonts();
   }, []);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      fetchAPIResponse();
-    });
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     fetchAPIResponse();
+  //   });
 
-    return unsubscribe;
-  }, [navigation]);
+  //   return unsubscribe;
+  // }, [navigation]);
 
   useEffect(() => {
     // Check if a user ID is stored in AsyncStorage
@@ -52,62 +53,162 @@ const Login = ({ navigation }) => {
       });
   }, [navigation]);
 
-  const fetchAPIResponse = async () => {
-    try {
-      const response = await fetch(
-        'https://car-wash-backend-api.onrender.com/api/clients'
-      );
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      setApiResponse(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+  // const fetchAPIResponse = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       'https://car-wash-backend-api.onrender.com/api/clients'
+  //     );
+  //     if (!response.ok) {
+  //       throw new Error('Network response was not ok');
+  //     }
+  //     const data = await response.json();
+  //     setApiResponse(data);
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   }
+  // };
 
-  const handlePhoneNumberChange = (text) => {
+  const handleclientPhoneChange = (text) => {
     const numericValue = text.replace(/[^0-9]/g, '');
 
     if (numericValue.length <= 10) {
-      setPhoneNumber(numericValue);
-      setPhoneNumberError('');
+      setclientPhone(numericValue);
+      setclientPhoneError('');
     }
   };
+
+  // const handleLogin = async () => {
+  //   setclientPhoneError('');
+
+
+  //   if (clientPhone.length === 10) {
+  //     const user = apiResponse.find(
+  //       (element) => element.clientPhone === parseInt(clientPhone)
+  //     );
+
+  //     if (user) {
+  //       const generatedOTP = Math.floor(1000 + Math.random() * 9000);
+
+  //       try {
+  //         await AsyncStorage.setItem('userId', user._id);
+  //       } catch (error) {
+  //         console.error('Error storing user data:', error);
+  //       }
+
+  //       navigation.navigate('Otp', {
+  //         clientPhone,
+  //         generatedOTP,
+  //       });
+  //     } else {
+  //       setclientPhoneError('* Phone number not found');
+  //     }
+  //   } else {
+  //     setclientPhoneError('* Phone number should be 10 digits');
+  //   }
+  // };
+
+  // const fetchAPIResponse = async (clientPhone) => {
+  //   try {
+  //     const response = await fetch(
+  //       'https://car-wash-backend-api.onrender.com/api/login',
+  //       {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({ clientPhone: parseInt(clientPhone) }), // Adjust the payload format
+  //       }
+  //     );
+
+  //     if (!response.ok) {
+  //       throw new Error('Network response was not ok');
+  //     }
+
+  //     const data = await response.json();
+
+  //     return data;
+  //   } catch (error) {
+  //     console.error('Error fetching login data:', error);
+  //     throw error;
+  //   }
+  // };
+
+  // const handleLogin = async () => {
+  //   setclientPhoneError('');
+
+  //   if (clientPhone.length === 10) {
+  //     try {
+  //       const loginData = await fetchAPIResponse(clientPhone);
+
+  //       if (loginData.exists) {
+  //         const generatedOTP = Math.floor(1000 + Math.random() * 9000);
+
+  //         try {
+  //           await AsyncStorage.setItem('userId', loginData.user._id);
+  //         } catch (error) {
+  //           console.error('Error storing user data:', error);
+  //         }
+
+  //         navigation.navigate('Otp', {
+  //           clientPhone,
+  //           generatedOTP,
+  //         });
+  //       } else {
+  //         setclientPhoneError('* Phone number not found. Please sign up.');
+  //       }
+  //     } catch (error) {
+  //       // Handle fetchLoginAPI error
+  //       setclientPhoneError('* An error occurred. Please try again.');
+  //     }
+  //   } else {
+  //     setclientPhoneError('* Phone number should be 10 digits');
+  //   }
+  // };
+
+
 
   const handleLogin = async () => {
-    setPhoneNumberError('');
+    try {
+      const response = await fetch('https://car-wash-backend-api.onrender.com/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ clientPhone }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log("API response", data);
+  
+        if (data.verified) {
+          // User exists, navigate to OTP page
+          const generatedOTP = Math.floor(1000 + Math.random() * 9000);
+  
+          try {
+            await AsyncStorage.setItem('userId', data.user._id);
+          } catch (error) {
+            console.error('Error storing user data:', error);
+          }
+  
+          navigation.navigate('Otp', {
+            clientPhone,
+            generatedOTP,
+          });
+        } else {
+            setclientPhoneError('* An error occurred. Please try again.');
 
-
-    if (phoneNumber.length === 10) {
-      const user = apiResponse.find(
-        (element) => element.clientPhone === parseInt(phoneNumber)
-      );
-
-      if (user) {
-        const generatedOTP = Math.floor(1000 + Math.random() * 9000);
-
-        try {
-          await AsyncStorage.setItem('userId', user._id);
-        } catch (error) {
-          console.error('Error storing user data:', error);
         }
-
-        navigation.navigate('Otp', {
-          phoneNumber,
-          generatedOTP,
-        });
       } else {
-        setPhoneNumberError('* Phone number not found');
+            setclientPhoneError('* Phone number not found, Please Sign up.');
+
       }
-    } else {
-      setPhoneNumberError('* Phone number should be 10 digits');
+    } catch (error) {
+      console.error('Error during login:', error);
+      setclientPhoneError('Error', 'An unexpected error occurred. Please try again later.');
     }
   };
-
-
-
+  
   const handleIconPressSignup = () => {
     navigation.navigate('Signup');
   };
@@ -124,13 +225,13 @@ const Login = ({ navigation }) => {
           style={styles.textBox}
           placeholder="Enter Your Phone Number"
           placeholderTextColor='#000'
-          onChangeText={handlePhoneNumberChange}
-          value={phoneNumber}
+          onChangeText={handleclientPhoneChange}
+          value={clientPhone}
           keyboardType={'numeric'}
           maxLength={10}
         />
-        {phoneNumberError !== '' && (
-          <Text style={styles.errorText}>{phoneNumberError}</Text>
+        {clientPhoneError !== '' && (
+          <Text style={styles.errorText}>{clientPhoneError}</Text>
         )}
 
         <PaperButton style={styles.button} onPress={handleLogin}>
