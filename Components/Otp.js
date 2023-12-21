@@ -25,9 +25,9 @@ const Otp = ({ route, navigation }) => {
   useEffect(() => {
     const loadFonts = async () => {
       await Font.loadAsync({
-        
-        'Poppins-Bold':require('../assets/fonts/Poppins-Bold.ttf'),
-       
+
+        'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+
         'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
 
       });
@@ -35,12 +35,12 @@ const Otp = ({ route, navigation }) => {
 
     loadFonts();
   }, []);
-  
+
 
 
   useEffect(() => {
     generateOTP();
-    checkIfLoggedIn(); // Check if the user is already logged in
+    // checkIfLoggedIn(); // Check if the user is already logged in
   }, []);
 
   // Function to generate a random 4-digit OTP
@@ -53,27 +53,61 @@ const Otp = ({ route, navigation }) => {
   };
 
   // Function to check if the user is already logged in
-  const checkIfLoggedIn = async () => {
-    const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
-    if (isLoggedIn === 'true') {
-      // User is already logged in, navigate to the home screen
-      navigation.navigate('Home');
-    }
-  };
+  // const checkIfLoggedIn = async () => {
+  //   const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+  //   if (isLoggedIn === 'true') {
+  //     // User is already logged in, navigate to the home screen
+  //     navigation.navigate('Home');
+  //   }
+  // };
 
   // Function to handle OTP verification
+  // const handleVerifyOTP = async () => {
+  //   const { generatedOTP } = route.params;
+
+  //   if (enteredOTP === generatedOTP.toString() || enteredOTP === generatedOTP1.toString()) {
+  //     // OTP verification successful, set the user as logged in and navigate to the home screen
+  //     await AsyncStorage.setItem('isLoggedIn', 'true');
+  //     navigation.navigate('Home');
+  //   } else {
+  //     // Show an error message for incorrect OTP
+  //     setOtpError('Enter the correct OTP');
+  //   }
+  // };
   const handleVerifyOTP = async () => {
     const { generatedOTP } = route.params;
 
     if (enteredOTP === generatedOTP.toString() || enteredOTP === generatedOTP1.toString()) {
-      // OTP verification successful, set the user as logged in and navigate to the home screen
-      await AsyncStorage.setItem('isLoggedIn', 'true');
-      navigation.navigate('Home');
+      // OTP verification successful, make an API call to get user info
+      try {
+        const response = await fetch('https://car-wash-backend-api.onrender.com/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ clientPhone: route.params.clientPhone }),
+        });
+
+        if (response.ok) {
+          const userData = await response.json();
+          // Set userId in AsyncStorage
+          await AsyncStorage.setItem('userId', userData.userId);
+
+          // Set the user as logged in and navigate to the home screen
+          await AsyncStorage.setItem('isLoggedIn', 'true');
+          navigation.navigate('Home');
+        } else {
+          console.error('Error fetching user information:', response.status);
+        }
+      } catch (error) {
+        console.error('Error during user info fetch:', error);
+      }
     } else {
       // Show an error message for incorrect OTP
       setOtpError('Enter the correct OTP');
     }
   };
+
 
   const commonStyles = {
 
@@ -104,8 +138,8 @@ const Otp = ({ route, navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => {
-          setIsRegeneratingOTP(true); 
-          generateOTP(); 
+          setIsRegeneratingOTP(true);
+          generateOTP();
         }}>
           <Text style={styles.service}>Resend OTP</Text>
         </TouchableOpacity>
@@ -163,7 +197,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#000',
     fontSize: 18,
-    fontFamily:'PTSerif-Bold',
+    fontFamily: 'PTSerif-Bold',
 
     textAlign: 'center',
   },
@@ -191,7 +225,7 @@ const styles = StyleSheet.create({
     color: 'blue',
     textDecorationLine: 'underline',
     fontSize: 15,
-    fontFamily:'Poppins-Bold'
+    fontFamily: 'Poppins-Bold'
   },
 });
 

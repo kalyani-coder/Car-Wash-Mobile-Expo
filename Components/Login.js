@@ -41,6 +41,7 @@ const Login = ({ navigation }) => {
 
   useEffect(() => {
     // Check if a user ID is stored in AsyncStorage
+
     AsyncStorage.getItem('userId')
       .then((userId) => {
         if (userId) {
@@ -176,31 +177,31 @@ const Login = ({ navigation }) => {
         },
         body: JSON.stringify({ clientPhone }),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
-        console.log("API response", data);
-  
+
         if (data.verified) {
           // User exists, navigate to OTP page
           const generatedOTP = Math.floor(1000 + Math.random() * 9000);
-  
-          try {
-            await AsyncStorage.setItem('userId', data.user._id);
-          } catch (error) {
-            console.error('Error storing user data:', error);
-          }
-  
+
+          // try {
+          //   await AsyncStorage.setItem('userId', data.user.userId);
+
+          // } catch (error) {
+          //   console.error('Error storing user data:', error);
+          // }
+
           navigation.navigate('Otp', {
             clientPhone,
             generatedOTP,
           });
         } else {
-            setclientPhoneError('* An error occurred. Please try again.');
+          setclientPhoneError('* An error occurred. Please try again.');
 
         }
       } else {
-            setclientPhoneError('* Phone number not found, Please Sign up.');
+        setclientPhoneError('* Phone number not found, Please Sign up.');
 
       }
     } catch (error) {
@@ -208,7 +209,7 @@ const Login = ({ navigation }) => {
       setclientPhoneError('Error', 'An unexpected error occurred. Please try again later.');
     }
   };
-  
+
   const handleIconPressSignup = () => {
     navigation.navigate('Signup');
   };
@@ -238,18 +239,20 @@ const Login = ({ navigation }) => {
           <PaperText style={styles.buttonText}>Continue</PaperText>
         </PaperButton>
 
-        <Text style={styles.sign}>By signing up, you agree to GoRide's </Text>
-
-        <TouchableOpacity>
-          <Text style={styles.service}>Terms of Service and Privacy Policy</Text>
-        </TouchableOpacity>
-
         <View style={styles.account}>
           <Text style={styles.text}>Don't have an account? </Text>
           <TouchableOpacity onPress={handleIconPressSignup}>
             <Text style={styles.login}>Sign Up</Text>
           </TouchableOpacity>
         </View>
+
+        <Text style={styles.sign}>By signing up, you agree to GoRide's </Text>
+
+        <TouchableOpacity>
+          <Text style={styles.service}>Terms of Service and Privacy Policy</Text>
+        </TouchableOpacity>
+
+
       </View>
     </>
   );
@@ -304,7 +307,7 @@ const styles = StyleSheet.create({
   },
   sign: {
     textAlign: 'center',
-    paddingTop: 200,
+    paddingTop: 100,
     fontWeight: 'bold',
   },
   service: {
@@ -319,7 +322,7 @@ const styles = StyleSheet.create({
   },
   account: {
     flexDirection: 'row',
-    marginTop: 100,
+    marginTop: 60,
     marginHorizontal: 90,
   },
   text: {
