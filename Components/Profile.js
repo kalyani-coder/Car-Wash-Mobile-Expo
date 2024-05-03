@@ -1,23 +1,27 @@
-
-
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
-import { Appearance } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { FontAwesome } from '@expo/vector-icons';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+} from "react-native";
+import { Appearance } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { FontAwesome } from "@expo/vector-icons";
 import {
   faUser,
   faEnvelope,
   faPhone,
   faMapMarkerAlt,
   faEdit,
-} from '@fortawesome/free-solid-svg-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRoute, useNavigation } from '@react-navigation/native';
-import { RefreshControl } from 'react-native';
-import * as ImagePicker from 'expo-image-picker'; // Import ImagePicker
-import * as Font from 'expo-font';
-
+} from "@fortawesome/free-solid-svg-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRoute, useNavigation } from "@react-navigation/native";
+import { RefreshControl } from "react-native";
+import * as ImagePicker from "expo-image-picker"; // Import ImagePicker
+import * as Font from "expo-font";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -30,17 +34,15 @@ const Profile = () => {
   useEffect(() => {
     const loadFonts = async () => {
       await Font.loadAsync({
-        'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
-        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-        'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+        "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
+        "Roboto-Bold": require("../assets/fonts/Roboto-Bold.ttf"),
+        "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
 
-        'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
-
+        "PTSerif-Bold": require("../assets/fonts/PTSerif-Bold.ttf"),
       });
     };
     loadFonts();
   }, []);
-
 
   useEffect(() => {
     loadUserData();
@@ -49,14 +51,14 @@ const Profile = () => {
   const loadUserData = async () => {
     try {
       // Replace with your logic to get the user ID from AsyncStorage
-      const userId = await AsyncStorage.getItem('userId');
+      const userId = await AsyncStorage.getItem("userId");
 
       if (userId) {
         const response = await fetch(
-          `https://car-wash-backend-api.onrender.com/api/clients/${userId}`
+          `http://backend.eastwayvisa.com/api/clients/${userId}`
         );
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         const userData = await response.json();
 
@@ -69,10 +71,10 @@ const Profile = () => {
           setUser(userData);
         }
       } else {
-        console.error('User ID not found in AsyncStorage');
+        console.error("User ID not found in AsyncStorage");
       }
     } catch (error) {
-      console.error('Error loading user data:', error);
+      console.error("Error loading user data:", error);
     }
   };
 
@@ -90,15 +92,15 @@ const Profile = () => {
     try {
       await AsyncStorage.clear();
       // Navigate to the login screen upon logout
-      navigation.navigate('Login');
+      navigation.navigate("Login");
     } catch (error) {
-      console.error('Error clearing AsyncStorage:', error);
+      console.error("Error clearing AsyncStorage:", error);
     }
   };
 
   const handleEditProfile = () => {
     // Navigate to the EditProfile screen when the "Edit" button is pressed
-    navigation.navigate('Editprofile', { user });
+    navigation.navigate("Editprofile", { user });
   };
 
   // Function to handle profile picture selection from the gallery
@@ -115,7 +117,7 @@ const Profile = () => {
         setProfilePic(result.uri);
       }
     } catch (error) {
-      console.error('Error picking profile picture:', error);
+      console.error("Error picking profile picture:", error);
     }
   };
 
@@ -128,7 +130,7 @@ const Profile = () => {
   }
 
   const commonStyles = {
-    color: colorScheme === 'dark' ? '#fff' : '#000',
+    color: colorScheme === "dark" ? "#fff" : "#000",
   };
 
   return (
@@ -149,7 +151,10 @@ const Profile = () => {
         >
           <View style={styles.navbar}>
             <Text style={styles.headingText}>Profile</Text>
-            <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={handleEditProfile}
+            >
               <FontAwesomeIcon icon={faEdit} size={30} color="black" />
             </TouchableOpacity>
           </View>
@@ -157,31 +162,64 @@ const Profile = () => {
           {profilePic ? (
             <Image source={{ uri: profilePic }} style={styles.profileImage} />
           ) : (
-            <FontAwesome name="user-circle" size={140} style={styles.profileImage} />
+            <FontAwesome
+              name="user-circle"
+              size={140}
+              style={styles.profileImage}
+            />
           )}
           {/* Add button to change profile picture */}
-          <TouchableOpacity style={styles.changeProfilePicButton} onPress={pickProfilePicture}>
-            <Text style={styles.changeProfilePicText}>Change Profile Picture</Text>
+          <TouchableOpacity
+            style={styles.changeProfilePicButton}
+            onPress={pickProfilePicture}
+          >
+            <Text style={styles.changeProfilePicText}>
+              Change Profile Picture
+            </Text>
           </TouchableOpacity>
           <View style={styles.infoCard}>
             <View style={styles.iconContainer}>
               <FontAwesomeIcon icon={faUser} size={30} color="black" />
-              <Text style={styles.infoText} numberOfLines={1} ellipsizeMode="tail">{user.clientName}</Text>
+              <Text
+                style={styles.infoText}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {user.clientName}
+              </Text>
             </View>
 
             <View style={styles.iconContainer}>
               <FontAwesomeIcon icon={faPhone} size={30} color="black" />
-              <Text style={styles.infoText} numberOfLines={1} ellipsizeMode="tail">{user.clientPhone}</Text>
+              <Text
+                style={styles.infoText}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {user.clientPhone}
+              </Text>
             </View>
 
             <View style={styles.iconContainer}>
               <FontAwesomeIcon icon={faEnvelope} size={30} color="black" />
-              <Text style={styles.infoText} numberOfLines={1} ellipsizeMode="tail">{user.clientEmail}</Text>
+              <Text
+                style={styles.infoText}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {user.clientEmail}
+              </Text>
             </View>
 
             <View style={styles.iconContainer}>
               <FontAwesomeIcon icon={faMapMarkerAlt} size={30} color="black" />
-              <Text style={styles.infoText} numberOfLines={1} ellipsizeMode="tail">{user.clientAddress}</Text>
+              <Text
+                style={styles.infoText}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {user.clientAddress}
+              </Text>
             </View>
           </View>
           <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
@@ -189,7 +227,7 @@ const Profile = () => {
           </TouchableOpacity>
         </ScrollView>
       </View>
-    </View >
+    </View>
   );
 };
 
@@ -197,31 +235,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
-    backgroundColor: '#D8D8D8',
+    backgroundColor: "#D8D8D8",
   },
 
   navbar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 20,
-
   },
   headingText: {
     fontSize: 30,
-    color: 'black',
-    fontFamily: 'Roboto-Bold',
-
+    color: "black",
+    fontFamily: "Roboto-Bold",
   },
   editButton: {
     padding: 10,
   },
   editButtonText: {
     fontSize: 18,
-    color: '#02ccfe',
+    color: "#02ccfe",
   },
   infoCard: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     margin: 20,
     marginBottom: 20,
     borderRadius: 10,
@@ -229,54 +265,51 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   iconContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 20,
-
   },
   infoText: {
     fontSize: 18,
     marginLeft: 10,
-    fontFamily: 'Roboto-Regular'
+    fontFamily: "Roboto-Regular",
   },
   logoutButton: {
-    backgroundColor: '#5B7586',
+    backgroundColor: "#5B7586",
     height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginHorizontal: 30,
     borderRadius: 4,
   },
   logoutText: {
-    color: '#000',
+    color: "#000",
     fontSize: 18,
-    fontFamily: 'Roboto-Bold',
-
-
+    fontFamily: "Roboto-Bold",
   },
   loadingText: {
     fontSize: 20,
-    color: '#000',
-    textAlign: 'center',
+    color: "#000",
+    textAlign: "center",
     marginTop: 50,
   },
   profileImage: {
     width: 160,
     height: 160,
     borderRadius: 80,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginBottom: 20,
   },
   changeProfilePicButton: {
-    backgroundColor: '#3498db',
+    backgroundColor: "#3498db",
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 5,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   changeProfilePicText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
 });
 

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -9,17 +8,15 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
-import { Appearance } from 'react-native';
+import { Appearance } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Picker } from '@react-native-picker/picker';
-import moment from 'moment';
+import { Picker } from "@react-native-picker/picker";
+import moment from "moment";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import * as Font from 'expo-font';
-
-
+import * as Font from "expo-font";
 
 const formatDate = (date) => {
   const day = date.getDate().toString().padStart(2, "0");
@@ -36,30 +33,32 @@ const formatTime = (time) => {
 };
 
 const PromotionConfirmation = ({ route, navigation }) => {
-  const { servicesName, price1, pickupAddress, date, time, image } = route.params;
+  const { servicesName, price1, pickupAddress, date, time, image } =
+    route.params;
 
-  const [selectedOptionValue, setSelectedOptionValue] = useState(selectedOption === 'pickup' ? 300 : 0);
-  const [clientvehicleno, setClientVehicleNo] = useState('');
-  const [clientcarmodelno, setClientCarModelNo] = useState('');
-  const [vehicleNumberError, setVehicleNumberError] = useState('');
-  const [modelNumberError, setModelNumberError] = useState('');
+  const [selectedOptionValue, setSelectedOptionValue] = useState(
+    selectedOption === "pickup" ? 300 : 0
+  );
+  const [clientvehicleno, setClientVehicleNo] = useState("");
+  const [clientcarmodelno, setClientCarModelNo] = useState("");
+  const [vehicleNumberError, setVehicleNumberError] = useState("");
+  const [modelNumberError, setModelNumberError] = useState("");
 
-  const [selectedOption, setSelectedOption] = useState('pickup');
+  const [selectedOption, setSelectedOption] = useState("pickup");
   const [clientData, setClientData] = useState([]);
   const colorScheme = Appearance.getColorScheme();
 
   useEffect(() => {
     const loadFonts = async () => {
-        await Font.loadAsync({
-            'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
-            'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-            'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
-            'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
-
-        });
+      await Font.loadAsync({
+        "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
+        "Roboto-Bold": require("../assets/fonts/Roboto-Bold.ttf"),
+        "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
+        "PTSerif-Bold": require("../assets/fonts/PTSerif-Bold.ttf"),
+      });
     };
     loadFonts();
-}, []);
+  }, []);
 
   useEffect(() => {
     fetchClientData();
@@ -67,55 +66,54 @@ const PromotionConfirmation = ({ route, navigation }) => {
 
   const fetchClientData = async () => {
     try {
-      const response = await fetch('https://car-wash-backend-api.onrender.com/api/clients');
+      const response = await fetch(
+        "http://backend.eastwayvisa.com/api/clients"
+      );
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
       const data = await response.json();
       setClientData(data);
     } catch (error) {
-      console.error('Error fetching client data:', error);
+      console.error("Error fetching client data:", error);
     }
   };
 
   const handleIconPressNotification = () => {
-    navigation.navigate('Notification');
+    navigation.navigate("Notification");
   };
 
   const handleIconPressHome = () => {
-    navigation.navigate('Home');
+    navigation.navigate("Home");
   };
-
-
 
   const handleIconPressBook = () => {
-    navigation.navigate('Appointment');
+    navigation.navigate("Appointment");
   };
-
 
   const openSettings = async () => {
     try {
       await Linking.openSettings();
     } catch (error) {
-      console.error('Error opening settings:', error);
+      console.error("Error opening settings:", error);
     }
   };
 
   const validateFields = () => {
     let isValid = true;
 
-    if (clientvehicleno.trim() === '') {
-      setVehicleNumberError('*Vehicle Number is required');
+    if (clientvehicleno.trim() === "") {
+      setVehicleNumberError("*Vehicle Number is required");
       isValid = false;
     } else {
-      setVehicleNumberError('');
+      setVehicleNumberError("");
     }
 
-    if (clientcarmodelno.trim() === '') {
-      setModelNumberError('*Model Number is required');
+    if (clientcarmodelno.trim() === "") {
+      setModelNumberError("*Model Number is required");
       isValid = false;
     } else {
-      setModelNumberError('');
+      setModelNumberError("");
     }
 
     return isValid;
@@ -123,33 +121,48 @@ const PromotionConfirmation = ({ route, navigation }) => {
 
   const handleSubmit = async () => {
     if (validateFields()) {
-      const pickuptoagent = selectedOption === "pickup" ? "pickuptoagent" : "No";
+      const pickuptoagent =
+        selectedOption === "pickup" ? "pickuptoagent" : "No";
       const selfdrive = selectedOption === "selfdrive" ? "selfdrive" : "No";
 
-      const { pickupAddress, date, time, servicesName, status, price1, image1 } = route.params;
+      const {
+        pickupAddress,
+        date,
+        time,
+        servicesName,
+        status,
+        price1,
+        image1,
+      } = route.params;
       const image = image1;
-      const taxAmount = price1 * 0.10;
+      const taxAmount = price1 * 0.1;
       const formattedTaxAmount = taxAmount.toFixed(2);
 
       let optionValue = 0;
 
-      if (selectedOption === 'pickup') {
+      if (selectedOption === "pickup") {
         optionValue = 300;
       }
 
-      const totalPrice = (price1 + parseFloat(formattedTaxAmount) + optionValue).toFixed(2);
-      const formattedDate = moment(date).format('DD-MM-YYYY');
-      const formattedTime = moment(time).format('hh:mm A');
+      const totalPrice = (
+        price1 +
+        parseFloat(formattedTaxAmount) +
+        optionValue
+      ).toFixed(2);
+      const formattedDate = moment(date).format("DD-MM-YYYY");
+      const formattedTime = moment(time).format("hh:mm A");
 
       try {
-        const userId = await AsyncStorage.getItem('userId');
-        const selectedClient = clientData.find(client => client._id === userId);
+        const userId = await AsyncStorage.getItem("userId");
+        const selectedClient = clientData.find(
+          (client) => client._id === userId
+        );
 
         if (selectedClient) {
-          fetch('https://car-wash-backend-api.onrender.com/api/bookings', {
-            method: 'POST',
+          fetch("http://backend.eastwayvisa.com/api/bookings", {
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
               date: formattedDate,
@@ -172,45 +185,47 @@ const PromotionConfirmation = ({ route, navigation }) => {
           })
             .then((response) => {
               if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error("Network response was not ok");
               }
               return response.json();
             })
             .then((data) => {
-              navigation.navigate('Confirm');
+              navigation.navigate("Confirm");
             })
             .catch((error) => {
-              console.error('Error:', error);
+              console.error("Error:", error);
             });
         } else {
-          console.error('Selected client not found in client data.');
+          console.error("Selected client not found in client data.");
         }
       } catch (error) {
-        console.error('Error retrieving user ID from AsyncStorage:', error);
+        console.error("Error retrieving user ID from AsyncStorage:", error);
       }
     }
   };
 
-
   //   const taxAmount = price1 * 0.10;
   //   const totalPrice = price1 + taxAmount + selectedOptionValue;
-  const taxAmount = price1 * 0.10;
+  const taxAmount = price1 * 0.1;
   const formattedTaxAmount = taxAmount.toFixed(2);
 
   let optionValue = 0;
 
-  if (selectedOption === 'pickup') {
+  if (selectedOption === "pickup") {
     optionValue = 300;
   }
 
-  const totalPrice = (price1 + parseFloat(formattedTaxAmount) + optionValue).toFixed(2);
+  const totalPrice = (
+    price1 +
+    parseFloat(formattedTaxAmount) +
+    optionValue
+  ).toFixed(2);
 
-  const formattedDate = moment(date).format('DD-MM-YYYY');
-  const formattedTime = moment(time).format('hh:mm A');
+  const formattedDate = moment(date).format("DD-MM-YYYY");
+  const formattedTime = moment(time).format("hh:mm A");
 
   const commonStyles = {
-
-    color: colorScheme === 'dark' ? '#fff' : '#000',
+    color: colorScheme === "dark" ? "#fff" : "#000",
   };
 
   return (
@@ -229,23 +244,29 @@ const PromotionConfirmation = ({ route, navigation }) => {
                 marginVertical: 10,
                 borderRadius: 8,
                 borderWidth: 0.5,
-                borderColor: 'black'
+                borderColor: "black",
               }}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  padding: '4%',
-                  justifyContent: 'space-evenly',
+                  padding: "4%",
+                  justifyContent: "space-evenly",
                 }}
               >
-                <MaterialCommunityIcons name="car-wash" size={35} color="black" />
+                <MaterialCommunityIcons
+                  name="car-wash"
+                  size={35}
+                  color="black"
+                />
                 <View>
-                  <Text style={{  fontFamily:'Poppins-Bold'}}>Service Name</Text>
+                  <Text style={{ fontFamily: "Poppins-Bold" }}>
+                    Service Name
+                  </Text>
                   <Text>{servicesName}</Text>
                 </View>
                 <View>
-                  <Text style={{  fontFamily:'Poppins-Bold'}}>Price</Text>
+                  <Text style={{ fontFamily: "Poppins-Bold" }}>Price</Text>
                   <Text>{price1}</Text>
                 </View>
               </View>
@@ -257,17 +278,23 @@ const PromotionConfirmation = ({ route, navigation }) => {
                 marginVertical: 10,
                 borderRadius: 8,
                 borderWidth: 0.5,
-                borderColor: 'black'
+                borderColor: "black",
               }}
             >
-              <View style={{ flexDirection: 'row', justifyContent: 'space-around', margin: 15 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  margin: 15,
+                }}
+              >
                 <View>
-                  <Text style={{  fontFamily:'Poppins-Bold'}}>Date</Text>
+                  <Text style={{ fontFamily: "Poppins-Bold" }}>Date</Text>
                   <Text>{formattedDate}</Text>
                   {/* <Text>{date}</Text> */}
                 </View>
                 <View>
-                  <Text style={{  fontFamily:'Poppins-Bold'}}>Time</Text>
+                  <Text style={{ fontFamily: "Poppins-Bold" }}>Time</Text>
                   <Text>{formattedTime}</Text>
                   {/* <Text>{time}</Text> */}
                 </View>
@@ -280,15 +307,21 @@ const PromotionConfirmation = ({ route, navigation }) => {
                 marginVertical: 10,
                 borderRadius: 8,
                 borderWidth: 0.5,
-                borderColor: 'black'
+                borderColor: "black",
               }}
             >
-              <View style={{ flexDirection: 'row', padding: 10 }}>
-                <Text style={{  fontFamily:'Poppins-Bold'}}>Address: </Text>
-                <Text style={{ fontFamily:'Roboto-Regular',resizeMode:'cover'}}>{pickupAddress}</Text>
+              <View style={{ flexDirection: "row", padding: 10 }}>
+                <Text style={{ fontFamily: "Poppins-Bold" }}>Address: </Text>
+                <Text
+                  style={{ fontFamily: "Roboto-Regular", resizeMode: "cover" }}
+                >
+                  {pickupAddress}
+                </Text>
               </View>
             </View>
-            <Text style={{ fontFamily:'Poppins-Bold' }}>Enter Vehicle Number<Text style={{ color: 'red' }}> *</Text></Text>
+            <Text style={{ fontFamily: "Poppins-Bold" }}>
+              Enter Vehicle Number<Text style={{ color: "red" }}> *</Text>
+            </Text>
             <TextInput
               placeholder="Ex:MH01AE8017"
               placeholderTextColor="#000"
@@ -297,7 +330,9 @@ const PromotionConfirmation = ({ route, navigation }) => {
               style={styles.input}
             />
             <Text style={styles.errorText}>{vehicleNumberError}</Text>
-            <Text style={{ fontFamily:'Poppins-Bold' }}>Enter Make/Model Number<Text style={{ color: 'red' }}> *</Text></Text>
+            <Text style={{ fontFamily: "Poppins-Bold" }}>
+              Enter Make/Model Number<Text style={{ color: "red" }}> *</Text>
+            </Text>
             <TextInput
               placeholder="Ex. Suzuki/Swift"
               placeholderTextColor="#000"
@@ -307,14 +342,16 @@ const PromotionConfirmation = ({ route, navigation }) => {
             />
             <Text style={styles.errorText}>{modelNumberError}</Text>
             <View style={styles.pickerContainer}>
-              <Text style={{ fontFamily:'Poppins-Bold' }}>Select an option:</Text>
+              <Text style={{ fontFamily: "Poppins-Bold" }}>
+                Select an option:
+              </Text>
               <Picker
                 style={[styles.picker, { borderRadius: 8 }]}
                 selectedValue={selectedOption}
                 onValueChange={(itemValue) => {
                   setSelectedOption(itemValue);
                   let optionValue = 0;
-                  if (itemValue === 'pickup') {
+                  if (itemValue === "pickup") {
                     optionValue = 300;
                   }
                   setSelectedOptionValue(optionValue);
@@ -324,17 +361,24 @@ const PromotionConfirmation = ({ route, navigation }) => {
                 <Picker.Item label="Self Drive" value="selfdrive" />
               </Picker>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5, marginVertical: 5, }}>
-              <Text style={{ fontWeight: 'bold' }}>
-                {selectedOption === 'pickup' ? 'Pickup By Agent' : 'Self Drive'}
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginTop: 5,
+                marginVertical: 5,
+              }}
+            >
+              <Text style={{ fontWeight: "bold" }}>
+                {selectedOption === "pickup" ? "Pickup By Agent" : "Self Drive"}
               </Text>
-              <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                <Text style={{ fontWeight: 'bold' }}>
-                  {selectedOption === 'pickup' ? optionValue : '0'}
+              <View style={{ flex: 1, alignItems: "flex-end" }}>
+                <Text style={{ fontWeight: "bold" }}>
+                  {selectedOption === "pickup" ? optionValue : "0"}
                 </Text>
               </View>
             </View>
-           
+
             <View style={styles.amount}>
               <Text style={styles.text2}>SERVICE PRICE</Text>
               <Text style={styles.text2}>{price1}</Text>
@@ -398,10 +442,9 @@ const PromotionConfirmation = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   header: {
     flex: 1,
-    backgroundColor: '#D8D8D8',
-    width: '100%',
-    height: '100%',
-
+    backgroundColor: "#D8D8D8",
+    width: "100%",
+    height: "100%",
   },
   container: {
     paddingTop: 15,
@@ -419,7 +462,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   date1: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   voucher1: {
     flexDirection: "row",
@@ -443,16 +486,16 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 0.5,
-    borderColor: 'black',
+    borderColor: "black",
     borderRadius: 8,
     padding: 5,
     marginBottom: 5,
-    backgroundColor: 'white',
-    
+    backgroundColor: "white",
+
     height: 55,
   },
   errorText: {
-    color: 'red',
+    color: "red",
   },
   pickerContainer: {
     marginTop: 5,
@@ -460,23 +503,23 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   picker: {
-    backgroundColor: 'white',
-    fontWeight: 'bold',
+    backgroundColor: "white",
+    fontWeight: "bold",
     borderRadius: 8,
   },
   selectedOptionText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   maincontainer: {
     // marginHorizontal: 15,
     // marginTop:10
-    position: 'relative'
+    position: "relative",
   },
   button: {
-    position: 'relative',
+    position: "relative",
     backgroundColor: "#5B7586",
     height: 45,
-    
+
     paddingTop: 10,
     marginHorizontal: 15,
     marginBottom: 10,
@@ -485,22 +528,21 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#000",
     fontSize: 16,
-    fontFamily: 'Roboto-Bold',
-
+    fontFamily: "Roboto-Bold",
 
     textAlign: "center",
   },
   footer: {
-    position: 'relative',
+    position: "relative",
     backgroundColor: "#fff",
     bottom: 0,
     left: 0,
     right: 0,
     padding: 10,
-    alignItems: 'center',
+    alignItems: "center",
     zIndex: 2,
-    borderTopColor: 'gray',
-    borderWidth: 0.5
+    borderTopColor: "gray",
+    borderWidth: 0.5,
   },
   iconsContainer1: {
     flexDirection: "row",
@@ -509,17 +551,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 40,
   },
   text9: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   text10: {
     fontSize: 10,
   },
   item: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
 });
 
 export default PromotionConfirmation;
-

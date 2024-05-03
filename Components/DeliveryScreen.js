@@ -13,17 +13,15 @@ import {
   ActivityIndicator,
   Linking,
   ScrollView,
-  Alert
+  Alert,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { XMarkIcon } from "react-native-heroicons/solid";
-import { MaterialIcons } from 'react-native-vector-icons';
+import { MaterialIcons } from "react-native-vector-icons";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import axios from "axios";
 import { Appearance } from "react-native";
-import { RefreshControl } from 'react-native';
-
-
+import { RefreshControl } from "react-native";
 
 export default function DeliveryScreen() {
   const navigation = useNavigation();
@@ -32,7 +30,6 @@ export default function DeliveryScreen() {
 
   const locationId = route.params.locationId;
   const agentId = route.params.agentId;
-
 
   //   const restaurant = useSelector(selectRestaurant);
   const [agent, setAgent] = useState({});
@@ -43,13 +40,9 @@ export default function DeliveryScreen() {
   const [loading, setLoading] = useState(true);
   const colorScheme = Appearance.getColorScheme();
 
-
-
   useEffect(() => {
     axios
-      .get(
-        `https://car-wash-backend-api.onrender.com/api/agents/${agentId}`
-      )
+      .get(`http://backend.eastwayvisa.com/api/agents/${agentId}`)
       .then((res) => {
         setAgent(res.data);
       })
@@ -60,16 +53,20 @@ export default function DeliveryScreen() {
 
   useEffect(() => {
     axios
-      .get(
-        `https://car-wash-backend-api.onrender.com/api/agentlocation/${locationId}`
-      )
+      .get(`http://backend.eastwayvisa.com/api/agentlocation/${locationId}`)
       .then((response) => {
         const data = response.data;
         // Handle the case where latitude or longitude is missing
 
-        if (!data.location || !data.location.latitude || !data.location.longitude) {
-
-          Alert.alert("Error", "Latitude or Longitude is missing in the response");
+        if (
+          !data.location ||
+          !data.location.latitude ||
+          !data.location.longitude
+        ) {
+          Alert.alert(
+            "Error",
+            "Latitude or Longitude is missing in the response"
+          );
           setLoading(false);
           return;
         }
@@ -83,7 +80,10 @@ export default function DeliveryScreen() {
       })
       .catch((error) => {
         console.error("Error fetching location data:", error);
-        Alert.alert("Error", "Error fetching location data. Please try again later.");
+        Alert.alert(
+          "Error",
+          "Error fetching location data. Please try again later."
+        );
       });
   }, []);
 
@@ -98,7 +98,7 @@ export default function DeliveryScreen() {
   const onRefresh = () => {
     setRefreshing(true);
     axios
-      .get(`https://car-wash-backend-api.onrender.com/api/agentlocation/${locationId}`)
+      .get(`http://backend.eastwayvisa.com/api/agentlocation/${locationId}`)
       .then((response) => {
         const data = response.data;
         const { latitude, longitude } = data.location;
@@ -116,11 +116,9 @@ export default function DeliveryScreen() {
       });
   };
 
-
   const handleCall = () => {
     const phoneNumber = agent.contactNumber;
-    Linking.openURL(`tel:+91${phoneNumber}`)
-
+    Linking.openURL(`tel:+91${phoneNumber}`);
   };
   const commonStyles = {
     color: colorScheme === "dark" ? "#fff" : "#000",
@@ -128,10 +126,7 @@ export default function DeliveryScreen() {
 
   return (
     <>
-      <View
-        style={{ flex: 1, backgroundColor: "#00CCBB", ...commonStyles }}
-      >
-
+      <View style={{ flex: 1, backgroundColor: "#00CCBB", ...commonStyles }}>
         <SafeAreaView style={{ zIndex: 50 }}>
           <View
             style={{
@@ -141,7 +136,9 @@ export default function DeliveryScreen() {
               padding: 5,
             }}
           >
-            <TouchableOpacity onPress={() => navigation.navigate("Appointment")}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Appointment")}
+            >
               <XMarkIcon color="white" size={30} />
             </TouchableOpacity>
             <TouchableOpacity onPress={onRefresh}>
@@ -178,8 +175,7 @@ export default function DeliveryScreen() {
               </View>
               <Image
                 source={{
-                  uri:
-                    "https://cdn.pixabay.com/animation/2022/11/10/13/26/13-26-03-556_512.gif",
+                  uri: "https://cdn.pixabay.com/animation/2022/11/10/13/26/13-26-03-556_512.gif",
                 }}
                 style={{ width: 100, height: 80 }}
               />
@@ -249,8 +245,7 @@ export default function DeliveryScreen() {
         >
           <Image
             source={{
-              uri:
-                "https://media.licdn.com/dms/image/C5603AQH1rpWCbawQiA/profile-displayphoto-shrink_800_800/0/1662914771856?e=1687996800&v=beta&t=Xo6UuBmZQw6eSuwDuJS8IMyc_dYip4-QW4T--5k2AtE",
+              uri: "https://media.licdn.com/dms/image/C5603AQH1rpWCbawQiA/profile-displayphoto-shrink_800_800/0/1662914771856?e=1687996800&v=beta&t=Xo6UuBmZQw6eSuwDuJS8IMyc_dYip4-QW4T--5k2AtE",
             }}
             style={{
               width: 48,
@@ -261,8 +256,10 @@ export default function DeliveryScreen() {
             }}
           />
           <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 16, marginLeft: 10 }}>{agent.fullName}</Text>
-            <Text style={{ color: "gray" }}>   Your Rider</Text>
+            <Text style={{ fontSize: 16, marginLeft: 10 }}>
+              {agent.fullName}
+            </Text>
+            <Text style={{ color: "gray" }}> Your Rider</Text>
           </View>
           <TouchableOpacity onPress={handleCall}>
             <Text
@@ -281,4 +278,3 @@ export default function DeliveryScreen() {
     </>
   );
 }
-

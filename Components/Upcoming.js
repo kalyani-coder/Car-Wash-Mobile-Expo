@@ -1,6 +1,4 @@
-
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,20 +7,19 @@ import {
   Linking,
   ScrollView,
   Alert,
-  Image
-} from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
-import { useRoute } from '@react-navigation/native';
-import { Appearance } from 'react-native';
-import { RefreshControl } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import moment from 'moment';
-import { Entypo } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import * as Font from 'expo-font';
-
+  Image,
+} from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
+import { Appearance } from "react-native";
+import { RefreshControl } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import moment from "moment";
+import { Entypo } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import * as Font from "expo-font";
 
 const Upcoming = ({ navigation }) => {
   const [data, setData] = useState([]);
@@ -34,11 +31,10 @@ const Upcoming = ({ navigation }) => {
   useEffect(() => {
     const loadFonts = async () => {
       await Font.loadAsync({
-        'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
-        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-        'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
-        'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
-
+        "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
+        "Roboto-Bold": require("../assets/fonts/Roboto-Bold.ttf"),
+        "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
+        "PTSerif-Bold": require("../assets/fonts/PTSerif-Bold.ttf"),
       });
     };
     loadFonts();
@@ -46,26 +42,30 @@ const Upcoming = ({ navigation }) => {
 
   const fetchData = async () => {
     try {
-      const userId = await AsyncStorage.getItem('userId');
+      const userId = await AsyncStorage.getItem("userId");
       if (userId) {
         const response = await fetch(
-          `https://car-wash-backend-api.onrender.com/api/bookings/clientId/${userId}`
+          `http://backend.eastwayvisa.com/api/bookings/clientId/${userId}`
         );
         if (response.ok) {
           const allData = await response.json();
 
           // Filter the data based on status
           const filteredData = allData.filter(
-            (item) => item.status === 'Accepted' || item.status === '' || item.status === 'WorkOnIt' || item.status === 'PickUp'
+            (item) =>
+              item.status === "Accepted" ||
+              item.status === "" ||
+              item.status === "WorkOnIt" ||
+              item.status === "PickUp"
           );
 
           setData(filteredData);
         } else {
-          console.error('Failed to fetch data');
+          console.error("Failed to fetch data");
         }
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -75,14 +75,12 @@ const Upcoming = ({ navigation }) => {
     }, [])
   );
 
-  //for refreshing the field 
+  //for refreshing the field
 
   const onRefresh = () => {
-
     setRefreshing(true);
 
     setTimeout(() => {
-
       setRefreshing(false);
     }, 2000);
   };
@@ -124,7 +122,7 @@ const Upcoming = ({ navigation }) => {
   //         onPress: () => {
   //           // Make a DELETE request to the API to cancel the appointment
   //           fetch(
-  //             `https://car-wash-backend-api.onrender.com/api/bookings/${appointmentId}`,
+  //             `http://backend.eastwayvisa.com/api/bookings/${appointmentId}`,
   //             {
   //               method: 'DELETE',
   //             }
@@ -165,7 +163,7 @@ const Upcoming = ({ navigation }) => {
   //           try {
   //             // Update the status to 'Declined' before canceling the appointment
   //             const updateStatusResponse = await fetch(
-  //               `https://car-wash-backend-api.onrender.com/api/bookings/${appointmentId}`,
+  //               `http://backend.eastwayvisa.com/api/bookings/${appointmentId}`,
   //               {
   //                 method: 'PATCH',
   //                 headers: {
@@ -176,25 +174,25 @@ const Upcoming = ({ navigation }) => {
   //                 }),
   //               }
   //             );
-  
+
   //             if (updateStatusResponse.ok) {
-  //               
+  //
   //             } else {
   //               console.error('Failed to update status to Declined');
   //               return;
   //             }
-  
+
   //             // Make a DELETE request to the API to cancel the appointment
   //             const cancelResponse = await fetch(
-  //               `https://car-wash-backend-api.onrender.com/api/bookings/${appointmentId}`,
+  //               `http://backend.eastwayvisa.com/api/bookings/${appointmentId}`,
   //               {
   //                 method: 'DELETE',
   //               }
   //             );
-  
+
   //             if (cancelResponse.ok) {
-  //             
-  
+  //
+
   //               // Update the local state
   //               const updatedData = data.filter(
   //                 (item) => item._id !== appointmentId
@@ -213,83 +211,77 @@ const Upcoming = ({ navigation }) => {
   // };
   const handleCancelAppointment = async (appointmentId) => {
     Alert.alert(
-      'Confirm Cancellation',
-      'Are you sure you want to cancel this appointment?',
+      "Confirm Cancellation",
+      "Are you sure you want to cancel this appointment?",
       [
         {
-          text: 'Cancel',
-          style: 'cancel',
+          text: "Cancel",
+          style: "cancel",
         },
         {
-          text: 'Confirm',
+          text: "Confirm",
           onPress: async () => {
             try {
               // Update the status to 'Declined' using the PATCH method
               const updateStatusResponse = await fetch(
-                `https://car-wash-backend-api.onrender.com/api/bookings/${appointmentId}`,
+                `http://backend.eastwayvisa.com/api/bookings/${appointmentId}`,
                 {
-                  method: 'PATCH',
+                  method: "PATCH",
                   headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                   },
                   body: JSON.stringify({
-                    status: 'Declined',
+                    status: "Declined",
                   }),
                 }
               );
-  
+
               if (updateStatusResponse.ok) {
-                
               } else {
-                console.error('Failed to update status to Declined');
+                console.error("Failed to update status to Declined");
                 return;
               }
-            const userId = await AsyncStorage.getItem('userId');
+              const userId = await AsyncStorage.getItem("userId");
 
-  
               // Fetch the updated list of bookings
-              const updatedResponse = await fetch(`https://car-wash-backend-api.onrender.com/api/bookings/clientId/${userId}`);
-              
+              const updatedResponse = await fetch(
+                `http://backend.eastwayvisa.com/api/bookings/clientId/${userId}`
+              );
+
               if (updatedResponse.ok) {
                 const updatedData = await updatedResponse.json();
-  
-                
+
                 setData(updatedData);
-                
               } else {
-                console.error('Failed to fetch updated data');
+                console.error("Failed to fetch updated data");
               }
             } catch (error) {
-              console.error('Error canceling appointment:', error);
+              console.error("Error canceling appointment:", error);
             }
           },
         },
       ]
     );
   };
-  
-  
 
   const handleTrack = (item) => {
-    navigation.navigate('DeliveryScreen', {
+    navigation.navigate("DeliveryScreen", {
       date: item.date,
       time: item.time,
       servicesName: item.servicesName,
       totalPrice: item.totalPrice,
       locationId: item.locationId,
-      agentId: item.agentId
+      agentId: item.agentId,
     });
   };
 
   const commonStyles = {
-
-    color: colorScheme === 'dark' ? '#fff' : '#000',
+    color: colorScheme === "dark" ? "#fff" : "#000",
   };
 
   return (
     <>
       <View style={[styles.header, commonStyles]}>
-
         <ScrollView
           vertical={true}
           showsVerticalScrollIndicator={false}
@@ -310,19 +302,26 @@ const Upcoming = ({ navigation }) => {
                 <View style={styles.promotioncardContent}>
                   <Image
                     source={{
-                      uri:
-                        item.image,
+                      uri: item.image,
                     }}
                     style={styles.promotionimage}
-                    resizeMode='contain'
+                    resizeMode="contain"
                   />
                   <View style={styles.promotiondetails}>
-                    <Text style={styles.promotionserviceName} numberOfLines={1} ellipsizeMode="tail">{item.servicesName}</Text>
+                    <Text
+                      style={styles.promotionserviceName}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {item.servicesName}
+                    </Text>
                     <Text style={styles.promotiondate}>
-                      {moment(item.date, 'DD-MM-YYYY').format('DD-MM-YYYY')}
+                      {moment(item.date, "DD-MM-YYYY").format("DD-MM-YYYY")}
                     </Text>
                     <Text style={styles.promotionclock}>{item.time}</Text>
-                    <Text style={styles.promotionprice}>Rs. {item.totalPrice}</Text>
+                    <Text style={styles.promotionprice}>
+                      Rs. {item.totalPrice}
+                    </Text>
                   </View>
                   {/* <View>
                     {item.status === 'Accepted' ? (
@@ -331,8 +330,11 @@ const Upcoming = ({ navigation }) => {
                       </TouchableOpacity>
                     ) : null}
                   </View> */}
-                  {item.status === 'PickUp' ? (
-                    <TouchableOpacity style={styles.trackButton} onPress={() => handleTrack(item)}>
+                  {item.status === "PickUp" ? (
+                    <TouchableOpacity
+                      style={styles.trackButton}
+                      onPress={() => handleTrack(item)}
+                    >
                       <Entypo name="location-pin" size={24} color="white" />
                     </TouchableOpacity>
                   ) : null}
@@ -341,24 +343,21 @@ const Upcoming = ({ navigation }) => {
                       <Entypo name="location-pin" size={24} color="white" />
                     </TouchableOpacity>
                   ) : null} */}
-
-
                 </View>
                 <View style={styles.buttonContainer}>
-                  {item.status === 'Accepted' ? (
+                  {item.status === "Accepted" ? (
                     <>
                       <Text
                         style={
-                          item.status === 'Accepted'
+                          item.status === "Accepted"
                             ? styles.confirmedStatus
                             : styles.pendingStatus
                         }
                       >
-                        {item.status === '' ? 'Pending' : item.status}
+                        {item.status === "" ? "Pending" : item.status}
                       </Text>
 
-
-                      {item.status == 'WorkOnIt' || item.status == 'PickUp' || (
+                      {item.status == "WorkOnIt" || item.status == "PickUp" || (
                         <View style={styles.rescheduleButton}>
                           <Text style={styles.buttonText}> No Reschedule</Text>
                         </View>
@@ -374,18 +373,18 @@ const Upcoming = ({ navigation }) => {
                     <>
                       <Text
                         style={
-                          item.status === 'Accepted'
+                          item.status === "Accepted"
                             ? styles.confirmedStatus
                             : styles.pendingStatus
                         }
                       >
-                        {item.status === '' ? 'Pending' : item.status}
+                        {item.status === "" ? "Pending" : item.status}
                       </Text>
 
                       <TouchableOpacity
                         style={styles.rescheduleButton}
                         onPress={() => {
-                          navigation.navigate('UpdateInfo', {
+                          navigation.navigate("UpdateInfo", {
                             appointment: item,
                           });
                         }}
@@ -405,7 +404,6 @@ const Upcoming = ({ navigation }) => {
             ))}
           </View>
         </ScrollView>
-
       </View>
     </>
   );
@@ -414,7 +412,7 @@ const Upcoming = ({ navigation }) => {
 const styles = StyleSheet.create({
   header: {
     flex: 1,
-    backgroundColor: '#D8D8D8',
+    backgroundColor: "#D8D8D8",
   },
 
   container: {
@@ -423,14 +421,14 @@ const styles = StyleSheet.create({
     // paddingVertical: 10,
   },
   promotioncard: {
-    flexDirection: 'column',
-    backgroundColor: 'white',
+    flexDirection: "column",
+    backgroundColor: "white",
     height: 200,
     width: 370,
     marginVertical: 10,
     borderRadius: 10,
     elevation: 2, // Add shadow for Android
-    shadowColor: 'rgba(0, 0, 0, 0.2)', // Add shadow for iOS
+    shadowColor: "rgba(0, 0, 0, 0.2)", // Add shadow for iOS
     shadowOpacity: 0.5,
     shadowOffset: {
       width: 0,
@@ -438,15 +436,15 @@ const styles = StyleSheet.create({
     },
   },
   promotioncardContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 10,
     // paddingVertical: 5,
   },
   promotionimage: {
     width: 120,
     height: 120,
-    resizeMode: 'cover',
+    resizeMode: "cover",
     borderRadius: 10,
     margin: 10,
   },
@@ -471,57 +469,51 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   trackButton: {
-    backgroundColor: 'skyblue',
+    backgroundColor: "skyblue",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
     marginTop: 5,
-    bottom: 30
-
+    bottom: 30,
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly', // Change to 'space-evenly' for even spacing
+    flexDirection: "row",
+    justifyContent: "space-evenly", // Change to 'space-evenly' for even spacing
     marginHorizontal: 5,
-    marginTop: 10
+    marginTop: 10,
   },
   confirmedStatus: {
-
-    backgroundColor: '#33B864',
+    backgroundColor: "#33B864",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    fontFamily: 'Roboto-Bold',
-
-
+    fontFamily: "Roboto-Bold",
   },
   pendingStatus: {
-    backgroundColor: '#FCAE1E',
+    backgroundColor: "#FCAE1E",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    fontFamily: 'Roboto-Bold',
-
+    fontFamily: "Roboto-Bold",
   },
   rescheduleButton: {
-    backgroundColor: '#f8db03',
+    backgroundColor: "#f8db03",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
   },
   cancelButton: {
-    backgroundColor: '#FF2E2E',
+    backgroundColor: "#FF2E2E",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
   },
   buttonText: {
-    color: 'black',
+    color: "black",
     fontSize: 14,
-    fontFamily: 'Roboto-Bold',
-    textAlign: 'center',
+    fontFamily: "Roboto-Bold",
+    textAlign: "center",
   },
-
 });
 
 export default Upcoming;

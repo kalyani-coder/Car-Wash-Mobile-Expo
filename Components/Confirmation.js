@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -20,18 +18,10 @@ import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import * as Font from 'expo-font';
-
-
+import * as Font from "expo-font";
 
 const Confirmation = ({ route, navigation }) => {
-  const {
-    servicesName,
-    price,
-    pickupAddress,
-    date,
-    time,
-  } = route.params;
+  const { servicesName, price, pickupAddress, date, time } = route.params;
   const [selectedOptionValue, setSelectedOptionValue] = useState(
     selectedOption === "pickup" ? 300 : 0
   );
@@ -48,16 +38,15 @@ const Confirmation = ({ route, navigation }) => {
 
   useEffect(() => {
     const loadFonts = async () => {
-        await Font.loadAsync({
-            'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
-            'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-            'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
-            'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
-
-        });
+      await Font.loadAsync({
+        "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
+        "Roboto-Bold": require("../assets/fonts/Roboto-Bold.ttf"),
+        "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
+        "PTSerif-Bold": require("../assets/fonts/PTSerif-Bold.ttf"),
+      });
     };
     loadFonts();
-}, []);
+  }, []);
 
   useEffect(() => {
     fetchClientData();
@@ -66,7 +55,7 @@ const Confirmation = ({ route, navigation }) => {
   const fetchClientData = async () => {
     try {
       const response = await fetch(
-        "https://car-wash-backend-api.onrender.com/api/clients"
+        "http://backend.eastwayvisa.com/api/clients"
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -86,12 +75,9 @@ const Confirmation = ({ route, navigation }) => {
     navigation.navigate("Home");
   };
 
-
-
   const handleIconPressBook = () => {
     navigation.navigate("Appointment");
   };
-
 
   const openSettings = async () => {
     try {
@@ -123,13 +109,15 @@ const Confirmation = ({ route, navigation }) => {
 
   const handleSubmit = async () => {
     if (validateFields()) {
-      const pickuptoagent = selectedOption === "pickup" ? "pickuptoagent" : "No";
+      const pickuptoagent =
+        selectedOption === "pickup" ? "pickuptoagent" : "No";
       const selfdrive = selectedOption === "selfdrive" ? "selfdrive" : "No";
 
-      const { pickupAddress, date, time, servicesName, status, price, image1 } = route.params;
+      const { pickupAddress, date, time, servicesName, status, price, image1 } =
+        route.params;
       const image = image1;
 
-      const taxAmount = price * 0.10;
+      const taxAmount = price * 0.1;
       const formattedTaxAmount = taxAmount.toFixed(2);
       let optionValue = 0;
 
@@ -137,16 +125,22 @@ const Confirmation = ({ route, navigation }) => {
         optionValue = 300;
       }
 
-      const totalPrice = (price + parseFloat(formattedTaxAmount) + optionValue).toFixed(2);
+      const totalPrice = (
+        price +
+        parseFloat(formattedTaxAmount) +
+        optionValue
+      ).toFixed(2);
       const formattedDate = moment(date).format("DD-MM-YYYY");
       const formattedTime = moment(time).format("hh:mm A");
 
       try {
         const userId = await AsyncStorage.getItem("userId");
-        const selectedClient = clientData.find((client) => client._id === userId);
+        const selectedClient = clientData.find(
+          (client) => client._id === userId
+        );
 
         if (selectedClient) {
-          fetch("https://car-wash-backend-api.onrender.com/api/bookings", {
+          fetch("http://backend.eastwayvisa.com/api/bookings", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -191,7 +185,7 @@ const Confirmation = ({ route, navigation }) => {
     }
   };
 
-  const taxAmount = price * 0.10;
+  const taxAmount = price * 0.1;
   const formattedTaxAmount = taxAmount.toFixed(2);
   let optionValue = 0;
 
@@ -199,7 +193,11 @@ const Confirmation = ({ route, navigation }) => {
     optionValue = 300;
   }
 
-  const totalPrice = (price + parseFloat(formattedTaxAmount) + optionValue).toFixed(2);
+  const totalPrice = (
+    price +
+    parseFloat(formattedTaxAmount) +
+    optionValue
+  ).toFixed(2);
 
   const formattedDate = moment(date).format("DD-MM-YYYY");
   const formattedTime = moment(time).format("hh:mm A");
@@ -222,7 +220,7 @@ const Confirmation = ({ route, navigation }) => {
         <View
           style={{
             height: 65,
-            
+
             backgroundColor: "white",
             marginVertical: 10,
             borderRadius: 8,
@@ -239,11 +237,11 @@ const Confirmation = ({ route, navigation }) => {
           >
             <MaterialCommunityIcons name="car-wash" size={35} color="black" />
             <View>
-              <Text style={{  fontFamily:'Poppins-Bold'}}>Service Name</Text>
+              <Text style={{ fontFamily: "Poppins-Bold" }}>Service Name</Text>
               <Text>{servicesName}</Text>
             </View>
             <View>
-              <Text style={{  fontFamily:'Poppins-Bold'}}>Price</Text>
+              <Text style={{ fontFamily: "Poppins-Bold" }}>Price</Text>
               <Text>{price}</Text>
             </View>
           </View>
@@ -251,7 +249,7 @@ const Confirmation = ({ route, navigation }) => {
         <View
           style={{
             height: 65,
-            
+
             backgroundColor: "white",
             marginVertical: 10,
             borderRadius: 8,
@@ -260,15 +258,19 @@ const Confirmation = ({ route, navigation }) => {
           }}
         >
           <View
-            style={{ flexDirection: "row", justifyContent: "space-around", margin: 15 }}
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-around",
+              margin: 15,
+            }}
           >
             <View>
-              <Text style={{  fontFamily:'Poppins-Bold'}}>Date</Text>
+              <Text style={{ fontFamily: "Poppins-Bold" }}>Date</Text>
               <Text>{formattedDate}</Text>
               {/* <Text>{date}</Text> */}
             </View>
             <View>
-              <Text style={{  fontFamily:'Poppins-Bold'}}>Time</Text>
+              <Text style={{ fontFamily: "Poppins-Bold" }}>Time</Text>
               <Text>{formattedTime}</Text>
               {/* <Text>{time}</Text> */}
             </View>
@@ -277,7 +279,7 @@ const Confirmation = ({ route, navigation }) => {
         <View
           style={{
             height: 60,
-          
+
             backgroundColor: "white",
             marginVertical: 10,
             borderRadius: 8,
@@ -286,11 +288,13 @@ const Confirmation = ({ route, navigation }) => {
           }}
         >
           <View style={{ flexDirection: "row", padding: 10 }}>
-            <Text style={{  fontFamily:'Poppins-Bold'}}>Address: </Text>
-            <Text style={{ fontFamily:'Roboto-Regular',resizeMode:'cover'}}>{pickupAddress}</Text>
+            <Text style={{ fontFamily: "Poppins-Bold" }}>Address: </Text>
+            <Text style={{ fontFamily: "Roboto-Regular", resizeMode: "cover" }}>
+              {pickupAddress}
+            </Text>
           </View>
         </View>
-        <Text style={{ fontFamily:'Poppins-Bold' }}>
+        <Text style={{ fontFamily: "Poppins-Bold" }}>
           Enter Vehicle Number<Text style={{ color: "red" }}> *</Text>
         </Text>
         <TextInput
@@ -301,7 +305,7 @@ const Confirmation = ({ route, navigation }) => {
           style={styles.input}
         />
         <Text style={styles.errorText}>{vehicleNumberError}</Text>
-        <Text style={{ fontFamily:'Poppins-Bold' }}>
+        <Text style={{ fontFamily: "Poppins-Bold" }}>
           Enter Make/Model Number<Text style={{ color: "red" }}> *</Text>
         </Text>
         <TextInput
@@ -313,7 +317,7 @@ const Confirmation = ({ route, navigation }) => {
         />
         <Text style={styles.errorText}>{modelNumberError}</Text>
         <View style={styles.pickerContainer}>
-          <Text style={{ fontFamily:'Poppins-Bold' }}>Select an option:</Text>
+          <Text style={{ fontFamily: "Poppins-Bold" }}>Select an option:</Text>
           <Picker
             style={[styles.picker, { borderRadius: 8 }]}
             selectedValue={selectedOption}
@@ -330,7 +334,14 @@ const Confirmation = ({ route, navigation }) => {
             <Picker.Item label="Self Drive" value="selfdrive" />
           </Picker>
         </View>
-        <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5, marginVertical: 5 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginTop: 5,
+            marginVertical: 5,
+          }}
+        >
           <Text style={{ fontWeight: "bold" }}>
             {selectedOption === "pickup" ? "Pickup By Agent" : "Self Drive"}
           </Text>
@@ -473,7 +484,7 @@ const styles = StyleSheet.create({
     position: "relative",
     backgroundColor: "#5B7586",
     height: 45,
-   
+
     paddingTop: 10,
     marginHorizontal: 15,
     marginBottom: 10,
@@ -482,7 +493,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#000",
     fontSize: 16,
-    fontFamily: 'Roboto-Bold',
+    fontFamily: "Roboto-Bold",
     textAlign: "center",
   },
   footer: {
@@ -517,4 +528,3 @@ const styles = StyleSheet.create({
 });
 
 export default Confirmation;
-

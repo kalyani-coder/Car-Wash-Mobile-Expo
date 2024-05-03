@@ -1,30 +1,34 @@
-
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { Appearance } from 'react-native';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { MaterialIcons, Entypo } from '@expo/vector-icons';
-import moment from 'moment';
-import * as Font from 'expo-font';
-
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import { Appearance } from "react-native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { MaterialIcons, Entypo } from "@expo/vector-icons";
+import moment from "moment";
+import * as Font from "expo-font";
 
 const UpdateInfo = ({ route, navigation }) => {
   const { appointment } = route.params;
-  const [editedAppointment, setEditedAppointment] = useState({ ...appointment });
+  const [editedAppointment, setEditedAppointment] = useState({
+    ...appointment,
+  });
   const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [isTimePickerVisible, setTimePickerVisible] = useState(false);
   const colorScheme = Appearance.getColorScheme();
 
-
   useEffect(() => {
     const loadFonts = async () => {
       await Font.loadAsync({
-        'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
-        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-        'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+        "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
+        "Roboto-Bold": require("../assets/fonts/Roboto-Bold.ttf"),
+        "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
 
-        'PTSerif-Bold': require('../assets/fonts/PTSerif-Bold.ttf'),
-
+        "PTSerif-Bold": require("../assets/fonts/PTSerif-Bold.ttf"),
       });
     };
     loadFonts();
@@ -40,7 +44,7 @@ const UpdateInfo = ({ route, navigation }) => {
 
   const handleDateConfirm = (selectedDate) => {
     hideDatePicker();
-    const formattedDate = moment(selectedDate).format('DD-MM-YYYY');
+    const formattedDate = moment(selectedDate).format("DD-MM-YYYY");
     setEditedAppointment({ ...editedAppointment, date: formattedDate });
   };
 
@@ -54,36 +58,41 @@ const UpdateInfo = ({ route, navigation }) => {
 
   const handleTimeConfirm = (selectedTime) => {
     hideTimePicker();
-    const formattedTime = moment(selectedTime).format('hh:mm A');
+    const formattedTime = moment(selectedTime).format("hh:mm A");
     setEditedAppointment({ ...editedAppointment, time: formattedTime });
   };
 
   const handleUpdate = () => {
     // Perform a PATCH request to update the appointment with the new date and time
     // Replace this with your actual API endpoint and logic
-    fetch(`https://car-wash-backend-api.onrender.com/api/bookings/${editedAppointment._id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(editedAppointment),
-    })
+    fetch(
+      `http://backend.eastwayvisa.com/api/bookings/${editedAppointment._id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(editedAppointment),
+      }
+    )
       .then((response) => {
         if (response.ok) {
           // Successfully updated the appointment
           // Navigate back to the Upcoming screen with the updated data
-          navigation.navigate('Appointment', { updatedAppointment: editedAppointment });
+          navigation.navigate("Appointment", {
+            updatedAppointment: editedAppointment,
+          });
         } else {
-          console.error('Failed to update appointment');
+          console.error("Failed to update appointment");
         }
       })
       .catch((error) => {
-        console.error('Error updating appointment:', error);
+        console.error("Error updating appointment:", error);
       });
   };
 
   const commonStyles = {
-    color: colorScheme === 'dark' ? '#fff' : '#000',
+    color: colorScheme === "dark" ? "#fff" : "#000",
   };
 
   return (
@@ -95,7 +104,10 @@ const UpdateInfo = ({ route, navigation }) => {
           <Text style={styles.label}>Date:</Text>
         </View>
         <Text style={styles.detail}>{editedAppointment.date}</Text>
-        <TouchableOpacity onPress={showDatePicker} style={styles.datePickerButton}>
+        <TouchableOpacity
+          onPress={showDatePicker}
+          style={styles.datePickerButton}
+        >
           <Text style={styles.datePickerButtonText}>Change Date</Text>
         </TouchableOpacity>
         <DateTimePickerModal
@@ -111,7 +123,10 @@ const UpdateInfo = ({ route, navigation }) => {
           <Text style={styles.label}>Time:</Text>
         </View>
         <Text style={styles.detail}>{editedAppointment.time}</Text>
-        <TouchableOpacity onPress={showTimePicker} style={styles.timePickerButton}>
+        <TouchableOpacity
+          onPress={showTimePicker}
+          style={styles.timePickerButton}
+        >
           <Text style={styles.timePickerButtonText}>Change Time</Text>
         </TouchableOpacity>
         <DateTimePickerModal
@@ -133,7 +148,6 @@ const UpdateInfo = ({ route, navigation }) => {
         <Text style={styles.detail}>{appointment.clientContact}</Text>
       </View>
       <View style={styles.appointmentDetails}>
-
         <Text style={styles.label}>Service Name:</Text>
         <Text style={styles.detail}>{appointment.servicesName}</Text>
       </View>
@@ -161,75 +175,68 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingTop: 70,
-    backgroundColor: '#f7f7f7',
+    backgroundColor: "#f7f7f7",
   },
   heading: {
     fontSize: 24,
     marginBottom: 20,
-    fontFamily: 'Poppins-Bold',
-
+    fontFamily: "Poppins-Bold",
   },
   appointmentDetails: {
-    flexDirection: 'row',
+    flexDirection: "row",
 
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 20,
   },
   iconContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   label: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginLeft: 10,
-
   },
   detail: {
     fontSize: 16,
     marginLeft: 8,
   },
   datePickerButton: {
-    backgroundColor: '#5B7586',
+    backgroundColor: "#5B7586",
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 5,
     marginLeft: 10,
   },
   datePickerButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 14,
-    fontFamily:'Roboto-Bold'
-
+    fontFamily: "Roboto-Bold",
   },
   timePickerButton: {
-    backgroundColor: '#5B7586',
+    backgroundColor: "#5B7586",
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 5,
     marginLeft: 10,
   },
   timePickerButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 14,
-    fontFamily:'Roboto-Bold'
-
-
+    fontFamily: "Roboto-Bold",
   },
   updateButton: {
-    backgroundColor: '#5B7586',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#5B7586",
+    alignItems: "center",
+    justifyContent: "center",
     height: 40,
     borderRadius: 5,
     marginTop: 20,
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontFamily:'Roboto-Bold'
-
-
+    fontFamily: "Roboto-Bold",
   },
 });
 

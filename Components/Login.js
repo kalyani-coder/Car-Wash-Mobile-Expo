@@ -1,30 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Alert
-} from 'react-native';
-import { Appearance } from 'react-native';
-import { Button as PaperButton, Text as PaperText, Provider as PaperProvider } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Font from 'expo-font';
+  Alert,
+} from "react-native";
+import { Appearance } from "react-native";
+import {
+  Button as PaperButton,
+  Text as PaperText,
+  Provider as PaperProvider,
+} from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Font from "expo-font";
 
 const Login = ({ navigation }) => {
-  const [clientPhone, setclientPhone] = useState('');
-  const [clientPhoneError, setclientPhoneError] = useState('');
+  const [clientPhone, setclientPhone] = useState("");
+  const [clientPhoneError, setclientPhoneError] = useState("");
   const [apiResponse, setApiResponse] = useState([]);
   const colorScheme = Appearance.getColorScheme();
 
   useEffect(() => {
     const loadFonts = async () => {
       await Font.loadAsync({
-        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+        "Roboto-Bold": require("../assets/fonts/Roboto-Bold.ttf"),
 
-        'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
-
+        "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
       });
     };
 
@@ -42,22 +45,22 @@ const Login = ({ navigation }) => {
   useEffect(() => {
     // Check if a user ID is stored in AsyncStorage
 
-    AsyncStorage.getItem('userId')
+    AsyncStorage.getItem("userId")
       .then((userId) => {
         if (userId) {
           // If the user is already registered, navigate to the Home page
-          navigation.navigate('Home');
+          navigation.navigate("Home");
         }
       })
       .catch((error) => {
-        console.error('Error checking AsyncStorage:', error);
+        console.error("Error checking AsyncStorage:", error);
       });
   }, [navigation]);
 
   // const fetchAPIResponse = async () => {
   //   try {
   //     const response = await fetch(
-  //       'https://car-wash-backend-api.onrender.com/api/clients'
+  //       'http://backend.eastwayvisa.com/api/clients'
   //     );
   //     if (!response.ok) {
   //       throw new Error('Network response was not ok');
@@ -70,17 +73,16 @@ const Login = ({ navigation }) => {
   // };
 
   const handleclientPhoneChange = (text) => {
-    const numericValue = text.replace(/[^0-9]/g, '');
+    const numericValue = text.replace(/[^0-9]/g, "");
 
     if (numericValue.length <= 10) {
       setclientPhone(numericValue);
-      setclientPhoneError('');
+      setclientPhoneError("");
     }
   };
 
   // const handleLogin = async () => {
   //   setclientPhoneError('');
-
 
   //   if (clientPhone.length === 10) {
   //     const user = apiResponse.find(
@@ -111,7 +113,7 @@ const Login = ({ navigation }) => {
   // const fetchAPIResponse = async (clientPhone) => {
   //   try {
   //     const response = await fetch(
-  //       'https://car-wash-backend-api.onrender.com/api/login',
+  //       'http://backend.eastwayvisa.com/api/login',
   //       {
   //         method: 'POST',
   //         headers: {
@@ -166,14 +168,12 @@ const Login = ({ navigation }) => {
   //   }
   // };
 
-
-
   const handleLogin = async () => {
     try {
-      const response = await fetch('https://car-wash-backend-api.onrender.com/api/login', {
-        method: 'POST',
+      const response = await fetch("http://backend.eastwayvisa.com/api/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ clientPhone }),
       });
@@ -192,30 +192,30 @@ const Login = ({ navigation }) => {
           //   console.error('Error storing user data:', error);
           // }
 
-          navigation.navigate('Otp', {
+          navigation.navigate("Otp", {
             clientPhone,
             generatedOTP,
           });
         } else {
-          setclientPhoneError('* An error occurred. Please try again.');
-
+          setclientPhoneError("* An error occurred. Please try again.");
         }
       } else {
-        setclientPhoneError('* Phone number not found, Please Sign up.');
-
+        setclientPhoneError("* Phone number not found, Please Sign up.");
       }
     } catch (error) {
-      console.error('Error during login:', error);
-      setclientPhoneError('Error', 'An unexpected error occurred. Please try again later.');
+      console.error("Error during login:", error);
+      setclientPhoneError(
+        "Error",
+        "An unexpected error occurred. Please try again later."
+      );
     }
   };
 
   const handleIconPressSignup = () => {
-    navigation.navigate('Signup');
+    navigation.navigate("Signup");
   };
   const commonStyles = {
-
-    color: colorScheme === 'dark' ? '#fff' : '#000',
+    color: colorScheme === "dark" ? "#fff" : "#000",
   };
   return (
     <>
@@ -225,13 +225,13 @@ const Login = ({ navigation }) => {
         <TextInput
           style={styles.textBox}
           placeholder="Enter Your Phone Number"
-          placeholderTextColor='#000'
+          placeholderTextColor="#000"
           onChangeText={handleclientPhoneChange}
           value={clientPhone}
-          keyboardType={'numeric'}
+          keyboardType={"numeric"}
           maxLength={10}
         />
-        {clientPhoneError !== '' && (
+        {clientPhoneError !== "" && (
           <Text style={styles.errorText}>{clientPhoneError}</Text>
         )}
 
@@ -249,41 +249,39 @@ const Login = ({ navigation }) => {
         <Text style={styles.sign}>By signing up, you agree to GoRide's </Text>
 
         <TouchableOpacity>
-          <Text style={styles.service}>Terms of Service and Privacy Policy</Text>
+          <Text style={styles.service}>
+            Terms of Service and Privacy Policy
+          </Text>
         </TouchableOpacity>
-
-
       </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
-    backgroundColor: '#D8D8D8',
+    backgroundColor: "#D8D8D8",
   },
   log: {
     fontSize: 20,
-    fontFamily: 'Poppins-Bold',
+    fontFamily: "Poppins-Bold",
     marginTop: 30,
-    color: 'black',
-    textAlign: 'center'
-
+    color: "black",
+    textAlign: "center",
   },
 
   name: {
     fontSize: 18,
     paddingTop: 100,
     marginTop: 10,
-    color: 'black',
+    color: "black",
     marginHorizontal: 30,
-    fontFamily: 'Roboto-Bold'
+    fontFamily: "Roboto-Bold",
   },
   textBox: {
-    borderColor: 'grey',
-    backgroundColor: 'white',
+    borderColor: "grey",
+    backgroundColor: "white",
     borderRadius: 6,
     borderWidth: 2,
     padding: 10,
@@ -291,7 +289,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   button: {
-    backgroundColor: '#5B7586',
+    backgroundColor: "#5B7586",
     height: 50,
     paddingTop: 5,
     marginHorizontal: 30,
@@ -299,41 +297,41 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   buttonText: {
-    color: '#000',
+    color: "#000",
     fontSize: 18,
-    fontFamily: 'Roboto-Bold',
+    fontFamily: "Roboto-Bold",
 
-    textAlign: 'center',
+    textAlign: "center",
   },
   sign: {
-    textAlign: 'center',
+    textAlign: "center",
     paddingTop: 100,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   service: {
-    color: 'blue',
-    textDecorationLine: 'underline',
-    textAlign: 'center',
-    fontWeight: 'bold',
+    color: "blue",
+    textDecorationLine: "underline",
+    textAlign: "center",
+    fontWeight: "bold",
   },
   errorText: {
-    color: 'red',
+    color: "red",
     marginHorizontal: 30,
   },
   account: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 60,
     marginHorizontal: 90,
   },
   text: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   login: {
-    fontWeight: 'bold',
-    color: 'blue',
-    textDecorationLine: 'underline',
+    fontWeight: "bold",
+    color: "blue",
+    textDecorationLine: "underline",
     fontSize: 15,
   },
 });
